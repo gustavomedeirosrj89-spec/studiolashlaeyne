@@ -33,29 +33,36 @@ export function Portfolio() {
   return (
     <section id="portfolio" className="py-20 md:py-32 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:row justify-between items-start md:items-end gap-6 mb-12 md:mb-20">
+        {/* Header Organizado */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 md:mb-24">
           <div className="space-y-4 max-w-2xl">
-            <h4 className="text-accent uppercase tracking-[0.3em] font-medium text-xs">Catálogo Exclusivo</h4>
-            <h2 className="text-4xl md:text-6xl font-headline leading-tight">Nossos <span className="text-primary italic">Estilos</span></h2>
-            <p className="text-muted-foreground font-light text-lg md:text-xl">
+            <h4 className="text-accent uppercase tracking-[0.4em] font-medium text-[10px] md:text-xs">Catálogo Exclusivo</h4>
+            <h2 className="text-5xl md:text-7xl font-headline leading-[0.9] text-foreground">
+              Nossos <br />
+              <span className="text-primary italic">Estilos</span>
+            </h2>
+            <p className="text-muted-foreground font-light text-lg md:text-xl max-w-lg leading-relaxed pt-2">
               Selecione a arquitetura ideal para o formato dos seus olhos e seu estilo de vida.
             </p>
           </div>
-          <Button variant="outline" className="rounded-full border-primary text-primary hover:bg-primary/10 tracking-[0.1em] uppercase text-xs h-12 px-8">
-            Ver Tabela Completa
-          </Button>
+          <div className="pt-4 md:pt-0 w-full md:w-auto">
+            <Button variant="outline" className="rounded-full border-primary text-primary hover:bg-primary/10 tracking-[0.2em] uppercase text-[10px] h-14 px-10 w-full md:w-auto transition-all">
+              Ver Tabela Completa
+            </Button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        {/* Grid de Estilos */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           {services.map((service, idx) => {
             const img = PlaceHolderImages.find(i => i.id === service.imageId)
             return (
               <div 
                 key={idx} 
-                className="group flex flex-col h-full bg-white rounded-[2rem] overflow-hidden border border-primary/5 hover:border-primary/20 transition-all duration-500 hover:shadow-xl graceful-reveal" 
+                className="group flex flex-col h-full bg-card rounded-[2.5rem] overflow-hidden border border-primary/5 hover:border-primary/20 transition-all duration-700 hover:shadow-2xl graceful-reveal" 
                 style={{ animationDelay: `${idx * 0.15}s` }}
               >
-                <div className="relative aspect-square overflow-hidden">
+                <div className="relative aspect-[4/5] overflow-hidden">
                   {img && (
                     <Image 
                       src={img.imageUrl} 
@@ -65,32 +72,33 @@ export function Portfolio() {
                       data-ai-hint={img.imageHint}
                     />
                   )}
-                  <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                  {/* Tags com design limpo */}
+                  <div className="absolute top-6 left-6 flex flex-wrap gap-2">
                     {service.tags.map(tag => (
-                      <Badge key={tag} className="bg-white/90 backdrop-blur-sm text-foreground hover:bg-white border-none shadow-sm px-3 py-1 text-[9px] uppercase tracking-widest font-bold">
+                      <Badge key={tag} className="bg-white/95 backdrop-blur-sm text-foreground hover:bg-white border-none shadow-sm px-4 py-1.5 text-[9px] uppercase tracking-[0.15em] font-bold">
                         {tag}
                       </Badge>
                     ))}
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 </div>
                 
-                <div className="flex-1 p-6 md:p-8 space-y-4 flex flex-col">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-2xl font-headline font-semibold text-foreground group-hover:text-primary transition-colors">{service.title}</h3>
-                    <span className="text-primary font-bold font-headline text-xl">{service.price}</span>
+                <div className="flex-1 p-8 md:p-10 space-y-6 flex flex-col">
+                  <div className="flex justify-between items-baseline">
+                    <h3 className="text-3xl font-headline font-semibold text-foreground group-hover:text-primary transition-colors">{service.title}</h3>
+                    <span className="text-primary font-bold font-headline text-2xl">{service.price}</span>
                   </div>
                   
-                  <p className="text-muted-foreground text-sm leading-relaxed font-light">
+                  <p className="text-muted-foreground text-base leading-relaxed font-light">
                     {service.description}
                   </p>
                   
-                  <div className="pt-4 mt-auto flex items-center justify-between border-t border-primary/5">
-                    <div className="flex gap-0.5">
-                      {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3 fill-primary text-primary" />)}
+                  <div className="pt-6 mt-auto flex items-center justify-between border-t border-primary/10">
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3.5 h-3.5 fill-primary text-primary" />)}
                     </div>
-                    <Button variant="ghost" className="p-0 h-auto text-[10px] uppercase tracking-[0.2em] font-bold text-accent group-hover:gap-3 transition-all">
-                      Saber Mais <ArrowRight className="w-4 h-4 ml-2" />
+                    <Button variant="ghost" className="p-0 h-auto text-[11px] uppercase tracking-[0.2em] font-bold text-accent hover:text-primary transition-all flex items-center gap-2">
+                      Saber Mais <ArrowRight className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
