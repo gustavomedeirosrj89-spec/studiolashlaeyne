@@ -59,7 +59,7 @@ export function Portfolio() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 md:mb-24">
           <div className="space-y-4 max-w-2xl">
-            <h4 className="text-accent uppercase tracking-[0.4em] font-medium text-[10px] md:text-xs">Arquitetura do Olhar</h4>
+            <h4 className="text-accent uppercase tracking-[0.4em] font-medium text-[10px] md:text-xs">Catálogo Exclusivo</h4>
             <h2 className="text-5xl md:text-7xl font-headline leading-[0.9] text-foreground">
               Nossos <br />
               <span className="text-primary italic">Estilos</span>
