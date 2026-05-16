@@ -1,6 +1,7 @@
 
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Sparkles, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,12 @@ const navItems = [
 ]
 
 export function Navbar() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-primary/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -42,32 +49,34 @@ export function Navbar() {
 
         {/* Mobile Nav */}
         <div className="md:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="w-6 h-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="bg-background">
-              <SheetHeader>
-                <SheetTitle className="font-headline text-left text-2xl">LAEYNE STUDIO</SheetTitle>
-              </SheetHeader>
-              <div className="flex flex-col gap-8 mt-16">
-                {navItems.map((item) => (
-                  <Link 
-                    key={item.name} 
-                    href={item.href}
-                    className="text-xl font-headline hover:text-primary transition-colors border-b border-primary/5 pb-4"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                <Button className="rounded-full w-full bg-primary h-14 text-base font-medium">
-                  Falar no WhatsApp
+          {mounted && (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="w-6 h-6" />
                 </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+              </SheetTrigger>
+              <SheetContent side="right" className="bg-background">
+                <SheetHeader>
+                  <SheetTitle className="font-headline text-left text-2xl">LAEYNE STUDIO</SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col gap-8 mt-16">
+                  {navItems.map((item) => (
+                    <Link 
+                      key={item.name} 
+                      href={item.href}
+                      className="text-xl font-headline hover:text-primary transition-colors border-b border-primary/5 pb-4"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                  <Button className="rounded-full w-full bg-primary h-14 text-base font-medium">
+                    Falar no WhatsApp
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
       </div>
     </nav>
