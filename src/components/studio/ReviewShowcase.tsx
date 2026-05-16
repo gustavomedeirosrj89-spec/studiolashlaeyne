@@ -3,38 +3,38 @@ import { Star, Quote } from "lucide-react"
 const reviews = [
   {
     name: "Beatriz M.",
-    role: "Regular Client",
-    content: "The attention to detail at LAEYNE is unparalleled. My Fox Eyes look lasted 4 weeks perfectly.",
+    role: "Cliente Regular",
+    content: "A atenção aos detalhes na LAEYNE é incomparável. Meu visual Fox Eyes durou 4 semanas perfeitamente.",
     rating: 5
   },
   {
     name: "Clara G.",
-    role: "Wedding Guest",
-    content: "Found my perfect volume thanks to the AI tool. Professional, clean, and absolutely stunning results.",
+    role: "Convidada de Casamento",
+    content: "Profissional, ambiente limpo e resultados absolutamente deslumbrantes. Recomendo muito!",
     rating: 5
   },
   {
     name: "Juliana S.",
-    role: "Model",
-    content: "Best Brazilian Volume I've ever had. It's so light I forget I'm wearing extensions!",
+    role: "Modelo",
+    content: "O melhor Volume Brasileiro que já tive. É tão leve que esqueço que estou usando extensões!",
     rating: 5
   }
 ]
 
 export function ReviewShowcase() {
   return (
-    <section id="reviews" className="py-24 px-6 overflow-hidden bg-accent/5">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-        <div className="lg:col-span-4 space-y-6">
-          <h2 className="text-5xl font-headline leading-tight">Voices of <br /><span className="text-primary italic">Confidence</span></h2>
-          <div className="flex items-center gap-2">
+    <section id="reviews" className="py-20 md:py-24 px-6 overflow-hidden bg-accent/5">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="lg:col-span-4 space-y-6 text-center lg:text-left">
+          <h2 className="text-4xl md:text-5xl font-headline leading-tight">Vozes de <br /><span className="text-primary italic">Confiança</span></h2>
+          <div className="flex items-center justify-center lg:justify-start gap-2">
             {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
-            <span className="text-sm font-medium ml-2">4.9/5 from 200+ clients</span>
+            <span className="text-sm font-medium ml-2">4.9/5 de mais de 200 clientes</span>
           </div>
-          <p className="text-muted-foreground font-light italic">Authentic feedback from our community of beauty enthusiasts.</p>
+          <p className="text-muted-foreground font-light italic">Feedback autêntico da nossa comunidade de entusiastas da beleza.</p>
         </div>
 
-        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {reviews.map((review, idx) => (
             <div 
               key={idx} 

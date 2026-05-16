@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/studio/Navbar"
 import { Hero } from "@/components/studio/Hero"
-import { LookMatcher } from "@/components/studio/LookMatcher"
 import { Portfolio } from "@/components/studio/Portfolio"
 import { ReviewShowcase } from "@/components/studio/ReviewShowcase"
 import { DigitalCatalog } from "@/components/studio/DigitalCatalog"
@@ -13,7 +12,6 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Portfolio />
-      <LookMatcher />
       <ReviewShowcase />
       <DigitalCatalog />
       <PaymentInfo />

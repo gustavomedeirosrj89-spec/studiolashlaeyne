@@ -6,10 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 
 const navItems = [
-  { name: "Portfolio", href: "#portfolio" },
-  { name: "Look Matcher", href: "#matcher" },
-  { name: "Reviews", href: "#reviews" },
-  { name: "Catalog", href: "#catalog" },
+  { name: "Portfólio", href: "#portfolio" },
+  { name: "Depoimentos", href: "#reviews" },
+  { name: "Catálogo", href: "#catalog" },
 ]
 
 export function Navbar() {
@@ -18,7 +17,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
           <Sparkles className="w-6 h-6 text-primary group-hover:rotate-12 transition-transform" />
-          <span className="font-headline text-2xl font-semibold tracking-tighter">LAEYNE STUDIO</span>
+          <span className="font-headline text-xl md:text-2xl font-semibold tracking-tighter">LAEYNE STUDIO</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -33,7 +32,7 @@ export function Navbar() {
             </Link>
           ))}
           <Button className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-medium uppercase tracking-widest text-xs">
-            Book Now
+            Agendar Agora
           </Button>
         </div>
 
@@ -60,7 +59,7 @@ export function Navbar() {
                   </Link>
                 ))}
                 <Button className="rounded-full w-full bg-primary mt-4">
-                  WhatsApp Booking
+                  Agendar via WhatsApp
                 </Button>
               </div>
             </SheetContent>

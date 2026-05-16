@@ -11,43 +11,43 @@ import { BookOpen, Clock, Trash2, Zap } from "lucide-react"
 
 export function DigitalCatalog() {
   return (
-    <section id="catalog" className="py-24 px-6 text-center">
+    <section id="catalog" className="py-20 md:py-24 px-6 text-center">
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="inline-block p-4 rounded-full bg-primary/10 mb-4">
           <BookOpen className="w-8 h-8 text-primary" />
         </div>
-        <h2 className="text-4xl md:text-5xl font-headline">Service Catalog</h2>
+        <h2 className="text-4xl md:text-5xl font-headline">Catálogo de Serviços</h2>
         <p className="text-muted-foreground font-light text-lg">
-          Complete transparency on our treatments, maintenance cycles, and specialized care protocols.
+          Transparência total em nossos tratamentos, ciclos de manutenção e protocolos de cuidados especializados.
         </p>
         
         <Dialog>
           <DialogTrigger asChild>
-            <Button size="lg" className="rounded-full px-12 h-14 bg-primary text-white hover:bg-primary/90">
-              Access Full Catalog
+            <Button size="lg" className="rounded-full px-12 h-14 bg-primary text-white hover:bg-primary/90 w-full sm:w-auto">
+              Acessar Catálogo Completo
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl bg-background border-none max-h-[80vh] overflow-y-auto">
+          <DialogContent className="max-w-2xl bg-background border-none max-h-[85vh] overflow-y-auto">
             <DialogHeader className="pb-4">
-              <DialogTitle className="text-4xl font-headline text-center">Service Tiers</DialogTitle>
+              <DialogTitle className="text-3xl md:text-4xl font-headline text-center">Tabela de Serviços</DialogTitle>
             </DialogHeader>
             <div className="space-y-12 py-6">
               <div className="space-y-6">
                 <h3 className="flex items-center gap-2 font-headline text-2xl text-primary">
-                  <Clock className="w-5 h-5" /> Maintenance Intervals
+                  <Clock className="w-5 h-5" /> Intervalos de Manutenção
                 </h3>
                 <div className="grid gap-4">
                   {[
-                    { label: "15 Days Maintenance", price: "R$ 100", desc: "For those who demand perfection at all times." },
-                    { label: "21 Days Maintenance", price: "R$ 130", desc: "Recommended average for most volume styles." },
-                    { label: "28 Days Maintenance", price: "R$ 160", desc: "Extended cycle for slow-growing lash sets." }
+                    { label: "Manutenção 15 Dias", price: "R$ 100", desc: "Para quem exige perfeição constante." },
+                    { label: "Manutenção 21 Dias", price: "R$ 130", desc: "Média recomendada para a maioria dos estilos." },
+                    { label: "Manutenção 28 Dias", price: "R$ 160", desc: "Ciclo estendido para cílios de crescimento lento." }
                   ].map((item, i) => (
                     <div key={i} className="flex justify-between items-center p-4 rounded-xl bg-secondary/20">
                       <div>
-                        <p className="font-semibold">{item.label}</p>
+                        <p className="font-semibold text-sm md:text-base">{item.label}</p>
                         <p className="text-xs text-muted-foreground">{item.desc}</p>
                       </div>
-                      <span className="font-headline text-xl">{item.price}</span>
+                      <span className="font-headline text-xl ml-4">{item.price}</span>
                     </div>
                   ))}
                 </div>
@@ -55,15 +55,15 @@ export function DigitalCatalog() {
 
               <div className="space-y-6">
                 <h3 className="flex items-center gap-2 font-headline text-2xl text-accent">
-                  <Trash2 className="w-5 h-5" /> Removal & Repair
+                  <Trash2 className="w-5 h-5" /> Remoção e Reparos
                 </h3>
                 <div className="grid gap-4">
                   <div className="flex justify-between items-center p-4 border rounded-xl">
-                    <p className="font-semibold">Professional Removal</p>
+                    <p className="font-semibold">Remoção Profissional</p>
                     <span className="font-headline text-xl">R$ 50</span>
                   </div>
                   <div className="flex justify-between items-center p-4 border rounded-xl">
-                    <p className="font-semibold">Rescue Fix (Single Gap)</p>
+                    <p className="font-semibold">Reparo Rápido (Falha Única)</p>
                     <span className="font-headline text-xl">R$ 30</span>
                   </div>
                 </div>
@@ -71,16 +71,16 @@ export function DigitalCatalog() {
 
               <div className="space-y-6">
                 <h3 className="flex items-center gap-2 font-headline text-2xl text-foreground">
-                  <Zap className="w-5 h-5" /> Spa Treatments
+                  <Zap className="w-5 h-5" /> Tratamentos Spa
                 </h3>
-                <div className="p-6 rounded-2xl bg-primary/5 space-y-4">
+                <div className="p-6 rounded-2xl bg-primary/5 space-y-4 text-left">
                   <div className="flex justify-between items-center">
                     <p className="font-semibold">Lash Botox & Tint</p>
                     <span className="font-headline text-xl">R$ 120</span>
                   </div>
                   <Separator />
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Advanced hydration and keratin treatment to strengthen natural lashes between extensions.
+                    Tratamento avançado de hidratação e queratina para fortalecer os cílios naturais entre as extensões.
                   </p>
                 </div>
               </div>
