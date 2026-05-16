@@ -1,28 +1,10 @@
 
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { MessageCircle, ArrowRight } from "lucide-react"
-import { PlaceHolderImages } from "@/lib/placeholder-images"
 
 export function Hero() {
-  const bgImage = PlaceHolderImages.find(img => img.id === "hero-bg-eyes")
-
   return (
     <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-background">
-      {/* Imagem de Fundo com Transparência */}
-      <div className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none">
-        {bgImage && (
-          <Image 
-            src={bgImage.imageUrl} 
-            alt="Fundo decorativo olhos"
-            fill
-            className="object-cover"
-            priority
-            data-ai-hint="eyes eyelashes"
-          />
-        )}
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
         <div className="max-w-3xl space-y-10 graceful-reveal text-center md:text-left mx-auto md:mx-0">
           <div className="space-y-6">
@@ -52,7 +34,6 @@ export function Hero() {
         </div>
       </div>
       
-      {/* Detalhes de iluminação sutil */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-primary/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-[150px] -z-10" />
     </section>

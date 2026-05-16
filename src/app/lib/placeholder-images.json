@@ -2,12 +2,6 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-bg-eyes",
-      "description": "Close-up horizontal de olhos com cílios luxuosos",
-      "imageUrl": "https://picsum.photos/seed/lashbg/1920/1080",
-      "imageHint": "eyelash horizontal"
-    },
-    {
       "id": "hero-lash",
       "description": "Close up de extensões de cílios de luxo",
       "imageUrl": "https://picsum.photos/seed/lash10/1200/800",
