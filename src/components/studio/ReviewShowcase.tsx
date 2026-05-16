@@ -29,7 +29,7 @@ export function ReviewShowcase() {
           <h2 className="text-4xl md:text-5xl font-headline leading-tight">Vozes de <br /><span className="text-primary italic">Confiança</span></h2>
           <div className="flex items-center justify-center lg:justify-start gap-2">
             {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 fill-primary text-primary" />)}
-            <span className="text-sm font-medium ml-2">4.9/5 de mais de 200 clientes</span>
+            <span className="text-sm font-medium ml-2">4.9/5</span>
           </div>
           <p className="text-muted-foreground font-light italic">Feedback autêntico da nossa comunidade de entusiastas da beleza.</p>
         </div>
