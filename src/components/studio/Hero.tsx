@@ -28,7 +28,7 @@ export function Hero() {
                 Experimente o luxo de um olhar renovado com nossas técnicas exclusivas. Design sob medida para sua beleza única e natural.
               </p>
               <p className="text-sm md:text-base text-muted-foreground/80 max-w-lg font-light italic border-l-2 border-primary/20 pl-4 mx-auto lg:mx-0">
-                Fundado por Laeyne, o estúdio é referência em lash design, combinando anos de experiência técnica com uma paixão por elevar a autoestima através de um olhar marcante e sofisticado.
+                Fundado por Laeyne, o estúdio transforma olhares com delicadeza, elegância e atenção aos mínimos detalhes. Especializada em lash design, oferece um atendimento pensado para realçar a beleza natural e elevar a autoestima através de um olhar marcante e sofisticado.
               </p>
             </div>
 
