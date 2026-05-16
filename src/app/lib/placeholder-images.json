@@ -1,5 +1,12 @@
+
 {
   "placeholderImages": [
+    {
+      "id": "hero-bg-eyes",
+      "description": "Close-up horizontal de olhos com cílios luxuosos",
+      "imageUrl": "https://picsum.photos/seed/lashbg/1920/1080",
+      "imageHint": "eyelash horizontal"
+    },
     {
       "id": "hero-lash",
       "description": "Close up de extensões de cílios de luxo",
@@ -29,12 +36,6 @@
       "description": "Detalhe da aplicação profissional de cílios",
       "imageUrl": "https://picsum.photos/seed/tech100/1000/1250",
       "imageHint": "beauty application"
-    },
-    {
-      "id": "client-review-1",
-      "description": "Detalhe de um olhar transformado",
-      "imageUrl": "https://picsum.photos/seed/client50/400/400",
-      "imageHint": "beautiful eyes"
     }
   ]
 }
