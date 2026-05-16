@@ -1,41 +1,40 @@
-
 {
   "placeholderImages": [
     {
       "id": "hero-lash",
       "description": "Close up de extensões de cílios de luxo",
-      "imageUrl": "https://picsum.photos/seed/lash1/1200/800",
+      "imageUrl": "https://picsum.photos/seed/lash10/1200/800",
       "imageHint": "eyelash extensions"
     },
     {
       "id": "brazilian-volume",
       "description": "Estilo de cílios Volume Brasileiro",
-      "imageUrl": "https://picsum.photos/seed/lash2/600/600",
-      "imageHint": "lash extensions"
+      "imageUrl": "https://picsum.photos/seed/lash20/800/800",
+      "imageHint": "eyelash volume"
     },
     {
       "id": "fox-eyes",
       "description": "Modelo com estilo Fox Eyes",
-      "imageUrl": "https://picsum.photos/seed/lash3/600/600",
-      "imageHint": "eye makeup"
+      "imageUrl": "https://picsum.photos/seed/lash30/800/800",
+      "imageHint": "fox eyes"
     },
     {
-      "id": "studio-vibe",
-      "description": "Interior luxuoso do estúdio de cílios",
-      "imageUrl": "https://picsum.photos/seed/studio1/800/1000",
-      "imageHint": "luxury spa"
-    },
-    {
-      "id": "client-review-1",
-      "description": "Cliente feliz mostrando seus cílios",
-      "imageUrl": "https://picsum.photos/seed/client1/400/400",
-      "imageHint": "beautiful eyes"
+      "id": "classic-lashes",
+      "description": "Estilo Clássico Fio a Fio",
+      "imageUrl": "https://picsum.photos/seed/lash40/800/800",
+      "imageHint": "natural eyelashes"
     },
     {
       "id": "technique-detail",
-      "description": "Detalhe da técnica de aplicação profissional",
-      "imageUrl": "https://picsum.photos/seed/tech1/800/600",
-      "imageHint": "beauty treatment"
+      "description": "Detalhe da aplicação profissional de cílios",
+      "imageUrl": "https://picsum.photos/seed/tech100/1000/1250",
+      "imageHint": "beauty application"
+    },
+    {
+      "id": "client-review-1",
+      "description": "Detalhe de um olhar transformado",
+      "imageUrl": "https://picsum.photos/seed/client50/400/400",
+      "imageHint": "beautiful eyes"
     }
   ]
 }
