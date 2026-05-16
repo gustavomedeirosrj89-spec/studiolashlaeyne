@@ -2,9 +2,24 @@ import { CreditCard, Wallet, Banknote, ShieldCheck } from "lucide-react"
 
 export function PaymentInfo() {
   const methods = [
-    { icon: <Wallet className="w-6 h-6" />, title: "PIX", detail: "5% de Desconto", color: "bg-primary/10 text-primary" },
-    { icon: <CreditCard className="w-6 h-6" />, title: "Cartão de Crédito", detail: "Até 3x Sem Juros", color: "bg-accent/10 text-accent" },
-    { icon: <Banknote className="w-6 h-6" />, title: "Dinheiro", detail: "Direto no Estúdio", color: "bg-foreground/5 text-foreground" },
+    { 
+      icon: <Wallet className="w-6 h-6" />, 
+      title: "PIX", 
+      detail: "Rápido e Seguro", 
+      color: "bg-primary/10 text-primary" 
+    },
+    { 
+      icon: <CreditCard className="w-6 h-6" />, 
+      title: "Cartão de Crédito", 
+      detail: "Até 3x Sem Juros", 
+      color: "bg-accent/10 text-accent" 
+    },
+    { 
+      icon: <Banknote className="w-6 h-6" />, 
+      title: "Espécie", 
+      detail: "Direto no Estúdio", 
+      color: "bg-foreground/5 text-foreground" 
+    },
   ]
 
   return (

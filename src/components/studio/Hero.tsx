@@ -1,4 +1,3 @@
-
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { MessageCircle, ArrowRight } from "lucide-react"
@@ -12,7 +11,7 @@ export function Hero() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-7 space-y-8 graceful-reveal" style={{ animationDelay: '0.1s' }}>
           <div className="space-y-4">
-            <h4 className="text-accent uppercase tracking-[0.3em] font-medium text-xs md:text-sm">Especialista em Cílios</h4>
+            <h4 className="text-accent uppercase tracking-[0.3em] font-medium text-xs md:text-sm">Especialista em Extensão de Cílios</h4>
             <h1 className="text-5xl md:text-8xl font-headline font-light leading-[1] text-foreground">
               A Arte de <br />
               <span className="italic font-serif text-primary">Realçar Olhares.</span>
@@ -24,10 +23,10 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Button size="lg" className="rounded-full px-10 h-14 bg-primary text-white hover:bg-primary/90 flex gap-2 w-full sm:w-auto text-base">
               <MessageCircle className="w-5 h-5" />
-              Agendar Consultoria
+              Agendar no WhatsApp
             </Button>
             <Button size="lg" variant="outline" className="rounded-full px-10 h-14 border-primary text-primary hover:bg-primary/10 flex gap-2 w-full sm:w-auto text-base">
-              Ver Portfólio
+              Nossos Estilos
               <ArrowRight className="w-5 h-5" />
             </Button>
           </div>
