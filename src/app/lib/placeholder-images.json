@@ -1,0 +1,34 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-lash",
+      "description": "Close up of long luxury eyelash extensions",
+      "imageUrl": "https://picsum.photos/seed/lash1/1200/800",
+      "imageHint": "eyelash extensions"
+    },
+    {
+      "id": "brazilian-volume",
+      "description": "Volume Brasileiro lash style showcase",
+      "imageUrl": "https://picsum.photos/seed/lash2/600/600",
+      "imageHint": "lash extensions"
+    },
+    {
+      "id": "fox-eyes",
+      "description": "Fox Eyes lash style model",
+      "imageUrl": "https://picsum.photos/seed/lash3/600/600",
+      "imageHint": "eye makeup"
+    },
+    {
+      "id": "studio-vibe",
+      "description": "Luxurious lash studio interior",
+      "imageUrl": "https://picsum.photos/seed/studio1/800/600",
+      "imageHint": "luxury spa"
+    },
+    {
+      "id": "client-review-1",
+      "description": "Happy client showing her lashes",
+      "imageUrl": "https://picsum.photos/seed/client1/400/400",
+      "imageHint": "beautiful eyes"
+    }
+  ]
+}
