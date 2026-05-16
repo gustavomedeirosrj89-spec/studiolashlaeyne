@@ -50,10 +50,11 @@ export function Hero() {
                 {specialistImg && (
                   <Image 
                     src={specialistImg.imageUrl} 
-                    alt="Especialista Laeyne"
+                    alt="Modelo Laeyne Studio"
                     fill
                     className="object-cover"
                     data-ai-hint={specialistImg.imageHint}
+                    unoptimized={specialistImg.imageUrl.includes('ibb.co')}
                   />
                 )}
               </div>
