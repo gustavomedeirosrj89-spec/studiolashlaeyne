@@ -32,6 +32,12 @@
       "imageHint": "natural eyelashes"
     },
     {
+      "id": "russian-volume",
+      "description": "Estilo de cílios Volume Russo",
+      "imageUrl": "https://i.ibb.co/C5hctDxn/Volume-russo.jpg",
+      "imageHint": "russian volume lashes"
+    },
+    {
       "id": "technique-detail",
       "description": "Detalhe da aplicação profissional de cílios",
       "imageUrl": "https://picsum.photos/seed/tech100/1000/1250",
