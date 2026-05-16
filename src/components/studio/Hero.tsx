@@ -39,14 +39,14 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Quadro da Especialista */}
+          {/* Quadro da Especialista (Enquadramento) */}
           <div className="lg:col-span-5 relative graceful-reveal" style={{ animationDelay: '0.3s' }}>
             <div className="relative w-full aspect-[4/5] max-w-[450px] mx-auto">
-              {/* Moldura Decorativa */}
+              {/* Moldura Decorativa (Fundo) */}
               <div className="absolute inset-0 border border-primary/20 rounded-[3rem] translate-x-4 translate-y-4 -z-10" />
               
               {/* Imagem com Blob Frame */}
-              <div className="w-full h-full blob-frame bg-secondary/30 relative">
+              <div className="w-full h-full blob-frame bg-secondary/30 relative shadow-2xl">
                 {specialistImg && (
                   <Image 
                     src={specialistImg.imageUrl} 
@@ -58,15 +58,15 @@ export function Hero() {
                 )}
               </div>
 
-              {/* Elementos Flutuantes */}
-              <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl hidden md:block">
+              {/* Elementos Flutuantes (Selo de Qualidade) */}
+              <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl hidden md:block border border-primary/5">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <MessageCircle className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground">Atendimento</p>
-                    <p className="text-sm font-semibold">Exclusivo & VIP</p>
+                    <p className="text-sm font-semibold text-foreground">Exclusivo & VIP</p>
                   </div>
                 </div>
               </div>
