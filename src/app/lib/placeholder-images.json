@@ -8,6 +8,12 @@
       "imageHint": "eyelash extensions"
     },
     {
+      "id": "specialist-photo",
+      "description": "Foto da especialista Laeyne",
+      "imageUrl": "https://picsum.photos/seed/laeyne/800/1000",
+      "imageHint": "professional lash artist"
+    },
+    {
       "id": "brazilian-volume",
       "description": "Estilo de cílios Volume Brasileiro",
       "imageUrl": "https://picsum.photos/seed/lash20/800/800",
