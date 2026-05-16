@@ -198,7 +198,7 @@ Horário desejado: ${formData.time}.`
                             placeholder="Ex: Maria Silva" 
                             className="h-12 bg-secondary/20 border-primary/10 focus:border-primary/30"
                             value={formData.name}
-                            onChange={(e) => setFormData(e.target.value)}
+                            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -209,7 +209,7 @@ Horário desejado: ${formData.time}.`
                               type="date" 
                               className="h-12 bg-secondary/20 border-primary/10"
                               value={formData.date}
-                              onChange={(e) => setFormData(e.target.value)}
+                              onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
                             />
                           </div>
                           <div className="space-y-2">
@@ -219,7 +219,7 @@ Horário desejado: ${formData.time}.`
                               type="time" 
                               className="h-12 bg-secondary/20 border-primary/10"
                               value={formData.time}
-                              onChange={(e) => setFormData(e.target.value)}
+                              onChange={(e) => setFormData(prev => ({ ...prev, time: e.target.value }))}
                             />
                           </div>
                         </div>
