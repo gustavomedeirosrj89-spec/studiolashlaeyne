@@ -1,34 +1,41 @@
+
 {
   "placeholderImages": [
     {
       "id": "hero-lash",
-      "description": "Close up of long luxury eyelash extensions",
+      "description": "Close up de extensões de cílios de luxo",
       "imageUrl": "https://picsum.photos/seed/lash1/1200/800",
       "imageHint": "eyelash extensions"
     },
     {
       "id": "brazilian-volume",
-      "description": "Volume Brasileiro lash style showcase",
+      "description": "Estilo de cílios Volume Brasileiro",
       "imageUrl": "https://picsum.photos/seed/lash2/600/600",
       "imageHint": "lash extensions"
     },
     {
       "id": "fox-eyes",
-      "description": "Fox Eyes lash style model",
+      "description": "Modelo com estilo Fox Eyes",
       "imageUrl": "https://picsum.photos/seed/lash3/600/600",
       "imageHint": "eye makeup"
     },
     {
       "id": "studio-vibe",
-      "description": "Luxurious lash studio interior",
-      "imageUrl": "https://picsum.photos/seed/studio1/800/600",
+      "description": "Interior luxuoso do estúdio de cílios",
+      "imageUrl": "https://picsum.photos/seed/studio1/800/1000",
       "imageHint": "luxury spa"
     },
     {
       "id": "client-review-1",
-      "description": "Happy client showing her lashes",
+      "description": "Cliente feliz mostrando seus cílios",
       "imageUrl": "https://picsum.photos/seed/client1/400/400",
       "imageHint": "beautiful eyes"
+    },
+    {
+      "id": "technique-detail",
+      "description": "Detalhe da técnica de aplicação profissional",
+      "imageUrl": "https://picsum.photos/seed/tech1/800/600",
+      "imageHint": "beauty treatment"
     }
   ]
 }

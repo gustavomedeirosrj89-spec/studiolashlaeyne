@@ -1,3 +1,4 @@
+
 "use client"
 
 import Link from "next/link"
@@ -6,9 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 
 const navItems = [
-  { name: "Portfólio", href: "#portfolio" },
+  { name: "Estilos", href: "#portfolio" },
   { name: "Depoimentos", href: "#reviews" },
-  { name: "Catálogo", href: "#catalog" },
+  { name: "Preços", href: "#catalog" },
 ]
 
 export function Navbar() {
@@ -17,7 +18,10 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
           <Sparkles className="w-6 h-6 text-primary group-hover:rotate-12 transition-transform" />
-          <span className="font-headline text-xl md:text-2xl font-semibold tracking-tighter">LAEYNE STUDIO</span>
+          <div className="flex flex-col -space-y-1">
+            <span className="font-headline text-xl md:text-2xl font-semibold tracking-tighter">LAEYNE STUDIO</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium">Lash Specialist</span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
@@ -26,12 +30,12 @@ export function Navbar() {
             <Link 
               key={item.name} 
               href={item.href}
-              className="text-sm font-medium hover:text-primary transition-colors uppercase tracking-widest"
+              className="text-xs font-semibold hover:text-primary transition-colors uppercase tracking-[0.2em]"
             >
               {item.name}
             </Link>
           ))}
-          <Button className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-medium uppercase tracking-widest text-xs">
+          <Button className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-medium uppercase tracking-[0.1em] text-xs h-11">
             Agendar Agora
           </Button>
         </div>
@@ -48,18 +52,18 @@ export function Navbar() {
               <SheetHeader>
                 <SheetTitle className="font-headline text-left text-2xl">LAEYNE STUDIO</SheetTitle>
               </SheetHeader>
-              <div className="flex flex-col gap-6 mt-12">
+              <div className="flex flex-col gap-8 mt-16">
                 {navItems.map((item) => (
                   <Link 
                     key={item.name} 
                     href={item.href}
-                    className="text-lg font-medium hover:text-primary transition-colors uppercase tracking-widest border-b pb-2"
+                    className="text-xl font-headline hover:text-primary transition-colors border-b border-primary/5 pb-4"
                   >
                     {item.name}
                   </Link>
                 ))}
-                <Button className="rounded-full w-full bg-primary mt-4">
-                  Agendar via WhatsApp
+                <Button className="rounded-full w-full bg-primary h-14 text-base font-medium">
+                  Falar no WhatsApp
                 </Button>
               </div>
             </SheetContent>
