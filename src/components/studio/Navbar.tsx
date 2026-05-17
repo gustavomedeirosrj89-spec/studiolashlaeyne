@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -33,82 +34,89 @@ export function Navbar() {
 
   return (
     <nav 
-      className={`fixed top-0 w-full z-50 transition-all duration-500 px-6 ${
-        scrolled ? "py-4" : "py-8"
-      }`}
+      className={`fixed top-0 w-full z-50 transition-all duration-700 px-4 md:px-6 pt-6 pointer-events-none`}
     >
       <div 
-        className={`max-w-7xl mx-auto px-8 h-16 flex items-center justify-between rounded-full transition-all duration-500 ${
-          scrolled ? "bg-background/80 backdrop-blur-xl border border-primary/10 shadow-lg" : "bg-transparent"
-        }`}
+        className={`max-w-5  xl mx-auto flex items-center justify-center transition-all duration-700`}
       >
-        <Link href="/" className="flex items-center gap-2 group">
-          <Sparkles className="w-5 h-5 text-primary group-hover:rotate-12 transition-transform duration-500" />
-          <div className="flex flex-col -space-y-1">
-            <span className="font-headline text-lg md:text-xl font-bold tracking-tighter uppercase">LAEYNE STUDIO</span>
+        <div 
+          className={`
+            flex items-center justify-between w-full max-w-4xl px-6 md:px-10 h-16 
+            rounded-full pointer-events-auto transition-all duration-700
+            ${scrolled 
+              ? "bg-background/90 backdrop-blur-xl border border-primary/10 shadow-2xl scale-95" 
+              : "bg-background/60 backdrop-blur-md border border-white/20 shadow-lg"
+            }
+          `}
+        >
+          {/* Logo Section */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <Sparkles className="w-5 h-5 text-primary group-hover:rotate-12 transition-transform duration-500" />
+            <span className="font-headline text-lg md:text-xl font-bold tracking-[0.15em] text-foreground uppercase">
+              LAEYNE STUDIO
+            </span>
+          </Link>
+
+          {/* Desktop Nav - Hidden on small screens to match the clean pill look */}
+          <div className="hidden lg:flex items-center gap-10">
+            {navItems.map((item) => (
+              <Link 
+                key={item.name} 
+                href={item.href}
+                className={`text-[10px] font-bold transition-all duration-300 uppercase tracking-[0.25em] relative group ${
+                  pathname === item.href ? "text-primary" : "text-muted-foreground hover:text-primary"
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
+            <Button asChild className="rounded-full px-6 bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.1em] text-[10px] h-10 shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95">
+              <Link href={WHATSAPP_URL} target="_blank">Agendar</Link>
+            </Button>
           </div>
-        </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-10">
-          {navItems.map((item) => (
-            <Link 
-              key={item.name} 
-              href={item.href}
-              className={`text-[10px] font-bold transition-all duration-300 uppercase tracking-[0.25em] relative group ${
-                pathname === item.href ? "text-primary" : "text-muted-foreground hover:text-primary"
-              }`}
-            >
-              {item.name}
-              <span className={`absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full ${pathname === item.href ? "w-full" : "w-0"}`} />
-            </Link>
-          ))}
-          <Button asChild className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.1em] text-[10px] h-11 shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95">
-            <Link href={WHATSAPP_URL} target="_blank">Agendar Agora</Link>
-          </Button>
-        </div>
+          {/* Mobile/Compact Menu Trigger */}
+          <div className="flex items-center">
+            {mounted && (
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="hover:bg-primary/10 rounded-full w-10 h-10">
+                    <Menu className="w-5 h-5 text-foreground" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="bg-background border-none w-full sm:max-w-md p-0 flex flex-col">
+                  <div className="p-10 flex flex-col h-full">
+                    <SheetHeader className="text-left mb-16">
+                      <SheetTitle className="font-headline text-2xl font-bold tracking-tight text-foreground uppercase">LAEYNE STUDIO</SheetTitle>
+                    </SheetHeader>
+                    
+                    <div className="flex flex-col gap-10 flex-1">
+                      {navItems.map((item) => (
+                        <SheetClose asChild key={item.name}>
+                          <Link 
+                            href={item.href}
+                            className="text-3xl font-headline font-light hover:text-primary transition-all flex items-center justify-between group"
+                          >
+                            {item.name}
+                            <ArrowRight className="w-6 h-6 opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0 text-primary" />
+                          </Link>
+                        </SheetClose>
+                      ))}
+                    </div>
 
-        {/* Mobile Nav */}
-        <div className="md:hidden">
-          {mounted && (
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="hover:bg-primary/10 rounded-full">
-                  <Menu className="w-6 h-6 text-foreground" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="bg-background border-none w-full sm:max-w-md p-0 flex flex-col">
-                <div className="p-10 flex flex-col h-full">
-                  <SheetHeader className="text-left mb-16">
-                    <SheetTitle className="font-headline text-2xl font-bold tracking-tight text-foreground uppercase">LAEYNE STUDIO</SheetTitle>
-                  </SheetHeader>
-                  
-                  <div className="flex flex-col gap-10 flex-1">
-                    {navItems.map((item) => (
-                      <SheetClose asChild key={item.name}>
-                        <Link 
-                          href={item.href}
-                          className="text-3xl font-headline font-light hover:text-primary transition-all flex items-center justify-between group"
-                        >
-                          {item.name}
-                          <ArrowRight className="w-6 h-6 opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0 text-primary" />
+                    <div className="mt-auto space-y-6">
+                      <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold text-center">Arquitetura de Luxo para seu Olhar</p>
+                      <Button asChild className="rounded-full w-full bg-primary h-16 text-lg font-bold uppercase tracking-widest text-white shadow-xl shadow-primary/20">
+                        <Link href={WHATSAPP_URL} target="_blank">
+                          Falar no WhatsApp
                         </Link>
-                      </SheetClose>
-                    ))}
+                      </Button>
+                    </div>
                   </div>
-
-                  <div className="mt-auto space-y-6">
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold text-center">Arquitetura de Luxo para seu Olhar</p>
-                    <Button asChild className="rounded-full w-full bg-primary h-16 text-lg font-bold uppercase tracking-widest text-white shadow-xl shadow-primary/20">
-                      <Link href={WHATSAPP_URL} target="_blank">
-                        Falar no WhatsApp
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
-          )}
+                </SheetContent>
+              </Sheet>
+            )}
+          </div>
         </div>
       </div>
     </nav>
