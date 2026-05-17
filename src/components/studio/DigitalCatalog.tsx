@@ -1,3 +1,4 @@
+
 import { 
   Clock, 
   Info,
@@ -28,7 +29,7 @@ export function DigitalCatalog() {
     { 
       label: "Manutenção 28 Dias", 
       price: "R$ 160", 
-      styles: "Clássico Fio a Fio",
+      styles: "Efeito Rimel",
       desc: "Para fios com ciclo de crescimento lento ou para quem busca apenas um realce sutil e natural." 
     }
   ]

@@ -20,7 +20,7 @@ import {
 const styles = [
   {
     id: "fio",
-    title: "Clássico Fio a Fio",
+    title: "Efeito Rimel",
     category: "Natural",
     price: "R$ 150",
     duration: "1h 30min",
@@ -78,7 +78,7 @@ const styles = [
     duration: "1h",
     maintenance: "Não se aplica",
     description: "Preenchimento estratégico.",
-    fullDescription: "A cliente escolhe o modelo desejado (Brasileiro, Fio a Fio, etc), mas a aplicação não é total. Realizamos um preenchimento estratégico para um visual harmônico com rapidez.",
+    fullDescription: "A cliente escolhe o modelo desejado (Brasileiro, Efeito Rimel, etc), mas a aplicação não é total. Realizamos um preenchimento estratégico para um visual harmônico com rapidez.",
     imageId: "lash-express",
     benefits: ["Rapidez", "Visual leve", "Preenchimento estratégico"],
     tags: ["Naturais"]

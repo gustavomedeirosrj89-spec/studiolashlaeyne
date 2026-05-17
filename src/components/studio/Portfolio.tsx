@@ -59,7 +59,7 @@ const services = [
   },
   {
     id: "classic",
-    title: "Clássico Fio a Fio",
+    title: "Efeito Rimel",
     price: "R$ 150",
     description: "Elegância discreta e naturalidade pura.",
     fullDescription: "Aplicação individual de um fio sintético sobre um fio natural. Perfeito para quem deseja o efeito de 'rímel perfeito' todos os dias.",
