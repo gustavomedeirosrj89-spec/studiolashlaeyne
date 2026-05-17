@@ -1,5 +1,9 @@
+
 import Link from "next/link"
 import { Instagram, MapPin, Clock, Mail, Sparkles, MessageCircle } from "lucide-react"
+
+const WHATSAPP_MESSAGE = "Oi, tudo bem? gostaria de marcar um agendamento. qual dia e horario você tem disponivel?"
+const WHATSAPP_URL = `https://wa.me/5588996363178?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
 
 // Ícone do TikTok customizado já que não existe no lucide-react padrão
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -29,16 +33,16 @@ export function Footer() {
             Onde a arquitetura encontra a elegância. Proporcionamos as extensões de cílios mais avançadas em um ambiente sereno e luxuoso.
           </p>
           <div className="flex flex-wrap justify-center md:justify-start gap-4">
-            <Link href="#" className="p-3 rounded-full border border-muted/20 hover:bg-primary transition-colors" title="Instagram">
+            <Link href="https://instagram.com" target="_blank" className="p-3 rounded-full border border-muted/20 hover:bg-primary transition-colors" title="Instagram">
               <Instagram className="w-5 h-5" />
             </Link>
-            <Link href="#" className="p-3 rounded-full border border-muted/20 hover:bg-primary transition-colors" title="WhatsApp">
+            <Link href={WHATSAPP_URL} target="_blank" className="p-3 rounded-full border border-muted/20 hover:bg-primary transition-colors" title="WhatsApp">
               <MessageCircle className="w-5 h-5" />
             </Link>
             <Link href="#" className="p-3 rounded-full border border-muted/20 hover:bg-primary transition-colors" title="TikTok">
               <TikTokIcon className="w-5 h-5" />
             </Link>
-            <Link href="#" className="p-3 rounded-full border border-muted/20 hover:bg-primary transition-colors" title="Email">
+            <Link href="mailto:contato@laeynestudio.com" className="p-3 rounded-full border border-muted/20 hover:bg-primary transition-colors" title="Email">
               <Mail className="w-5 h-5" />
             </Link>
           </div>
@@ -47,11 +51,11 @@ export function Footer() {
         <div className="space-y-6">
           <h4 className="font-headline text-xl text-primary uppercase tracking-widest">Localização</h4>
           <ul className="space-y-4 text-muted font-light flex flex-col items-center md:items-start">
-            <li className="flex gap-2">
+            <li className="flex gap-2 text-left">
               <MapPin className="w-5 h-5 text-primary shrink-0" />
               <span>Rua Major Felinto, 168<br />Varzea</span>
             </li>
-            <li className="flex gap-2">
+            <li className="flex gap-2 text-left">
               <Clock className="w-5 h-5 text-primary shrink-0" />
               <span>Seg - Sex: 09:00 - 19:00<br />Sáb: 09:00 - 14:00</span>
             </li>
@@ -61,10 +65,10 @@ export function Footer() {
         <div className="space-y-6">
           <h4 className="font-headline text-xl text-primary uppercase tracking-widest">Links Rápidos</h4>
           <ul className="space-y-4 text-muted font-light flex flex-col items-center md:items-start">
-            <li><Link href="#portfolio" className="hover:text-primary transition-colors">Portfólio de Serviços</Link></li>
-            <li><Link href="#reviews" className="hover:text-primary transition-colors">Depoimentos</Link></li>
-            <li><Link href="#catalog" className="hover:text-primary transition-colors">Catálogo de Preços</Link></li>
-            <li><Link href="#" className="hover:text-primary transition-colors">Políticas de Agendamento</Link></li>
+            <li><Link href="/estilos" className="hover:text-primary transition-colors">Portfólio de Serviços</Link></li>
+            <li><Link href="/#reviews" className="hover:text-primary transition-colors">Depoimentos</Link></li>
+            <li><Link href="/#catalog" className="hover:text-primary transition-colors">Catálogo de Preços</Link></li>
+            <li><Link href={WHATSAPP_URL} target="_blank" className="hover:text-primary transition-colors">Agendar Agora</Link></li>
           </ul>
         </div>
       </div>

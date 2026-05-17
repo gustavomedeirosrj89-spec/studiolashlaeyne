@@ -1,3 +1,5 @@
+
+import Link from "next/link"
 import { Navbar } from "@/components/studio/Navbar"
 import { Footer } from "@/components/studio/Footer"
 import { StyleCatalog } from "@/components/studio/StyleCatalog"
@@ -5,6 +7,9 @@ import { Gallery } from "@/components/studio/Gallery"
 import { DigitalCatalog } from "@/components/studio/DigitalCatalog"
 import { Button } from "@/components/ui/button"
 import { MessageCircle } from "lucide-react"
+
+const WHATSAPP_MESSAGE = "Oi, tudo bem? gostaria de marcar um agendamento. qual dia e horario você tem disponivel?"
+const WHATSAPP_URL = `https://wa.me/5588996363178?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
 
 export default function EstilosPage() {
   return (
@@ -38,9 +43,11 @@ export default function EstilosPage() {
           <h2 className="text-4xl md:text-6xl font-headline leading-tight">
             Transforme seu olhar com um estilo <span className="text-primary italic">feito para você.</span>
           </h2>
-          <Button size="lg" className="rounded-full px-12 h-16 bg-primary hover:bg-primary/90 text-white text-lg font-bold uppercase tracking-widest shadow-2xl shadow-primary/40 group transition-all">
-            <MessageCircle className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
-            Agendar pelo WhatsApp
+          <Button asChild size="lg" className="rounded-full px-12 h-16 bg-primary hover:bg-primary/90 text-white text-lg font-bold uppercase tracking-widest shadow-2xl shadow-primary/40 group transition-all">
+            <Link href={WHATSAPP_URL} target="_blank" className="flex items-center">
+              <MessageCircle className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+              Agendar pelo WhatsApp
+            </Link>
           </Button>
         </div>
       </section>

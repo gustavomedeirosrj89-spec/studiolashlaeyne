@@ -15,6 +15,9 @@ const navItems = [
   { name: "Preços", href: "/#catalog" },
 ]
 
+const WHATSAPP_MESSAGE = "Oi, tudo bem? gostaria de marcar um agendamento. qual dia e horario você tem disponivel?"
+const WHATSAPP_URL = `https://wa.me/5588996363178?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
+
 export function Navbar() {
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
@@ -48,7 +51,7 @@ export function Navbar() {
             </Link>
           ))}
           <Button asChild className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.1em] text-[10px] h-11">
-            <Link href="#portfolio">Agendar Agora</Link>
+            <Link href={WHATSAPP_URL} target="_blank">Agendar Agora</Link>
           </Button>
         </div>
 
@@ -75,8 +78,10 @@ export function Navbar() {
                       {item.name}
                     </Link>
                   ))}
-                  <Button className="rounded-full w-full bg-primary h-14 text-base font-medium">
-                    Falar no WhatsApp
+                  <Button asChild className="rounded-full w-full bg-primary h-14 text-base font-medium">
+                    <Link href={WHATSAPP_URL} target="_blank">
+                      Falar no WhatsApp
+                    </Link>
                   </Button>
                 </div>
               </SheetContent>

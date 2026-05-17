@@ -18,6 +18,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+const WHATSAPP_MESSAGE = "Oi, tudo bem? gostaria de marcar um agendamento. qual dia e horario você tem disponivel?"
+const WHATSAPP_URL = `https://wa.me/5588996363178?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
+
 const topPickServices = [
   { 
     id: "vol-brasileiro", 
@@ -82,13 +85,13 @@ export function Hero() {
                 Experimente o luxo de um olhar renovado com nossas técnicas exclusivas. Design sob medida para sua beleza única e natural.
               </p>
               <p className="text-sm md:text-base text-muted-foreground/80 max-w-lg font-light italic border-l-2 border-primary/20 pl-4 mx-auto lg:mx-0">
-                Fundado por Laeyne, o estúdio transforma olhares com delicadeza, elegância e atenção aos mínimos detalhes. Especializada em lash design, oferece um atendimento pensado para realçar a beleza natural.
+                Fundado por Laeyne, o estúdio transforma olhares com delicadeza, elegância e atenção aos mínimos detalhes. Especializada em lash design, oferece um atendimento pensado para realçar a beleza natural e elevar a autoestima através de um olhar marcante e sofisticado.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-5 pt-4">
               <Button asChild size="lg" className="rounded-full px-10 h-16 bg-primary text-white hover:bg-primary/90 flex gap-3 w-full sm:w-auto text-base shadow-lg shadow-primary/20 transition-all">
-                <Link href="https://wa.me/5588996363178" target="_blank">
+                <Link href={WHATSAPP_URL} target="_blank">
                   <MessageCircle className="w-5 h-5" />
                   Agendar Agora
                 </Link>
