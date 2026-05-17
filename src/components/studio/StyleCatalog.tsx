@@ -160,7 +160,7 @@ export function StyleCatalog() {
           <button
             key={cat}
             onClick={() => setActiveFilter(cat)}
-            className={`px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.25em] transition-all duration-500 border ${
+            className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.25em] transition-all duration-500 border ${
               activeFilter === cat 
                 ? "bg-primary text-white border-primary shadow-2xl shadow-primary/20 scale-105" 
                 : "bg-white/40 text-muted-foreground border-transparent hover:border-primary/20 hover:bg-white"
@@ -171,14 +171,14 @@ export function StyleCatalog() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredStyles.map((style, idx) => {
           const img = PlaceHolderImages.find(i => i.id === style.imageId)
           return (
             <Dialog key={style.id}>
               <DialogTrigger asChild>
                 <div 
-                  className="group relative h-[600px] rounded-[3rem] overflow-hidden cursor-pointer shadow-xl transition-all duration-700 hover:-translate-y-4 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] graceful-reveal"
+                  className="group relative h-[500px] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-lg transition-all duration-700 hover:-translate-y-2 hover:shadow-2xl graceful-reveal"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   {img && (
@@ -190,24 +190,24 @@ export function StyleCatalog() {
                       unoptimized={img.imageUrl.includes('ibb.co')}
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-700 group-hover:opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent transition-opacity duration-700 group-hover:opacity-80" />
                   
-                  <div className="absolute bottom-0 w-full p-10 space-y-6">
-                    <Badge className="bg-white/20 backdrop-blur-md text-white border-white/20 px-4 py-1.5 text-[9px] uppercase tracking-[0.2em] font-black">
+                  <div className="absolute bottom-0 w-full p-8 space-y-4">
+                    <Badge className="bg-white/20 backdrop-blur-md text-white border-white/20 px-3 py-1 text-[8px] uppercase tracking-[0.2em] font-black">
                       {style.category}
                     </Badge>
-                    <div className="space-y-2 text-left">
-                      <h3 className="text-4xl font-headline text-white font-bold leading-tight">{style.title}</h3>
-                      <p className="text-white/60 text-base font-light italic leading-relaxed">{style.description}</p>
+                    <div className="space-y-1 text-left">
+                      <h3 className="text-3xl font-headline text-white font-bold leading-tight">{style.title}</h3>
+                      <p className="text-white/60 text-sm font-light italic leading-relaxed">{style.description}</p>
                     </div>
                     
-                    <div className="flex justify-between items-end pt-6 border-t border-white/10">
+                    <div className="flex justify-between items-end pt-4 border-t border-white/10">
                       <div className="flex flex-col text-left">
-                        <span className="text-white font-headline text-3xl font-bold tracking-tight">{style.price}</span>
-                        <span className="text-white/40 text-[9px] uppercase font-black tracking-widest mt-1">Manut. {style.maintenance}</span>
+                        <span className="text-white font-headline text-2xl font-bold tracking-tight">{style.price}</span>
+                        <span className="text-white/40 text-[8px] uppercase font-black tracking-widest mt-1">Manut. {style.maintenance}</span>
                       </div>
-                      <div className="bg-primary p-4 rounded-full text-white shadow-xl shadow-primary/20 group-hover:scale-110 transition-all duration-500">
-                        <ArrowRight className="w-6 h-6" />
+                      <div className="bg-primary p-3 rounded-full text-white shadow-xl shadow-primary/20 group-hover:scale-110 transition-all duration-500">
+                        <ArrowRight className="w-5 h-5" />
                       </div>
                     </div>
                   </div>
