@@ -2,17 +2,18 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, ArrowRight, Sparkles } from "lucide-react"
+import { MessageCircle, ArrowRight, Sparkles, Star } from "lucide-react"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
+import { Badge } from "@/components/ui/badge"
 
 export function Hero() {
   const specialistImg = PlaceHolderImages.find(img => img.id === "specialist-photo")
   
-  // Principais produtos para o destaque no Hero
+  // Principais produtos para o destaque no Hero com mais informações para os cards
   const topPicks = [
-    { id: "vol-brasileiro", name: "Volume Brasileiro" },
-    { id: "vol-russo", name: "Volume Russo" },
-    { id: "fox-eyes", name: "Fox Eyes" }
+    { id: "vol-brasileiro", name: "Volume Brasileiro", price: "R$ 180", tag: "Mais Amado" },
+    { id: "vol-russo", name: "Volume Russo", price: "R$ 250", tag: "Premium" },
+    { id: "fox-eyes", name: "Fox Eyes", price: "R$ 220", tag: "Tendência" }
   ].map(pick => ({
     ...pick,
     img: PlaceHolderImages.find(img => img.id === pick.id)
@@ -39,7 +40,7 @@ export function Hero() {
                 Experimente o luxo de um olhar renovado com nossas técnicas exclusivas. Design sob medida para sua beleza única e natural.
               </p>
               <p className="text-sm md:text-base text-muted-foreground/80 max-w-lg font-light italic border-l-2 border-primary/20 pl-4 mx-auto lg:mx-0">
-                Fundado por Laeyne, o estúdio transforma olhares com delicadeza, elegância e atenção aos mínimos detalhes. Especializada em lash design, oferece um atendimento pensado para realçar a beleza natural e elevar a autoestima.
+                Fundado por Laeyne, o estúdio transforma olhares com delicadeza, elegância e atenção aos mínimos detalhes. Especializada em lash design, oferece um atendimento pensado para realçar a beleza natural.
               </p>
             </div>
 
@@ -58,26 +59,40 @@ export function Hero() {
               </Button>
             </div>
 
-            {/* Top Picks / Principais Produtos */}
-            <div className="pt-8 space-y-4">
+            {/* Cards de Destaque no Hero */}
+            <div className="pt-12 space-y-6">
               <div className="flex items-center justify-center lg:justify-start gap-2 text-accent">
                 <Sparkles className="w-4 h-4" />
                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Mais Desejados do Estúdio</span>
               </div>
-              <div className="flex flex-wrap justify-center lg:justify-start gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {topPicks.map((pick, i) => (
-                  <div key={pick.id} className="group flex items-center gap-3 graceful-reveal" style={{ animationDelay: `${0.4 + i * 0.1}s` }}>
-                    <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 group-hover:border-primary transition-colors">
+                  <div 
+                    key={pick.id} 
+                    className="group relative bg-white/50 backdrop-blur-sm p-3 rounded-3xl border border-primary/5 hover:border-primary/20 hover:bg-white hover:shadow-xl transition-all duration-500 graceful-reveal" 
+                    style={{ animationDelay: `${0.4 + i * 0.1}s` }}
+                  >
+                    <div className="relative aspect-square w-full rounded-2xl overflow-hidden mb-3">
                       {pick.img && (
                         <Image 
                           src={pick.img.imageUrl} 
                           alt={pick.name}
                           fill
-                          className="object-cover"
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       )}
+                      <Badge className="absolute top-2 left-2 bg-primary/90 text-white border-none text-[8px] uppercase tracking-tighter px-2 py-0.5">
+                        {pick.tag}
+                      </Badge>
                     </div>
-                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{pick.name}</span>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1 text-primary">
+                        <Star className="w-2.5 h-2.5 fill-primary" />
+                        <span className="text-[8px] font-bold uppercase tracking-widest">Favorito</span>
+                      </div>
+                      <h4 className="text-xs font-headline font-bold text-foreground line-clamp-1">{pick.name}</h4>
+                      <p className="text-[10px] text-primary font-bold">{pick.price}</p>
+                    </div>
                   </div>
                 ))}
               </div>
