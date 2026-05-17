@@ -45,6 +45,19 @@ const styles = [
     tags: ["Mais Procurados"]
   },
   {
+    id: "brazilian-marrom",
+    title: "Volume Brasileiro Marrom",
+    category: "Tendência",
+    price: "R$ 200",
+    duration: "2h",
+    maintenance: "21 dias",
+    description: "Elegância sutil e natural.",
+    fullDescription: "A técnica queridinha agora em tons de marrom chocolate. Perfeito para loiras ou para quem busca um olhar extremamente suave e sofisticado, sem o contraste pesado do preto.",
+    imageId: "vol-brasileiro-marrom",
+    benefits: ["Efeito ultra natural", "Suavidade no olhar", "Ideal para peles claras"],
+    tags: ["Naturais", "Premium"]
+  },
+  {
     id: "russian",
     title: "Volume Russo",
     category: "Premium",

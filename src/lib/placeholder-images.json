@@ -19,6 +19,12 @@
       "imageHint": "brazilian volume"
     },
     {
+      "id": "vol-brasileiro-marrom",
+      "description": "Volume Brasileiro Marrom Chocolate",
+      "imageUrl": "https://picsum.photos/seed/brownlash/800/1000",
+      "imageHint": "brown eyelashes"
+    },
+    {
       "id": "vol-russo",
       "description": "Volume Russo Glamour",
       "imageUrl": "https://i.ibb.co/C5hctDxn/Volume-russo.jpg",
