@@ -2,6 +2,7 @@
 import { Navbar } from "@/components/studio/Navbar"
 import { Hero } from "@/components/studio/Hero"
 import { StudioGallery } from "@/components/studio/StudioGallery"
+import { CatalogCTA } from "@/components/studio/CatalogCTA"
 import { ReviewShowcase } from "@/components/studio/ReviewShowcase"
 import { DigitalCatalog } from "@/components/studio/DigitalCatalog"
 import { PaymentInfo } from "@/components/studio/PaymentInfo"
@@ -13,6 +14,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <StudioGallery />
+      <CatalogCTA />
       <ReviewShowcase />
       <DigitalCatalog />
       <PaymentInfo />
