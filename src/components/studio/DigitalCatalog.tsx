@@ -1,4 +1,3 @@
-
 import { 
   Clock, 
   Info,
@@ -27,7 +26,7 @@ export function DigitalCatalog() {
       desc: "O intervalo ideal para a maioria das técnicas, mantendo a arquitetura e o design original do olhar." 
     },
     { 
-      label: "Manutenção 28 Dias", 
+      label: "Manutenção 30 Dias", 
       price: "R$ 160", 
       styles: "Efeito Rimel",
       desc: "Para fios com ciclo de crescimento lento ou para quem busca apenas um realce sutil e natural." 
