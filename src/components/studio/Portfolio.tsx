@@ -33,7 +33,7 @@ const services = [
     price: "R$ 250",
     description: "Glamour extremo e densidade máxima.",
     fullDescription: "A técnica de Volume Russo consiste na aplicação de pequenos 'fans' feitos à mão sobre cada cílio natural. O resultado é um olhar com densidade incrível e textura aveludada incomparável.",
-    imageId: "russian-volume",
+    imageId: "vol-russo",
     tags: ["Luxo", "Densidade"],
     benefits: ["Preenchimento máximo", "Efeito 5D a 7D", "Ideal para eventos de gala"]
   },
@@ -43,7 +43,7 @@ const services = [
     price: "R$ 180",
     description: "Volume moderado com fios em formato de Y.",
     fullDescription: "Utiliza fios tecnológicos em Y que proporcionam volume e leveza simultaneamente. É o equilíbrio perfeito entre o clássico e o dramático.",
-    imageId: "brazilian-volume",
+    imageId: "vol-brasileiro",
     tags: ["Mais Pedido", "Natural"],
     benefits: ["Leveza absoluta", "Visual moderno", "Ótima retenção"]
   },
@@ -63,7 +63,7 @@ const services = [
     price: "R$ 150",
     description: "Elegância discreta e naturalidade pura.",
     fullDescription: "Aplicação individual de um fio sintético sobre um fio natural. Perfeito para quem deseja o efeito de 'rímel perfeito' todos os dias.",
-    imageId: "classic-lashes",
+    imageId: "fio-a-fio",
     tags: ["Clean Girl", "Natural"],
     benefits: ["Conforto total", "Realce sutil", "Ideal para o dia a dia"]
   }
@@ -84,10 +84,7 @@ export function Portfolio() {
       return
     }
 
-    const message = `Olá! Gostaria de agendar o procedimento ${selectedService.title.toUpperCase()} ✨
-Meu nome é ${formData.name}.
-Data desejada: ${formData.date}.
-Horário desejado: ${formData.time}.`
+    const message = `Olá! Gostaria de agendar o procedimento ${selectedService.title.toUpperCase()} ✨\nMeu nome é ${formData.name}.\nData desejada: ${formData.date}.\nHorário desejado: ${formData.time}.`
 
     const whatsappUrl = `https://wa.me/5588996363178?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
