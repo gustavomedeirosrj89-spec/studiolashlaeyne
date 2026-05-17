@@ -1,52 +1,64 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-lash",
-      "description": "Close up de extensões de cílios de luxo",
-      "imageUrl": "https://picsum.photos/seed/lash10/1200/800",
-      "imageHint": "eyelash extensions"
-    },
-    {
       "id": "specialist-photo",
       "description": "Foto da especialista Laeyne Studio",
       "imageUrl": "https://i.ibb.co/MxLZTDXP/photo-2026-05-16-13-22-44.jpg",
       "imageHint": "beauty specialist"
     },
     {
-      "id": "brazilian-volume",
-      "description": "Estilo de cílios Volume Brasileiro",
-      "imageUrl": "https://picsum.photos/seed/lash20/800/800",
-      "imageHint": "eyelash volume"
-    },
-    {
-      "id": "fox-eyes",
-      "description": "Modelo com estilo Fox Eyes",
-      "imageUrl": "https://picsum.photos/seed/lash30/800/800",
-      "imageHint": "fox eyes"
-    },
-    {
-      "id": "classic-lashes",
+      "id": "fio-a-fio",
       "description": "Estilo Clássico Fio a Fio",
-      "imageUrl": "https://picsum.photos/seed/lash40/800/800",
+      "imageUrl": "https://picsum.photos/seed/lash101/800/1000",
       "imageHint": "natural eyelashes"
     },
     {
-      "id": "russian-volume",
-      "description": "Estilo de cílios Volume Russo",
+      "id": "vol-brasileiro",
+      "description": "Volume Brasileiro em Y",
+      "imageUrl": "https://picsum.photos/seed/lash102/800/1000",
+      "imageHint": "brazilian volume"
+    },
+    {
+      "id": "vol-russo",
+      "description": "Volume Russo Glamour",
       "imageUrl": "https://i.ibb.co/C5hctDxn/Volume-russo.jpg",
-      "imageHint": "russian volume lashes"
+      "imageHint": "russian volume"
     },
     {
-      "id": "studio-vibe",
-      "description": "Interior luxuoso do estúdio",
-      "imageUrl": "https://picsum.photos/seed/studio50/800/1000",
-      "imageHint": "luxury salon"
+      "id": "mega-vol",
+      "description": "Mega Volume Intenso",
+      "imageUrl": "https://picsum.photos/seed/lash103/800/1000",
+      "imageHint": "mega volume lashes"
     },
     {
-      "id": "technique-detail",
-      "description": "Detalhe da aplicação profissional",
-      "imageUrl": "https://picsum.photos/seed/tech60/800/600",
-      "imageHint": "beauty treatment"
+      "id": "fox-eyes",
+      "description": "Efeito Fox Eyes Sensual",
+      "imageUrl": "https://picsum.photos/seed/lash104/800/1000",
+      "imageHint": "fox eyes"
+    },
+    {
+      "id": "hibrido",
+      "description": "Estilo Híbrido Equilibrado",
+      "imageUrl": "https://picsum.photos/seed/lash105/800/1000",
+      "imageHint": "hybrid eyelashes"
+    },
+    {
+      "id": "gallery-1",
+      "description": "Resultado Real 1",
+      "imageUrl": "https://picsum.photos/seed/res1/600/800",
+      "imageHint": "eye beauty"
+    },
+    {
+      "id": "gallery-2",
+      "description": "Resultado Real 2",
+      "imageUrl": "https://picsum.photos/seed/res2/600/600",
+      "imageHint": "eyelash detail"
+    },
+    {
+      "id": "gallery-3",
+      "description": "Resultado Real 3",
+      "imageUrl": "https://picsum.photos/seed/res3/600/900",
+      "imageHint": "beauty portrait"
     }
   ]
 }

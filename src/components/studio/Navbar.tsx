@@ -3,18 +3,21 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Sparkles, Menu } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { Sparkles, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 
 const navItems = [
-  { name: "Estilos", href: "#portfolio" },
-  { name: "Depoimentos", href: "#reviews" },
-  { name: "Preços", href: "#catalog" },
+  { name: "Início", href: "/" },
+  { name: "Nossos Estilos", href: "/estilos" },
+  { name: "Depoimentos", href: "/#reviews" },
+  { name: "Preços", href: "/#catalog" },
 ]
 
 export function Navbar() {
   const [mounted, setMounted] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     setMounted(true)
@@ -37,13 +40,15 @@ export function Navbar() {
             <Link 
               key={item.name} 
               href={item.href}
-              className="text-xs font-semibold hover:text-primary transition-colors uppercase tracking-[0.2em]"
+              className={`text-[10px] font-bold transition-colors uppercase tracking-[0.2em] ${
+                pathname === item.href ? "text-primary border-b border-primary/30" : "text-muted-foreground hover:text-primary"
+              }`}
             >
               {item.name}
             </Link>
           ))}
-          <Button className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground font-medium uppercase tracking-[0.1em] text-xs h-11">
-            Agendar Agora
+          <Button asChild className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.1em] text-[10px] h-11">
+            <Link href="#portfolio">Agendar Agora</Link>
           </Button>
         </div>
 

@@ -1,0 +1,48 @@
+
+import { Navbar } from "@/components/studio/Navbar"
+import { Footer } from "@/components/studio/Footer"
+import { StyleCatalog } from "@/components/studio/StyleCatalog"
+import { Gallery } from "@/components/studio/Gallery"
+import { Button } from "@/components/ui/button"
+import { MessageCircle } from "lucide-react"
+
+export default function EstilosPage() {
+  return (
+    <main className="min-h-screen bg-background">
+      <Navbar />
+      
+      {/* Hero da Página de Estilos */}
+      <section className="pt-40 pb-20 px-6 text-center bg-accent/5">
+        <div className="max-w-4xl mx-auto space-y-6 graceful-reveal">
+          <h4 className="text-accent uppercase tracking-[0.5em] font-bold text-xs">Catálogo de Procedimentos</h4>
+          <h1 className="text-5xl md:text-8xl font-headline leading-tight">
+            Escolha Seu <br />
+            <span className="text-primary italic">Estilo Único.</span>
+          </h1>
+          <p className="text-muted-foreground text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+            Nossos designs são arquitetados para realçar a sua beleza natural, respeitando a saúde dos seus fios e elevando sua autoestima.
+          </p>
+        </div>
+      </section>
+
+      <StyleCatalog />
+      
+      <Gallery />
+
+      {/* CTA Final */}
+      <section className="py-24 px-6 bg-foreground text-background text-center">
+        <div className="max-w-3xl mx-auto space-y-10 graceful-reveal">
+          <h2 className="text-4xl md:text-6xl font-headline leading-tight">
+            Transforme seu olhar com um estilo <span className="text-primary italic">feito para você.</span>
+          </h2>
+          <Button size="lg" className="rounded-full px-12 h-16 bg-primary hover:bg-primary/90 text-white text-lg font-bold uppercase tracking-widest shadow-2xl shadow-primary/40 group transition-all">
+            <MessageCircle className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+            Agendar pelo WhatsApp
+          </Button>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}
