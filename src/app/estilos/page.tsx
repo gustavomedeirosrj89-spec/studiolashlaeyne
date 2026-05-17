@@ -1,8 +1,8 @@
-
 import { Navbar } from "@/components/studio/Navbar"
 import { Footer } from "@/components/studio/Footer"
 import { StyleCatalog } from "@/components/studio/StyleCatalog"
 import { Gallery } from "@/components/studio/Gallery"
+import { DigitalCatalog } from "@/components/studio/DigitalCatalog"
 import { Button } from "@/components/ui/button"
 import { MessageCircle } from "lucide-react"
 
@@ -26,6 +26,9 @@ export default function EstilosPage() {
       </section>
 
       <StyleCatalog />
+      
+      {/* Tabela de Manutenção e Preços Adicionais */}
+      <DigitalCatalog />
       
       <Gallery />
 
