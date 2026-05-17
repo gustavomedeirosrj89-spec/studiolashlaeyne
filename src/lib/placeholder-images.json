@@ -49,6 +49,24 @@
       "imageHint": "hybrid eyelashes"
     },
     {
+      "id": "gallery-real-1",
+      "description": "Resultado Real Volume Brasileiro",
+      "imageUrl": "https://i.ibb.co/Cs5hGW80/c-lios-volume-brasileiro.jpg",
+      "imageHint": "eyelash result"
+    },
+    {
+      "id": "gallery-real-2",
+      "description": "Resultado Real Detalhe",
+      "imageUrl": "https://i.ibb.co/YFzTz4fN/download-13.jpg",
+      "imageHint": "lash detail"
+    },
+    {
+      "id": "gallery-real-3",
+      "description": "Resultado Real Olhar",
+      "imageUrl": "https://i.ibb.co/cKd84pGc/download-14.jpg",
+      "imageHint": "beauty eyes"
+    },
+    {
       "id": "gallery-1",
       "description": "Resultado Real 1",
       "imageUrl": "https://picsum.photos/seed/res1/600/800",

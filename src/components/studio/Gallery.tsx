@@ -6,10 +6,10 @@ import { PlaceHolderImages } from "@/lib/placeholder-images"
 
 export function Gallery() {
   const images = [
-    PlaceHolderImages.find(i => i.id === "gallery-1"),
+    PlaceHolderImages.find(i => i.id === "gallery-real-1"),
+    PlaceHolderImages.find(i => i.id === "gallery-real-2"),
+    PlaceHolderImages.find(i => i.id === "gallery-real-3"),
     PlaceHolderImages.find(i => i.id === "vol-russo"),
-    PlaceHolderImages.find(i => i.id === "gallery-2"),
-    PlaceHolderImages.find(i => i.id === "gallery-3"),
     PlaceHolderImages.find(i => i.id === "fox-eyes"),
     PlaceHolderImages.find(i => i.id === "vol-brasileiro"),
   ].filter(Boolean)
