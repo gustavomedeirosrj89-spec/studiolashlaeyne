@@ -2,11 +2,21 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, ArrowRight } from "lucide-react"
+import { MessageCircle, ArrowRight, Sparkles } from "lucide-react"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 
 export function Hero() {
   const specialistImg = PlaceHolderImages.find(img => img.id === "specialist-photo")
+  
+  // Principais produtos para o destaque no Hero
+  const topPicks = [
+    { id: "vol-brasileiro", name: "Volume Brasileiro" },
+    { id: "vol-russo", name: "Volume Russo" },
+    { id: "fox-eyes", name: "Fox Eyes" }
+  ].map(pick => ({
+    ...pick,
+    img: PlaceHolderImages.find(img => img.id === pick.id)
+  }))
 
   return (
     <section className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden bg-background">
@@ -46,6 +56,31 @@ export function Hero() {
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
+            </div>
+
+            {/* Top Picks / Principais Produtos */}
+            <div className="pt-8 space-y-4">
+              <div className="flex items-center justify-center lg:justify-start gap-2 text-accent">
+                <Sparkles className="w-4 h-4" />
+                <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Mais Desejados do Estúdio</span>
+              </div>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-6">
+                {topPicks.map((pick, i) => (
+                  <div key={pick.id} className="group flex items-center gap-3 graceful-reveal" style={{ animationDelay: `${0.4 + i * 0.1}s` }}>
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 group-hover:border-primary transition-colors">
+                      {pick.img && (
+                        <Image 
+                          src={pick.img.imageUrl} 
+                          alt={pick.name}
+                          fill
+                          className="object-cover"
+                        />
+                      )}
+                    </div>
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{pick.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
