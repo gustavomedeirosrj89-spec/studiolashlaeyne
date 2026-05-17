@@ -129,7 +129,6 @@ export function StyleCatalog() {
 
   return (
     <section className="py-20 px-6 max-w-7xl mx-auto space-y-16">
-      {/* Filtros */}
       <div className="flex flex-wrap justify-center gap-3">
         {categories.map(cat => (
           <button
@@ -146,7 +145,6 @@ export function StyleCatalog() {
         ))}
       </div>
 
-      {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredStyles.map((style, idx) => {
           const img = PlaceHolderImages.find(i => i.id === style.imageId)
@@ -157,7 +155,15 @@ export function StyleCatalog() {
                   className="group relative h-[500px] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-xl transition-all duration-500 hover:-translate-y-2 graceful-reveal"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
-                  {img && <Image src={img.imageUrl} alt={style.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />}
+                  {img && (
+                    <Image 
+                      src={img.imageUrl} 
+                      alt={style.title} 
+                      fill 
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      unoptimized={img.imageUrl.includes('ibb.co')}
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   
                   <div className="absolute bottom-0 w-full p-8 space-y-4">
@@ -184,7 +190,15 @@ export function StyleCatalog() {
               <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background border-none rounded-[3rem] shadow-2xl">
                 <div className="grid grid-cols-1 md:grid-cols-2">
                   <div className="relative aspect-square md:aspect-auto">
-                    {img && <Image src={img.imageUrl} alt={style.title} fill className="object-cover" />}
+                    {img && (
+                      <Image 
+                        src={img.imageUrl} 
+                        alt={style.title} 
+                        fill 
+                        className="object-cover" 
+                        unoptimized={img.imageUrl.includes('ibb.co')}
+                      />
+                    )}
                     <div className="absolute inset-0 bg-black/20" />
                   </div>
                   <div className="p-10 space-y-8 overflow-y-auto max-h-[90vh]">
