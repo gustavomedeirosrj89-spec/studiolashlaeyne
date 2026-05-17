@@ -1,10 +1,13 @@
 import { 
   Clock, 
-  Trash2, 
-  Zap, 
   Info,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  Gem,
+  Wind,
+  ShieldCheck,
+  Zap,
+  Star
 } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 
@@ -30,10 +33,13 @@ export function DigitalCatalog() {
     }
   ]
 
-  const extras = [
-    { label: "Remoção Profissional", price: "R$ 50", detail: "Protocolo seguro que preserva a saúde do fio natural." },
-    { label: "Reparo Rápido", price: "R$ 30", detail: "Correção pontual de falhas em até 48h após o procedimento." },
-    { label: "Lash Botox & Tint", price: "R$ 120", detail: "Tratamento de queratina e cor para fios naturais." }
+  const premiumFeatures = [
+    { label: "Atendimento Personalizado", icon: <CheckCircle2 className="w-5 h-5 text-primary" /> },
+    { label: "Produtos Importados", icon: <Gem className="w-5 h-5 text-primary" /> },
+    { label: "Ambiente Climatizado", icon: <Wind className="w-5 h-5 text-primary" /> },
+    { label: "Técnicas Atualizadas", icon: <Zap className="w-5 h-5 text-primary" /> },
+    { label: "Alta Retenção", icon: <ShieldCheck className="w-5 h-5 text-primary" /> },
+    { label: "Acabamento Natural", icon: <Star className="w-5 h-5 text-primary" /> }
   ]
 
   return (
@@ -85,25 +91,26 @@ export function DigitalCatalog() {
             </div>
           </div>
 
-          {/* Coluna de Extras e Spa */}
+          {/* Coluna de Experiência Premium */}
           <div className="space-y-8">
             <div className="bg-foreground text-background p-8 md:p-12 rounded-[3rem] shadow-xl graceful-reveal" style={{ animationDelay: '0.2s' }}>
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary">
-                  <Zap className="w-6 h-6" />
+                  <Star className="w-6 h-6" />
                 </div>
-                <h3 className="font-headline text-3xl">Serviços Adicionais</h3>
+                <h3 className="font-headline text-3xl">Experiência Premium</h3>
               </div>
 
-              <div className="space-y-8">
-                {extras.map((item, i) => (
-                  <div key={i} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <p className="font-medium text-lg text-primary-foreground">{item.label}</p>
-                      <span className="font-headline text-2xl text-primary">{item.price}</span>
+              <div className="grid grid-cols-1 gap-6">
+                {premiumFeatures.map((item, i) => (
+                  <div key={i} className="flex items-center gap-4 group">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      {item.icon}
                     </div>
-                    <p className="text-sm text-muted/60 font-light">{item.detail}</p>
-                    {i < extras.length - 1 && <Separator className="bg-muted/10 mt-4" />}
+                    <span className="text-lg font-light tracking-wide text-primary-foreground/90 group-hover:text-primary transition-colors">
+                      {item.label}
+                    </span>
+                    {i < premiumFeatures.length - 1 && <Separator className="bg-muted/10 hidden" />}
                   </div>
                 ))}
               </div>
@@ -112,12 +119,12 @@ export function DigitalCatalog() {
             {/* Banner de Qualidade */}
             <div className="bg-primary/10 p-8 rounded-[2.5rem] border border-primary/20 flex items-center gap-6 graceful-reveal" style={{ animationDelay: '0.4s' }}>
               <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-primary shadow-lg shrink-0">
-                <CheckCircle2 className="w-7 h-7" />
+                <ShieldCheck className="w-7 h-7" />
               </div>
               <div>
-                <h4 className="font-bold text-sm uppercase tracking-widest text-primary">Garantia de Qualidade</h4>
+                <h4 className="font-bold text-sm uppercase tracking-widest text-primary">Segurança Garantida</h4>
                 <p className="text-xs text-muted-foreground leading-relaxed mt-1">
-                  Utilizamos apenas adesivos hipoalergênicos de padrão médico e fios de seda premium para maior retenção e conforto.
+                  Ambiente estéril e materiais descartáveis para cada atendimento, priorizando sempre a sua saúde ocular.
                 </p>
               </div>
             </div>
