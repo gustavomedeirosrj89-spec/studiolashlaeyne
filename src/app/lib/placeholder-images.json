@@ -14,28 +14,64 @@
       "imageHint": "beauty specialist"
     },
     {
-      "id": "brazilian-volume",
-      "description": "Estilo de cílios Volume Brasileiro",
+      "id": "fio-a-fio",
+      "description": "Estilo Clássico Fio a Fio",
+      "imageUrl": "https://picsum.photos/seed/lash101/800/1000",
+      "imageHint": "natural eyelashes"
+    },
+    {
+      "id": "vol-brasileiro",
+      "description": "Volume Brasileiro em Y",
       "imageUrl": "https://i.ibb.co/4xRTCVs/Volume-brasileiro.jpg",
-      "imageHint": "eyelash volume"
+      "imageHint": "brazilian volume"
+    },
+    {
+      "id": "vol-brasileiro-marrom",
+      "description": "Volume Brasileiro Marrom Chocolate",
+      "imageUrl": "https://picsum.photos/seed/brownlash/800/1000",
+      "imageHint": "brown eyelashes"
+    },
+    {
+      "id": "vol-russo",
+      "description": "Volume Russo Glamour",
+      "imageUrl": "https://i.ibb.co/C5hctDxn/Volume-russo.jpg",
+      "imageHint": "russian volume"
+    },
+    {
+      "id": "mega-vol",
+      "description": "Mega Volume Intenso",
+      "imageUrl": "https://i.ibb.co/8gG14BGT/Mega-Volume.jpg",
+      "imageHint": "mega volume lashes"
     },
     {
       "id": "fox-eyes",
-      "description": "Modelo com estilo Fox Eyes",
+      "description": "Efeito Fox Eyes Sensual",
       "imageUrl": "https://i.ibb.co/60TStvPD/Efeito-foxy-eyes.jpg",
       "imageHint": "fox eyes"
     },
     {
-      "id": "classic-lashes",
-      "description": "Estilo Clássico Fio a Fio",
-      "imageUrl": "https://picsum.photos/seed/lash40/800/800",
-      "imageHint": "natural eyelashes"
+      "id": "hibrido",
+      "description": "Estilo Híbrido Equilibrado",
+      "imageUrl": "https://picsum.photos/seed/lash105/800/1000",
+      "imageHint": "hybrid eyelashes"
     },
     {
-      "id": "russian-volume",
-      "description": "Estilo de cílios Volume Russo",
-      "imageUrl": "https://i.ibb.co/C5hctDxn/Volume-russo.jpg",
-      "imageHint": "russian volume lashes"
+      "id": "gallery-1",
+      "description": "Resultado Real 1",
+      "imageUrl": "https://picsum.photos/seed/res1/600/800",
+      "imageHint": "eye beauty"
+    },
+    {
+      "id": "gallery-2",
+      "description": "Resultado Real 2",
+      "imageUrl": "https://picsum.photos/seed/res2/600/600",
+      "imageHint": "eyelash detail"
+    },
+    {
+      "id": "gallery-3",
+      "description": "Resultado Real 3",
+      "imageUrl": "https://picsum.photos/seed/res3/600/900",
+      "imageHint": "beauty portrait"
     },
     {
       "id": "technique-detail",
