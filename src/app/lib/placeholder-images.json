@@ -56,6 +56,18 @@
       "imageHint": "hybrid eyelashes"
     },
     {
+      "id": "vol-egipcio",
+      "description": "Volume Egípcio em W",
+      "imageUrl": "https://picsum.photos/seed/egypt/800/1000",
+      "imageHint": "w-lashes volume"
+    },
+    {
+      "id": "lash-express",
+      "description": "Lash Express Praticidade",
+      "imageUrl": "https://picsum.photos/seed/express/800/1000",
+      "imageHint": "eyelash quick"
+    },
+    {
       "id": "gallery-real-1",
       "description": "Resultado Real Volume Brasileiro",
       "imageUrl": "https://i.ibb.co/Cs5hGW80/c-lios-volume-brasileiro.jpg",

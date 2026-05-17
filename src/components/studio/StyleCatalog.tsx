@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState } from "react"
@@ -55,6 +56,32 @@ const styles = [
     imageId: "vol-brasileiro-marrom",
     benefits: ["Efeito ultra natural", "Suavidade no olhar", "Ideal para peles claras"],
     tags: ["Naturais", "Premium"]
+  },
+  {
+    id: "egyptian",
+    title: "Volume Egípcio",
+    category: "Tendência",
+    price: "R$ 190",
+    duration: "2h",
+    maintenance: "21 dias",
+    description: "Volume tecnológico em W.",
+    fullDescription: "Fios em formato de W que garantem um volume mais denso que o brasileiro, com excelente retenção e um visual moderno e preenchido.",
+    imageId: "vol-egipcio",
+    benefits: ["Alta retenção", "Visual tecnológico", "Preenchimento ideal"],
+    tags: ["Volumosos", "Premium"]
+  },
+  {
+    id: "express",
+    title: "Lash Express",
+    category: "Praticidade",
+    price: "R$ 120",
+    duration: "1h",
+    maintenance: "Não se aplica",
+    description: "Preenchimento estratégico.",
+    fullDescription: "A cliente escolhe o modelo desejado (Brasileiro, Fio a Fio, etc), mas a aplicação não é total. Realizamos um preenchimento estratégico para um visual harmônico com rapidez.",
+    imageId: "lash-express",
+    benefits: ["Rapidez", "Visual leve", "Preenchimento estratégico"],
+    tags: ["Naturais"]
   },
   {
     id: "russian",
@@ -162,6 +189,7 @@ export function StyleCatalog() {
                       fill 
                       className="object-cover transition-transform duration-1000 group-hover:scale-110"
                       unoptimized={img.imageUrl.includes('ibb.co')}
+                      data-ai-hint={img.imageHint}
                     />
                   )}
                   {/* Overlay Gradiente Editorial */}
