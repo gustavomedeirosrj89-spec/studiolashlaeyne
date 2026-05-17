@@ -3,15 +3,31 @@ import {
   Trash2, 
   Zap, 
   Info,
-  CheckCircle2
+  CheckCircle2,
+  Sparkles
 } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 
 export function DigitalCatalog() {
   const maintenances = [
-    { label: "Manutenção 15 Dias", price: "R$ 100", desc: "Recomendado para quem exige cílios impecáveis e densos a todo momento." },
-    { label: "Manutenção 21 Dias", price: "R$ 130", desc: "O intervalo ideal para a maioria das técnicas, mantendo o design original." },
-    { label: "Manutenção 28 Dias", price: "R$ 160", desc: "Para fios com ciclo de crescimento lento ou para retoques finais de emergência." }
+    { 
+      label: "Manutenção 15 Dias", 
+      price: "R$ 100", 
+      styles: "Mega Volume, Volume Russo",
+      desc: "Recomendado para quem exige cílios impecáveis, densos e com preenchimento total a todo momento." 
+    },
+    { 
+      label: "Manutenção 21 Dias", 
+      price: "R$ 130", 
+      styles: "Volume Brasileiro, Fox Eyes, Híbrido",
+      desc: "O intervalo ideal para a maioria das técnicas, mantendo a arquitetura e o design original do olhar." 
+    },
+    { 
+      label: "Manutenção 28 Dias", 
+      price: "R$ 160", 
+      styles: "Clássico Fio a Fio",
+      desc: "Para fios com ciclo de crescimento lento ou para quem busca apenas um realce sutil e natural." 
+    }
   ]
 
   const extras = [
@@ -44,9 +60,15 @@ export function DigitalCatalog() {
             <div className="space-y-6">
               {maintenances.map((item, i) => (
                 <div key={i} className="group p-6 rounded-2xl border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all">
-                  <div className="flex justify-between items-center mb-2">
+                  <div className="flex justify-between items-center mb-3">
                     <p className="font-semibold text-lg">{item.label}</p>
                     <span className="font-headline text-2xl text-primary">{item.price}</span>
+                  </div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Sparkles className="w-3 h-3 text-accent" />
+                    <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-accent">
+                      Indicado para: {item.styles}
+                    </p>
                   </div>
                   <p className="text-sm text-muted-foreground font-light leading-relaxed">
                     {item.desc}
