@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Sparkles, Menu, ArrowRight } from "lucide-react"
@@ -18,34 +18,54 @@ const navItems = [
 const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20um%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
 
 export function Navbar() {
+  const [isVisible, setIsVisible] = useState(true)
   const [scrolled, setScrolled] = useState(false)
+  const lastScrollY = useRef(0)
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY
+      
+      // Determina se a barra deve ser visível (esconde ao descer, mostra ao subir)
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setIsVisible(false)
+      } else {
+        setIsVisible(true)
+      }
+
+      // Determina se a barra já saiu do topo para aplicar estilos de vidro
+      setScrolled(currentScrollY > 20)
+      
+      lastScrollY.current = currentScrollY
     }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+
+    window.addEventListener("scroll", controlNavbar)
+    return () => window.removeEventListener("scroll", controlNavbar)
   }, [])
 
   return (
-    <nav className="fixed top-0 w-full z-50 px-4 pt-6 transition-all duration-500 pointer-events-none">
+    <nav 
+      className={`
+        fixed top-0 w-full z-50 px-4 pt-6 transition-all duration-500 pointer-events-none
+        ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}
+      `}
+    >
       <div className="max-w-5xl mx-auto flex items-center justify-center">
         <div 
           className={`
-            flex items-center justify-between w-full px-6 h-16 rounded-full 
+            flex items-center justify-between w-full px-8 h-16 rounded-full 
             pointer-events-auto transition-all duration-500 border
             ${scrolled 
-              ? "bg-background/80 backdrop-blur-xl border-primary/10 shadow-2xl scale-95" 
+              ? "bg-white/70 backdrop-blur-xl border-primary/10 shadow-2xl scale-95" 
               : "bg-white/40 backdrop-blur-md border-white/20 shadow-lg"
             }
           `}
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <Sparkles className="w-5 h-5 text-primary animate-pulse" />
-            <span className="font-headline text-lg md:text-xl font-bold tracking-[0.1em] text-foreground uppercase">
+          <Link href="/" className="flex items-center gap-3 group">
+            <Sparkles className="w-5 h-5 text-primary" />
+            <span className="font-headline text-lg md:text-xl font-medium tracking-[0.1em] text-foreground uppercase">
               LAEYNE STUDIO
             </span>
           </Link>
@@ -73,7 +93,7 @@ export function Navbar() {
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10">
-                  <Menu className="w-5 h-5" />
+                  <Menu className="w-5 h-5 text-foreground" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="bg-background border-none p-0 flex flex-col w-full sm:max-w-md">
