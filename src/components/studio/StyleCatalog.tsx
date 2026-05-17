@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState } from "react"
@@ -8,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Sparkles, MessageCircle, Clock, CheckCircle2, Calendar } from "lucide-react"
+import { Sparkles, MessageCircle, Clock, CheckCircle2, Calendar, ArrowRight } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -128,16 +127,17 @@ export function StyleCatalog() {
   }
 
   return (
-    <section className="py-20 px-6 max-w-7xl mx-auto space-y-16">
-      <div className="flex flex-wrap justify-center gap-3">
+    <section className="py-24 px-6 max-w-7xl mx-auto space-y-20">
+      {/* Filtros Minimalistas */}
+      <div className="flex flex-wrap justify-center gap-4 graceful-reveal">
         {categories.map(cat => (
           <button
             key={cat}
             onClick={() => setActiveFilter(cat)}
-            className={`px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${
+            className={`px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.25em] transition-all duration-500 border ${
               activeFilter === cat 
-                ? "bg-primary text-white shadow-lg" 
-                : "bg-secondary/50 text-muted-foreground hover:bg-secondary"
+                ? "bg-primary text-white border-primary shadow-2xl shadow-primary/20 scale-105" 
+                : "bg-white/40 text-muted-foreground border-transparent hover:border-primary/20 hover:bg-white"
             }`}
           >
             {cat}
@@ -145,14 +145,14 @@ export function StyleCatalog() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {filteredStyles.map((style, idx) => {
           const img = PlaceHolderImages.find(i => i.id === style.imageId)
           return (
             <Dialog key={style.id}>
               <DialogTrigger asChild>
                 <div 
-                  className="group relative h-[500px] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-xl transition-all duration-500 hover:-translate-y-2 graceful-reveal"
+                  className="group relative h-[600px] rounded-[3rem] overflow-hidden cursor-pointer shadow-xl transition-all duration-700 hover:-translate-y-4 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] graceful-reveal"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   {img && (
@@ -160,36 +160,38 @@ export function StyleCatalog() {
                       src={img.imageUrl} 
                       alt={style.title} 
                       fill 
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
                       unoptimized={img.imageUrl.includes('ibb.co')}
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  {/* Overlay Gradiente Editorial */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-700 group-hover:opacity-80" />
                   
-                  <div className="absolute bottom-0 w-full p-8 space-y-4">
-                    <Badge className="bg-primary/90 text-white border-none px-3 py-1 text-[8px] uppercase tracking-wider font-bold">
+                  <div className="absolute bottom-0 w-full p-10 space-y-6">
+                    <Badge className="bg-white/20 backdrop-blur-md text-white border-white/20 px-4 py-1.5 text-[9px] uppercase tracking-[0.2em] font-black">
                       {style.category}
                     </Badge>
-                    <div className="space-y-1 text-left">
-                      <h3 className="text-3xl font-headline text-white">{style.title}</h3>
-                      <p className="text-white/70 text-sm font-light italic">{style.description}</p>
+                    <div className="space-y-2 text-left">
+                      <h3 className="text-4xl font-headline text-white font-bold leading-tight">{style.title}</h3>
+                      <p className="text-white/60 text-base font-light italic leading-relaxed">{style.description}</p>
                     </div>
-                    <div className="flex justify-between items-center pt-4 border-t border-white/10">
+                    
+                    <div className="flex justify-between items-end pt-6 border-t border-white/10">
                       <div className="flex flex-col text-left">
-                        <span className="text-white font-headline text-2xl">{style.price}</span>
-                        <span className="text-white/50 text-[8px] uppercase font-bold">Manut. {style.maintenance}</span>
+                        <span className="text-white font-headline text-3xl font-bold tracking-tight">{style.price}</span>
+                        <span className="text-white/40 text-[9px] uppercase font-black tracking-widest mt-1">Manut. {style.maintenance}</span>
                       </div>
-                      <Button variant="ghost" className="text-white hover:bg-white/20 rounded-full px-6 text-xs uppercase tracking-widest">
-                        Detalhes
-                      </Button>
+                      <div className="bg-primary p-4 rounded-full text-white shadow-xl shadow-primary/20 group-hover:scale-110 transition-all duration-500">
+                        <ArrowRight className="w-6 h-6" />
+                      </div>
                     </div>
                   </div>
                 </div>
               </DialogTrigger>
 
-              <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background border-none rounded-[3rem] shadow-2xl">
-                <div className="grid grid-cols-1 md:grid-cols-2">
-                  <div className="relative aspect-square md:aspect-auto">
+              <DialogContent className="max-w-5xl p-0 overflow-hidden bg-background border-none rounded-[3.5rem] shadow-2xl animate-in zoom-in-95 duration-500">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <div className="relative aspect-square lg:aspect-auto h-[300px] lg:h-full">
                     {img && (
                       <Image 
                         src={img.imageUrl} 
@@ -199,39 +201,39 @@ export function StyleCatalog() {
                         unoptimized={img.imageUrl.includes('ibb.co')}
                       />
                     )}
-                    <div className="absolute inset-0 bg-black/20" />
+                    <div className="absolute inset-0 bg-black/10" />
                   </div>
-                  <div className="p-10 space-y-8 overflow-y-auto max-h-[90vh]">
-                    <div className="space-y-4 text-left">
-                      <div className="flex items-center gap-2 text-primary">
-                        <Sparkles className="w-4 h-4" />
-                        <span className="text-[10px] uppercase tracking-widest font-bold">Arquitetura do Olhar</span>
+                  <div className="p-12 lg:p-16 space-y-12 overflow-y-auto max-h-[90vh]">
+                    <div className="space-y-6 text-left">
+                      <div className="flex items-center gap-3 text-primary">
+                        <Sparkles className="w-5 h-5" />
+                        <span className="text-[10px] uppercase tracking-[0.5em] font-black">Técnica Exclusiva</span>
                       </div>
-                      <DialogTitle className="text-4xl font-headline leading-tight">{style.title}</DialogTitle>
-                      <p className="text-muted-foreground font-light leading-relaxed">{style.fullDescription}</p>
+                      <DialogTitle className="text-5xl lg:text-6xl font-headline leading-tight font-bold">{style.title}</DialogTitle>
+                      <p className="text-muted-foreground font-light text-xl leading-relaxed">{style.fullDescription}</p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 bg-secondary/30 rounded-2xl text-left">
-                        <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Manutenção Ideal</p>
-                        <div className="flex items-center gap-2 text-primary">
-                          <Clock className="w-4 h-4" />
-                          <span className="font-semibold">{style.maintenance}</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div className="p-8 bg-secondary/30 rounded-[2rem] border border-white/20">
+                        <p className="text-[10px] uppercase font-black text-muted-foreground mb-3">Ciclo de Manutenção</p>
+                        <div className="flex items-center gap-3 text-primary">
+                          <Clock className="w-5 h-5" />
+                          <span className="text-lg font-bold">{style.maintenance}</span>
                         </div>
                       </div>
-                      <div className="p-4 bg-primary/10 rounded-2xl text-left">
-                        <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Investimento</p>
-                        <p className="text-2xl font-headline text-primary">{style.price}</p>
+                      <div className="p-8 bg-primary/10 rounded-[2rem] border border-primary/5">
+                        <p className="text-[10px] uppercase font-black text-muted-foreground mb-3">Valor do Procedimento</p>
+                        <p className="text-4xl font-headline text-primary font-bold">{style.price}</p>
                       </div>
                     </div>
 
-                    <form onSubmit={handleBooking(style.title)} className="space-y-4 text-left">
-                      <div className="space-y-2">
-                        <Label className="text-[10px] uppercase font-bold">Seu Nome</Label>
+                    <form onSubmit={handleBooking(style.title)} className="space-y-6 text-left">
+                      <div className="space-y-3">
+                        <Label className="text-[10px] uppercase font-black tracking-widest text-muted-foreground ml-2">Dados da Cliente</Label>
                         <Input 
                           required 
-                          placeholder="Ex: Maria Silva" 
-                          className="h-12 bg-secondary/20 border-primary/10" 
+                          placeholder="Seu nome para o agendamento" 
+                          className="h-16 bg-secondary/10 border-primary/5 rounded-2xl focus:ring-primary/20 text-lg px-6" 
                           value={formData.name}
                           onChange={(e) => setFormData(p => ({...p, name: e.target.value}))}
                         />
@@ -240,21 +242,21 @@ export function StyleCatalog() {
                         <Input 
                           type="date" 
                           required 
-                          className="h-12 bg-secondary/20" 
+                          className="h-16 bg-secondary/10 border-primary/5 rounded-2xl px-6" 
                           value={formData.date}
                           onChange={(e) => setFormData(p => ({...p, date: e.target.value}))}
                         />
                         <Input 
                           type="time" 
                           required 
-                          className="h-12 bg-secondary/20" 
+                          className="h-16 bg-secondary/10 border-primary/5 rounded-2xl px-6" 
                           value={formData.time}
                           onChange={(e) => setFormData(p => ({...p, time: e.target.value}))}
                         />
                       </div>
-                      <Button className="w-full h-14 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-bold tracking-widest flex gap-3 shadow-xl shadow-primary/20">
-                        <MessageCircle className="w-5 h-5" />
-                        Confirmar Agendamento
+                      <Button className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.2em] flex gap-4 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] text-lg">
+                        <MessageCircle className="w-7 h-7" />
+                        Agendar via WhatsApp
                       </Button>
                     </form>
                   </div>

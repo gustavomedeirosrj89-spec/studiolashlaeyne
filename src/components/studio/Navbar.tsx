@@ -1,12 +1,11 @@
-
 "use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Sparkles, Menu, X } from "lucide-react"
+import { Sparkles, Menu, X, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet"
 
 const navItems = [
   { name: "Início", href: "/" },
@@ -20,20 +19,33 @@ const WHATSAPP_URL = `https://wa.me/5588996363178?text=${encodeURIComponent(WHAT
 
 export function Navbar() {
   const [mounted, setMounted] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
     setMounted(true)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-primary/10">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <nav 
+      className={`fixed top-0 w-full z-50 transition-all duration-500 px-6 ${
+        scrolled ? "py-4" : "py-8"
+      }`}
+    >
+      <div 
+        className={`max-w-7xl mx-auto px-8 h-16 flex items-center justify-between rounded-full transition-all duration-500 ${
+          scrolled ? "bg-background/80 backdrop-blur-xl border border-primary/10 shadow-lg" : "bg-transparent"
+        }`}
+      >
         <Link href="/" className="flex items-center gap-2 group">
-          <Sparkles className="w-6 h-6 text-primary group-hover:rotate-12 transition-transform" />
+          <Sparkles className="w-5 h-5 text-primary group-hover:rotate-12 transition-transform duration-500" />
           <div className="flex flex-col -space-y-1">
-            <span className="font-headline text-xl md:text-2xl font-semibold tracking-tighter">LAEYNE STUDIO</span>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium">Lash Specialist</span>
+            <span className="font-headline text-lg md:text-xl font-bold tracking-tighter uppercase">LAEYNE STUDIO</span>
           </div>
         </Link>
 
@@ -43,14 +55,15 @@ export function Navbar() {
             <Link 
               key={item.name} 
               href={item.href}
-              className={`text-[10px] font-bold transition-colors uppercase tracking-[0.2em] ${
-                pathname === item.href ? "text-primary border-b border-primary/30" : "text-muted-foreground hover:text-primary"
+              className={`text-[10px] font-bold transition-all duration-300 uppercase tracking-[0.25em] relative group ${
+                pathname === item.href ? "text-primary" : "text-muted-foreground hover:text-primary"
               }`}
             >
               {item.name}
+              <span className={`absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full ${pathname === item.href ? "w-full" : "w-0"}`} />
             </Link>
           ))}
-          <Button asChild className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.1em] text-[10px] h-11">
+          <Button asChild className="rounded-full px-8 bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-[0.1em] text-[10px] h-11 shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95">
             <Link href={WHATSAPP_URL} target="_blank">Agendar Agora</Link>
           </Button>
         </div>
@@ -60,29 +73,38 @@ export function Navbar() {
           {mounted && (
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="w-6 h-6" />
+                <Button variant="ghost" size="icon" className="hover:bg-primary/10 rounded-full">
+                  <Menu className="w-6 h-6 text-foreground" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-background">
-                <SheetHeader>
-                  <SheetTitle className="font-headline text-left text-2xl">LAEYNE STUDIO</SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-8 mt-16">
-                  {navItems.map((item) => (
-                    <Link 
-                      key={item.name} 
-                      href={item.href}
-                      className="text-xl font-headline hover:text-primary transition-colors border-b border-primary/5 pb-4"
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                  <Button asChild className="rounded-full w-full bg-primary h-14 text-base font-medium">
-                    <Link href={WHATSAPP_URL} target="_blank">
-                      Falar no WhatsApp
-                    </Link>
-                  </Button>
+              <SheetContent side="right" className="bg-background border-none w-full sm:max-w-md p-0 flex flex-col">
+                <div className="p-10 flex flex-col h-full">
+                  <SheetHeader className="text-left mb-16">
+                    <SheetTitle className="font-headline text-2xl font-bold tracking-tight text-foreground uppercase">LAEYNE STUDIO</SheetTitle>
+                  </SheetHeader>
+                  
+                  <div className="flex flex-col gap-10 flex-1">
+                    {navItems.map((item) => (
+                      <SheetClose asChild key={item.name}>
+                        <Link 
+                          href={item.href}
+                          className="text-3xl font-headline font-light hover:text-primary transition-all flex items-center justify-between group"
+                        >
+                          {item.name}
+                          <ArrowRight className="w-6 h-6 opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0 text-primary" />
+                        </Link>
+                      </SheetClose>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto space-y-6">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold text-center">Arquitetura de Luxo para seu Olhar</p>
+                    <Button asChild className="rounded-full w-full bg-primary h-16 text-lg font-bold uppercase tracking-widest text-white shadow-xl shadow-primary/20">
+                      <Link href={WHATSAPP_URL} target="_blank">
+                        Falar no WhatsApp
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>
