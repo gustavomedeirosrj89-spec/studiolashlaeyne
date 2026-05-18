@@ -36,15 +36,15 @@ export function CatalogCTA() {
           </p>
         </div>
 
-        {/* Botão de Bloco de Luxo perfeitamente enquadrado */}
-        <div className="w-full max-w-2xl graceful-reveal px-4" style={{ animationDelay: '0.2s' }}>
+        {/* Botão de Bloco de Luxo Retangular (Enquadrado) */}
+        <div className="w-full max-w-md graceful-reveal px-4" style={{ animationDelay: '0.2s' }}>
           <Button 
             asChild 
-            className="w-full h-auto min-h-[5.5rem] md:min-h-[7rem] rounded-none bg-primary hover:bg-primary/90 text-white transition-all duration-500 hover:scale-[1.01] active:scale-95 border-none p-6 shadow-2xl shadow-primary/10"
+            className="w-full h-auto min-h-[4rem] md:min-h-[5rem] rounded-none bg-primary hover:bg-primary/90 text-white transition-all duration-500 hover:scale-[1.01] active:scale-95 border-none p-6 shadow-2xl shadow-primary/10"
           >
             <Link href="/estilos" className="flex items-center justify-center">
-              <span className="text-sm md:text-xl font-black uppercase tracking-[0.3em] leading-[1.2] text-center block w-full max-w-xs md:max-w-md mx-auto">
-                VEJA NOSSO CATALOGO COMPLETO
+              <span className="text-xs md:text-lg font-black uppercase tracking-[0.4em] leading-none text-center block w-full">
+                CATÁLOGO COMPLETO
               </span>
             </Link>
           </Button>
