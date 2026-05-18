@@ -32,14 +32,14 @@ export function CatalogCTA() {
           </p>
         </div>
 
-        {/* Botão de Bloco de Luxo */}
+        {/* Botão de Bloco de Luxo com texto enquadrado */}
         <div className="w-full max-w-2xl graceful-reveal" style={{ animationDelay: '0.2s' }}>
           <Button 
             asChild 
-            className="w-full h-20 md:h-24 rounded-none bg-primary hover:bg-primary/90 text-white transition-all duration-500 hover:scale-[1.02] active:scale-95 border-none"
+            className="w-full h-auto min-h-[5rem] md:min-h-[6rem] rounded-none bg-primary hover:bg-primary/90 text-white transition-all duration-500 hover:scale-[1.02] active:scale-95 border-none p-4"
           >
-            <Link href="/estilos" className="flex items-center justify-center">
-              <span className="text-sm md:text-xl font-bold uppercase tracking-[0.3em] whitespace-nowrap">
+            <Link href="/estilos" className="flex items-center justify-center text-center">
+              <span className="text-sm md:text-lg lg:text-xl font-bold uppercase tracking-[0.2em] md:tracking-[0.3em] leading-tight max-w-[90%]">
                 VEJA NOSSO CATALOGO COMPLETO AQUI
               </span>
             </Link>
