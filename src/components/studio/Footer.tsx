@@ -23,21 +23,31 @@ const TikTokIcon = ({ className }: { className?: string }) => (
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-background py-24 px-6 border-t border-white/5">
-      <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-16">
+    <footer className="bg-foreground text-background py-32 px-6 border-t border-white/5">
+      <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-20">
         
-        <div className="space-y-6 flex flex-col items-center graceful-reveal">
-          <Link href="/" className="flex items-center gap-3 group">
-            <Sparkles className="w-8 h-8 text-primary animate-pulse" />
-            <span className="font-headline text-3xl md:text-5xl font-medium tracking-[0.15em] uppercase">
-              LAEYNE STUDIO
-            </span>
+        {/* Identidade Centralizada - Estilo Imagem de Referência */}
+        <div className="space-y-12 flex flex-col items-center graceful-reveal">
+          <Link href="/" className="flex flex-col items-center gap-4 group">
+            <div className="relative">
+              <Sparkles className="w-8 h-8 text-primary absolute -left-12 top-0 md:-left-16" />
+              <h2 className="font-headline text-5xl md:text-7xl font-light tracking-[0.2em] uppercase leading-[0.9]">
+                LAEYNE <br />
+                <span className="block pt-2">STUDIO</span>
+              </h2>
+            </div>
           </Link>
-          <p className="text-muted max-w-xl font-light leading-relaxed text-sm md:text-base italic">
-            "Onde a arquitetura encontra a elegância. Proporcionamos as extensões de cílios mais avançadas em um ambiente sereno e luxuoso."
-          </p>
+          
+          <div className="max-w-2xl px-4">
+            <p className="text-muted-foreground/80 font-headline text-lg md:text-2xl leading-relaxed italic">
+              "Onde a arquitetura encontra a elegância. <br className="hidden md:block" />
+              Proporcionamos as extensões de cílios mais avançadas <br className="hidden md:block" />
+              em um ambiente sereno e luxuoso."
+            </p>
+          </div>
         </div>
 
+        {/* Informações de Contato */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 w-full max-w-4xl graceful-reveal" style={{ animationDelay: '0.1s' }}>
           <div className="flex flex-col items-center space-y-4">
             <div className="p-4 rounded-full bg-white/5">
@@ -55,6 +65,7 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Redes Sociais */}
         <div className="flex gap-8 graceful-reveal" style={{ animationDelay: '0.2s' }}>
           <Link href="https://instagram.com" target="_blank" className="p-4 bg-white/5 rounded-full hover:text-primary transition-all">
             <Instagram className="w-6 h-6" />
