@@ -17,7 +17,7 @@ export function CatalogCTA() {
         <div className="flex items-center justify-center gap-3 text-primary/80 graceful-reveal">
           <Sparkles className="w-4 h-4" />
           <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] font-bold">
-            Arquitetura de Luxo para seu Olhar
+            ARQUITETURA DE LUXO PARA SEU OLHAR
           </span>
         </div>
 
@@ -38,9 +38,9 @@ export function CatalogCTA() {
             asChild 
             className="w-full h-auto min-h-[5rem] md:min-h-[6rem] rounded-none bg-primary hover:bg-primary/90 text-white transition-all duration-500 hover:scale-[1.02] active:scale-95 border-none p-4"
           >
-            <Link href="/estilos" className="flex items-center justify-center text-center">
-              <span className="text-sm md:text-lg lg:text-xl font-bold uppercase tracking-[0.2em] md:tracking-[0.3em] leading-tight max-w-[90%]">
-                VEJA NOSSO CATALOGO COMPLETO AQUI
+            <Link href="/estilos" className="flex items-center justify-center">
+              <span className="text-sm md:text-lg lg:text-xl font-bold uppercase tracking-[0.2em] md:tracking-[0.3em] leading-tight text-center block w-full">
+                VEJA NOSSO CATALOGO COMPLETO
               </span>
             </Link>
           </Button>
