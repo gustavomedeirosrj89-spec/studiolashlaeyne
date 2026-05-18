@@ -94,14 +94,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Label className="text-[10px] uppercase font-black tracking-widest ml-4 text-foreground/60">Usuário</Label>
                 <div className="relative">
                   <UserCircle className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40" />
-                  <Input required className="h-14 pl-12 bg-white/50 border-none rounded-2xl" value={username} onChange={(e) => setUsername(e.target.value)} />
+                  <input required type="text" className="flex h-14 w-full pl-12 bg-white/50 border-none rounded-2xl text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label className="text-[10px] uppercase font-black tracking-widest ml-4 text-foreground/60">Senha</Label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40" />
-                  <Input type="password" required className="h-14 pl-12 bg-white/50 border-none rounded-2xl" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <input type="password" required className="flex h-14 w-full pl-12 bg-white/50 border-none rounded-2xl text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
               </div>
             </div>
@@ -115,26 +115,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background overflow-hidden">
-        <Sidebar className="bg-sidebar border-r border-white/5 shadow-2xl z-50">
-          <SidebarHeader className="p-8">
+        <Sidebar className="bg-sidebar border-r border-sidebar-border shadow-2xl z-50 overflow-hidden">
+          <SidebarHeader className="p-8 bg-sidebar">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
                 <Sparkle className="w-6 h-6 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="font-headline text-xl uppercase tracking-widest leading-none text-white">LAEYNE</span>
+                <span className="font-headline text-xl uppercase tracking-widest leading-none text-sidebar-foreground">LAEYNE</span>
                 <span className="text-[8px] uppercase tracking-[0.3em] font-black text-primary">STUDIO LASH</span>
               </div>
             </div>
           </SidebarHeader>
-          <SidebarContent className="px-6 py-4">
+          <SidebarContent className="px-6 py-4 bg-sidebar">
             <SidebarMenu className="gap-3">
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild 
                     isActive={pathname === item.href}
-                    className="h-14 rounded-2xl px-5 transition-all duration-300 data-[active=true]:bg-primary data-[active=true]:text-white hover:bg-white/5 group"
+                    className="h-14 rounded-2xl px-5 transition-all duration-300 data-[active=true]:bg-primary data-[active=true]:text-white hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group"
                   >
                     <Link href={item.href} className="flex items-center gap-4">
                       <item.icon className="w-5 h-5 transition-transform group-hover:scale-110" />
@@ -145,11 +145,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               ))}
             </SidebarMenu>
           </SidebarContent>
-          <SidebarFooter className="p-8 border-t border-white/5">
+          <SidebarFooter className="p-8 border-t border-sidebar-border bg-sidebar">
             <Button 
               variant="ghost" 
               onClick={handleLogout} 
-              className="w-full justify-start gap-4 h-14 rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 group transition-all"
+              className="w-full justify-start gap-4 h-14 rounded-2xl text-sidebar-foreground/60 hover:text-destructive hover:bg-destructive/10 group transition-all"
             >
               <LogOut className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
               <span className="text-[10px] font-black uppercase tracking-[0.2em]">Sair</span>
