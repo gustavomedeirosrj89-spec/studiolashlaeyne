@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -64,24 +64,26 @@ const topPickServices = [
 ]
 
 export function Hero() {
-  const specialistImg = PlaceHolderImages.find(img => img.id === "specialist-photo")
+  const [mounted, setMounted] = useState(false)
   const [formData, setFormData] = useState({ name: "", date: "", time: "" })
+  const specialistImg = PlaceHolderImages.find(img => img.id === "specialist-photo")
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const availableTimeSlots = useMemo(() => {
     if (!formData.date) return ALL_TIME_SLOTS
-    
-    // Create date and adjust for local timezone to get correct day
     const selectedDate = new Date(formData.date + 'T00:00:00')
-    const dayOfWeek = selectedDate.getDay() // 0 = Sun, 6 = Sat
+    const dayOfWeek = selectedDate.getDay() 
 
-    if (dayOfWeek === 6) { // Saturday
+    if (dayOfWeek === 6) { // Sábado
       return ALL_TIME_SLOTS.filter(time => {
         const hour = parseInt(time.split(":")[0])
-        return hour < 14 // Saturday until 14h
+        return hour < 14
       })
     }
-    
-    return ALL_TIME_SLOTS // Weekdays until 19h (slots go until 18h/18h30)
+    return ALL_TIME_SLOTS
   }, [formData.date])
 
   const handleBooking = (title: string) => (e: React.FormEvent) => {
@@ -90,10 +92,12 @@ export function Hero() {
     window.open(`https://wa.me/5588996363178?text=${encodeURIComponent(msg)}`, "_blank")
   }
 
+  if (!mounted) return null
+
   return (
     <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden bg-background">
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute top-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px]" />
       </div>
 
@@ -151,38 +155,38 @@ export function Hero() {
                           </div>
                         </div>
                       </DialogTrigger>
-                      <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background border-none rounded-[3rem] shadow-2xl">
-                        <div className="grid grid-cols-1 md:grid-cols-2">
-                          <div className="relative aspect-square md:aspect-auto">
+                      <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3rem] shadow-2xl max-h-[90vh]">
+                        <div className="grid grid-cols-1 lg:grid-cols-12">
+                          <div className="lg:col-span-5 relative aspect-square lg:aspect-auto h-[250px] lg:h-auto">
                             {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" />}
                           </div>
-                          <div className="p-10 space-y-8 overflow-y-auto max-h-[85vh]">
+                          <div className="lg:col-span-7 p-6 md:p-10 space-y-8">
                             <DialogHeader className="space-y-4 text-left">
                               <div className="flex flex-col gap-4">
-                                <Badge className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full w-fit">Exclusivo</Badge>
-                                <DialogTitle className="text-4xl font-headline">{pick.name}</DialogTitle>
+                                <Badge className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full w-fit">Destaque</Badge>
+                                <DialogTitle className="text-4xl font-headline leading-tight">{pick.name}</DialogTitle>
                               </div>
                               <p className="text-muted-foreground font-light leading-relaxed">{pick.fullDescription}</p>
                             </DialogHeader>
-                            <div className="grid grid-cols-2 gap-4">
-                              <div className="p-6 bg-secondary/30 rounded-3xl">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div className="p-6 bg-secondary/30 rounded-3xl flex flex-col items-center justify-center text-center">
                                 <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Manutenção</p>
                                 <div className="flex items-center gap-2 text-primary">
                                   <Clock className="w-4 h-4" />
                                   <span className="font-bold text-sm">{pick.maintenance}</span>
                                 </div>
                               </div>
-                              <div className="p-6 bg-primary/10 rounded-3xl">
+                              <div className="p-6 bg-primary/10 rounded-3xl flex flex-col items-center justify-center text-center">
                                 <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Valor</p>
                                 <p className="text-2xl font-headline text-primary font-bold">{pick.price}</p>
                               </div>
                             </div>
-                            <form onSubmit={handleBooking(pick.name)} className="space-y-4">
+                            <form onSubmit={handleBooking(pick.name)} className="space-y-4 pt-6 border-t border-primary/10">
                               <div className="space-y-2">
-                                <Label className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground ml-2">Dados da Agenda</Label>
+                                <Label className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground ml-2">Agendar Horário</Label>
                                 <Input required placeholder="Seu nome" className="h-14 bg-secondary/10 border-none rounded-2xl" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
                               </div>
-                              <div className="grid grid-cols-2 gap-4">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <Input type="date" required className="h-14 bg-secondary/10 border-none rounded-2xl" value={formData.date} onChange={(e) => setFormData(p => ({...p, date: e.target.value}))} />
                                 <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required>
                                   <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl focus:ring-0">
@@ -197,10 +201,9 @@ export function Hero() {
                                   </SelectContent>
                                 </Select>
                               </div>
-                              <p className="text-[9px] text-muted-foreground italic px-2 text-center">Horários: Seg-Sex: 09h às 19h | Sáb: 09h às 14h</p>
                               <Button className="w-full h-16 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-widest flex gap-3 shadow-lg">
                                 <MessageCircle className="w-6 h-6" />
-                                Agendar no WhatsApp
+                                AGENDAR VIA WHATSAPP
                               </Button>
                             </form>
                           </div>

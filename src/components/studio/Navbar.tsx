@@ -28,28 +28,22 @@ export function Navbar() {
     setMounted(true)
     const controlNavbar = () => {
       const currentScrollY = window.scrollY
-      
       if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
         setIsVisible(false)
       } else {
         setIsVisible(true)
       }
-
       setScrolled(currentScrollY > 20)
       lastScrollY.current = currentScrollY
     }
-
     window.addEventListener("scroll", controlNavbar)
     return () => window.removeEventListener("scroll", controlNavbar)
   }, [])
 
-  // Evita erro de hidratação ao carregar componentes com IDs dinâmicos (como o Sheet)
   if (!mounted) {
     return (
-      <nav className="fixed top-0 w-full z-50 px-4 pt-6 pointer-events-none opacity-0">
-        <div className="max-w-5xl mx-auto flex items-center justify-center">
-          <div className="w-full h-16 rounded-full bg-white/40 backdrop-blur-md" />
-        </div>
+      <nav className="fixed top-0 w-full z-50 px-4 pt-6 opacity-0 pointer-events-none">
+        <div className="max-w-5xl mx-auto h-16 rounded-full bg-white/40" />
       </nav>
     )
   }
@@ -72,7 +66,6 @@ export function Navbar() {
             }
           `}
         >
-          {/* Logo Desktop */}
           <Link href="/" className="flex items-center gap-3 group">
             <Sparkles className="w-5 h-5 text-primary" />
             <span className="font-headline text-lg md:text-xl font-medium tracking-[0.1em] text-foreground uppercase">
@@ -80,7 +73,6 @@ export function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Links */}
           <div className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => (
               <Link 
@@ -98,7 +90,6 @@ export function Navbar() {
             </Button>
           </div>
 
-          {/* Mobile Menu */}
           <div className="lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
@@ -107,22 +98,22 @@ export function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="bg-[#f5f2ed] border-none p-0 flex flex-col w-full sm:max-w-md">
-                <div className="p-8 md:p-12 flex flex-col h-full relative">
+                <div className="p-8 md:p-12 flex flex-col h-full relative overflow-hidden">
+                  {/* Efeito de Marca D'água "L" */}
+                  <span className="absolute -left-12 -top-12 text-[25rem] font-headline text-primary/5 select-none pointer-events-none">L</span>
                   
-                  <SheetHeader className="mb-16 text-left space-y-0">
+                  <SheetHeader className="mb-16 text-left space-y-0 relative z-10">
                     <SheetTitle asChild>
-                      <div className="relative inline-flex items-center gap-2">
-                        <div className="relative">
-                          <span className="absolute -left-2 -top-1 text-4xl font-headline text-primary/20 select-none">L</span>
-                          <span className="font-headline text-2xl md:text-3xl font-semibold tracking-tight text-foreground uppercase relative z-10">
-                            LAEYNE STUDIO
-                          </span>
-                        </div>
+                      <div className="flex items-center gap-3">
+                        <Sparkles className="w-5 h-5 text-primary" />
+                        <span className="font-headline text-2xl md:text-3xl font-semibold tracking-tight text-foreground uppercase">
+                          LAEYNE STUDIO
+                        </span>
                       </div>
                     </SheetTitle>
                   </SheetHeader>
                   
-                  <div className="flex flex-col gap-6 flex-1">
+                  <div className="flex flex-col gap-6 flex-1 relative z-10">
                     {navItems.map((item) => (
                       <SheetClose asChild key={item.name}>
                         <Link 
@@ -135,7 +126,7 @@ export function Navbar() {
                     ))}
                   </div>
 
-                  <div className="mt-auto space-y-8 pb-4">
+                  <div className="mt-auto space-y-8 pb-4 relative z-10">
                     <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#8a8a8a] font-bold text-center">
                       ARQUITETURA DE LUXO PARA SEU OLHAR
                     </p>
