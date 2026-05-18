@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Sparkles, Menu, ArrowRight, X } from "lucide-react"
+import { Sparkles, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet"
 
@@ -97,16 +97,18 @@ export function Navbar() {
                 <div className="p-8 md:p-12 flex flex-col h-full relative">
                   
                   {/* Header com Efeito no Nome (Referência Imagem) */}
-                  <div className="mb-16 relative">
-                    <div className="flex items-center gap-2">
-                      <div className="relative">
-                        <span className="absolute -left-2 -top-1 text-4xl font-headline text-primary/20 select-none">L</span>
-                        <span className="font-headline text-2xl md:text-3xl font-semibold tracking-tight text-foreground uppercase relative z-10">
-                          LAEYNE STUDIO
-                        </span>
+                  <SheetHeader className="mb-16 text-left space-y-0">
+                    <SheetTitle asChild>
+                      <div className="relative inline-flex items-center gap-2">
+                        <div className="relative">
+                          <span className="absolute -left-2 -top-1 text-4xl font-headline text-primary/20 select-none">L</span>
+                          <span className="font-headline text-2xl md:text-3xl font-semibold tracking-tight text-foreground uppercase relative z-10">
+                            LAEYNE STUDIO
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </SheetTitle>
+                  </SheetHeader>
                   
                   {/* Links Modernos e Editoriais */}
                   <div className="flex flex-col gap-6 flex-1">

@@ -231,7 +231,7 @@ export function StyleCatalog() {
 
                   {/* Lado Direito - Conteúdo Editorial */}
                   <div className="lg:col-span-7 p-8 lg:p-14 bg-background flex flex-col justify-center space-y-10">
-                    <div className="space-y-4 text-left">
+                    <DialogHeader className="space-y-4 text-left">
                       <div className="flex items-center gap-2 text-primary">
                         <Sparkles className="w-4 h-4" />
                         <span className="text-[10px] uppercase tracking-[0.4em] font-black">Técnica Exclusiva</span>
@@ -242,9 +242,9 @@ export function StyleCatalog() {
                       <p className="text-muted-foreground font-light text-lg lg:text-xl leading-relaxed max-w-lg">
                         {style.fullDescription}
                       </p>
-                    </div>
+                    </DialogHeader>
 
-                    {/* Blocos de Informação (Cards de referência) */}
+                    {/* Blocos de Informação */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="p-8 bg-secondary/30 rounded-[2.5rem] border border-primary/5 flex flex-col items-center justify-center text-center space-y-2">
                         <p className="text-[9px] uppercase font-black tracking-[0.2em] text-muted-foreground">Ciclo de Manutenção</p>

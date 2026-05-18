@@ -5,7 +5,7 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, ArrowRight, Sparkles, Star, Clock } from "lucide-react"
+import { MessageCircle, ArrowRight, Star, Clock } from "lucide-react"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
+  DialogHeader,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -126,11 +127,13 @@ export function Hero() {
                             {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" />}
                           </div>
                           <div className="p-10 space-y-8 overflow-y-auto max-h-[85vh]">
-                            <div className="space-y-4">
-                              <Badge className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full">Exclusivo</Badge>
-                              <DialogTitle className="text-4xl font-headline">{pick.name}</DialogTitle>
+                            <DialogHeader className="space-y-4 text-left">
+                              <div className="flex flex-col gap-4">
+                                <Badge className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full w-fit">Exclusivo</Badge>
+                                <DialogTitle className="text-4xl font-headline">{pick.name}</DialogTitle>
+                              </div>
                               <p className="text-muted-foreground font-light leading-relaxed">{pick.fullDescription}</p>
-                            </div>
+                            </DialogHeader>
                             <div className="grid grid-cols-2 gap-4">
                               <div className="p-6 bg-secondary/30 rounded-3xl">
                                 <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Manutenção</p>
