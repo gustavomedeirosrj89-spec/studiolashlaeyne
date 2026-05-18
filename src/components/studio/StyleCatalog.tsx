@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -22,6 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+import { useFirestore } from "@/firebase"
+import { errorEmitter } from "@/firebase/error-emitter"
+import { FirestorePermissionError } from "@/firebase/errors"
 
 const ALL_TIME_SLOTS = [
   "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
@@ -129,6 +134,7 @@ export function StyleCatalog() {
   const [activeFilter, setActiveFilter] = useState("Todos")
   const [formData, setFormData] = useState({ name: "", date: "", time: "" })
   const [mounted, setMounted] = useState(false)
+  const firestore = useFirestore()
 
   useEffect(() => {
     setMounted(true)
@@ -154,6 +160,26 @@ export function StyleCatalog() {
 
   const handleBooking = (title: string) => (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (firestore) {
+      const data = {
+        clientName: formData.name,
+        serviceName: title,
+        date: formData.date,
+        time: formData.time,
+        createdAt: serverTimestamp(),
+      }
+      
+      addDoc(collection(firestore, "appointments"), data).catch(async () => {
+        const permissionError = new FirestorePermissionError({
+          path: "appointments",
+          operation: "create",
+          requestResourceData: data,
+        })
+        errorEmitter.emit("permission-error", permissionError)
+      })
+    }
+
     const msg = `Olá! Gostaria de agendar: ${title.toUpperCase()}\nNome: ${formData.name}\nData: ${formData.date}\nHora: ${formData.time}`
     window.open(`https://wa.me/5588996363178?text=${encodeURIComponent(msg)}`, "_blank")
   }
