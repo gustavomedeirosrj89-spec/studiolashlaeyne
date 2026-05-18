@@ -16,6 +16,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+const TIME_SLOTS = [
+  "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", 
+  "15:00", "16:00", "17:00", "18:00", "19:00"
+]
 
 const styles = [
   {
@@ -203,7 +215,6 @@ export function StyleCatalog() {
 
               <DialogContent className="max-w-[1000px] p-0 overflow-y-auto lg:overflow-hidden bg-background border-none rounded-[2.5rem] shadow-2xl animate-in zoom-in-95 duration-500 max-h-[90vh]">
                 <div className="grid grid-cols-1 lg:grid-cols-12 min-h-full lg:min-h-[600px]">
-                  {/* Imagem - Ocupa topo no mobile, lateral no desktop */}
                   <div className="lg:col-span-5 relative h-[250px] lg:h-auto">
                     {img && (
                       <Image 
@@ -216,7 +227,6 @@ export function StyleCatalog() {
                     )}
                   </div>
 
-                  {/* Conteúdo - Ajustado para mobile */}
                   <div className="lg:col-span-7 p-6 md:p-10 lg:p-14 bg-background flex flex-col justify-center space-y-8 md:space-y-10">
                     <div className="space-y-4 text-left">
                       <div className="flex items-center gap-2 text-primary">
@@ -231,7 +241,6 @@ export function StyleCatalog() {
                       </p>
                     </div>
 
-                    {/* Boxes Pills - Referência da imagem */}
                     <div className="grid grid-cols-1 gap-4 md:gap-6">
                       <div className="p-6 md:p-8 bg-secondary/30 rounded-[3rem] border border-primary/5 flex flex-col items-center justify-center text-center space-y-2">
                         <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Ciclo de Manutenção</p>
@@ -246,7 +255,6 @@ export function StyleCatalog() {
                       </div>
                     </div>
 
-                    {/* Formulário - Enquadrado */}
                     <form onSubmit={handleBooking(style.title)} className="space-y-6 text-left border-t border-primary/10 pt-8">
                       <div className="space-y-3">
                         <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Dados da Cliente</Label>
@@ -266,15 +274,18 @@ export function StyleCatalog() {
                           value={formData.date}
                           onChange={(e) => setFormData(p => ({...p, date: e.target.value}))}
                         />
-                        <Input 
-                          type="time" 
-                          required 
-                          min="09:00"
-                          max="19:00"
-                          className="h-14 md:h-16 bg-secondary/10 border-none rounded-2xl px-6 md:px-8 focus:ring-primary/20" 
-                          value={formData.time}
-                          onChange={(e) => setFormData(p => ({...p, time: e.target.value}))}
-                        />
+                        <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required>
+                          <SelectTrigger className="h-14 md:h-16 bg-secondary/10 border-none rounded-2xl px-6 md:px-8 focus:ring-0">
+                            <SelectValue placeholder="Horário" />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-2xl border-none shadow-xl">
+                            {TIME_SLOTS.map(time => (
+                              <SelectItem key={time} value={time} className="rounded-xl">
+                                {time}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div className="space-y-4">
                         <p className="text-[10px] text-muted-foreground font-light text-center">Horário: 09h às 19h (Sáb: 14h)</p>

@@ -25,6 +25,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+const TIME_SLOTS = [
+  "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", 
+  "15:00", "16:00", "17:00", "18:00", "19:00"
+]
 
 const services = [
   {
@@ -210,16 +222,19 @@ export function Portfolio() {
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold">Horário (09h-19h)</Label>
-                            <Input 
-                              required
-                              type="time" 
-                              min="09:00"
-                              max="19:00"
-                              className="h-12 bg-secondary/20 border-primary/10"
-                              value={formData.time}
-                              onChange={(e) => setFormData(prev => ({ ...prev, time: e.target.value }))}
-                            />
+                            <Label className="text-[10px] uppercase tracking-widest font-bold">Horário</Label>
+                            <Select onValueChange={(val) => setFormData(prev => ({ ...prev, time: val }))} required>
+                              <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0">
+                                <SelectValue placeholder="Selecione" />
+                              </SelectTrigger>
+                              <SelectContent className="rounded-2xl border-none shadow-xl">
+                                {TIME_SLOTS.map(time => (
+                                  <SelectItem key={time} value={time} className="rounded-xl">
+                                    {time}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </div>
                         </div>
 

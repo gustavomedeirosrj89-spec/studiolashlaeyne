@@ -17,8 +17,20 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20um%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
+
+const TIME_SLOTS = [
+  "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", 
+  "15:00", "16:00", "17:00", "18:00", "19:00"
+]
 
 const topPickServices = [
   { 
@@ -154,19 +166,20 @@ export function Hero() {
                               </div>
                               <div className="grid grid-cols-2 gap-4">
                                 <Input type="date" required className="h-14 bg-secondary/10 border-none rounded-2xl" value={formData.date} onChange={(e) => setFormData(p => ({...p, date: e.target.value}))} />
-                                <div className="relative">
-                                  <Input 
-                                    type="time" 
-                                    required 
-                                    min="09:00" 
-                                    max="19:00"
-                                    className="h-14 bg-secondary/10 border-none rounded-2xl" 
-                                    value={formData.time} 
-                                    onChange={(e) => setFormData(p => ({...p, time: e.target.value}))} 
-                                  />
-                                </div>
+                                <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required>
+                                  <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl focus:ring-0">
+                                    <SelectValue placeholder="Horário" />
+                                  </SelectTrigger>
+                                  <SelectContent className="rounded-2xl border-none shadow-xl">
+                                    {TIME_SLOTS.map(time => (
+                                      <SelectItem key={time} value={time} className="rounded-xl">
+                                        {time}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
                               </div>
-                              <p className="text-[9px] text-muted-foreground italic px-2">Horários: Seg-Sex: 09h às 19h | Sáb: 09h às 14h</p>
+                              <p className="text-[9px] text-muted-foreground italic px-2 text-center">Horários: Seg-Sex: 09h às 19h | Sáb: 09h às 14h</p>
                               <Button className="w-full h-16 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-widest flex gap-3 shadow-lg">
                                 <MessageCircle className="w-6 h-6" />
                                 Agendar no WhatsApp
