@@ -34,6 +34,15 @@
     --ring: 34 30% 50%;
     
     --radius: 1.5rem;
+
+    --sidebar-background: 30 10% 15%;
+    --sidebar-foreground: 36 25% 95%;
+    --sidebar-primary: 34 30% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 34 30% 50% / 0.1;
+    --sidebar-accent-foreground: 34 30% 50%;
+    --sidebar-border: 30 10% 20%;
+    --sidebar-ring: 34 30% 50%;
   }
 
   .dark {
@@ -46,6 +55,15 @@
     --accent: 11 26% 62%;
     --accent-foreground: 36 25% 98%;
     --border: 30 10% 20%;
+
+    --sidebar-background: 30 10% 5%;
+    --sidebar-foreground: 36 25% 95%;
+    --sidebar-primary: 34 30% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 30 10% 15%;
+    --sidebar-accent-foreground: 36 25% 95%;
+    --sidebar-border: 30 10% 15%;
+    --sidebar-ring: 34 30% 50%;
   }
 }
 
@@ -96,7 +114,6 @@
   @apply bg-white/40 backdrop-blur-md border border-white/20;
 }
 
-/* Scroll smoothness */
 html {
   scroll-behavior: smooth;
 }

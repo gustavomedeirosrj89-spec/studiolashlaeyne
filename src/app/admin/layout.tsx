@@ -91,14 +91,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <form onSubmit={handleLogin} className="space-y-6 bg-white/50 backdrop-blur-xl p-10 rounded-[3rem] border border-primary/10 shadow-2xl">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-[10px] uppercase font-black tracking-widest ml-4">Usuário</Label>
+                <Label className="text-[10px] uppercase font-black tracking-widest ml-4 text-foreground/60">Usuário</Label>
                 <div className="relative">
                   <UserCircle className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40" />
                   <Input required className="h-14 pl-12 bg-white/50 border-none rounded-2xl" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="text-[10px] uppercase font-black tracking-widest ml-4">Senha</Label>
+                <Label className="text-[10px] uppercase font-black tracking-widest ml-4 text-foreground/60">Senha</Label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40" />
                   <Input type="password" required className="h-14 pl-12 bg-white/50 border-none rounded-2xl" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -114,50 +114,63 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
-        <Sidebar className="border-r border-primary/10">
-          <SidebarHeader className="p-6">
+      <div className="flex min-h-screen w-full bg-background overflow-hidden">
+        <Sidebar className="bg-sidebar border-r border-white/5 shadow-2xl z-50">
+          <SidebarHeader className="p-8">
             <div className="flex items-center gap-3">
-              <Sparkle className="w-6 h-6 text-primary" />
-              <span className="font-headline text-xl uppercase tracking-widest">LAEYNE</span>
+              <div className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+                <Sparkle className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-headline text-xl uppercase tracking-widest leading-none text-white">LAEYNE</span>
+                <span className="text-[8px] uppercase tracking-[0.3em] font-black text-primary">STUDIO LASH</span>
+              </div>
             </div>
           </SidebarHeader>
-          <SidebarContent className="px-4">
-            <SidebarMenu>
+          <SidebarContent className="px-6 py-4">
+            <SidebarMenu className="gap-3">
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild 
                     isActive={pathname === item.href}
-                    className="h-12 rounded-2xl px-4 hover:bg-primary/5 data-[active=true]:bg-primary data-[active=true]:text-white transition-all"
+                    className="h-14 rounded-2xl px-5 transition-all duration-300 data-[active=true]:bg-primary data-[active=true]:text-white hover:bg-white/5 group"
                   >
-                    <Link href={item.href} className="flex items-center gap-3">
-                      <item.icon className="w-5 h-5" />
-                      <span className="text-xs font-bold uppercase tracking-wider">{item.title}</span>
+                    <Link href={item.href} className="flex items-center gap-4">
+                      <item.icon className="w-5 h-5 transition-transform group-hover:scale-110" />
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em]">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarContent>
-          <SidebarFooter className="p-6">
-            <Button variant="ghost" onClick={handleLogout} className="w-full justify-start gap-3 rounded-2xl text-muted-foreground hover:text-destructive">
-              <LogOut className="w-5 h-5" />
-              <span className="text-xs font-bold uppercase tracking-wider">Sair</span>
+          <SidebarFooter className="p-8 border-t border-white/5">
+            <Button 
+              variant="ghost" 
+              onClick={handleLogout} 
+              className="w-full justify-start gap-4 h-14 rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 group transition-all"
+            >
+              <LogOut className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Sair</span>
             </Button>
           </SidebarFooter>
         </Sidebar>
-        <SidebarInset className="flex flex-col">
-          <header className="h-16 flex items-center px-8 border-b border-primary/5 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
-            <SidebarTrigger />
-            <div className="ml-auto flex items-center gap-4">
-              <span className="text-[10px] uppercase font-black tracking-widest text-primary">Modo Admin Luxo</span>
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <UserCircle className="w-5 h-5 text-primary" />
+        <SidebarInset className="flex flex-col bg-background h-screen">
+          <header className="h-20 flex items-center px-10 border-b border-primary/5 bg-white/60 backdrop-blur-xl sticky top-0 z-40">
+            <SidebarTrigger className="hover:bg-primary/5" />
+            <div className="ml-6 h-6 w-[1px] bg-primary/10" />
+            <div className="ml-auto flex items-center gap-6">
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] uppercase font-black tracking-widest text-primary">Modo Admin Luxo</span>
+                <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest italic">Laeyne Studio v2.0</span>
+              </div>
+              <div className="w-10 h-10 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10 shadow-sm transition-transform hover:scale-105">
+                <UserCircle className="w-6 h-6 text-primary" />
               </div>
             </div>
           </header>
-          <main className="flex-1 p-8 overflow-y-auto">
+          <main className="flex-1 p-10 overflow-y-auto custom-scrollbar">
             {children}
           </main>
         </SidebarInset>
