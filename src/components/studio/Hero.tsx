@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -27,7 +27,7 @@ import {
 
 const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20um%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
 
-const TIME_SLOTS = [
+const ALL_TIME_SLOTS = [
   "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
   "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", 
   "17:00", "17:30", "18:00"
@@ -66,6 +66,23 @@ const topPickServices = [
 export function Hero() {
   const specialistImg = PlaceHolderImages.find(img => img.id === "specialist-photo")
   const [formData, setFormData] = useState({ name: "", date: "", time: "" })
+
+  const availableTimeSlots = useMemo(() => {
+    if (!formData.date) return ALL_TIME_SLOTS
+    
+    // Create date and adjust for local timezone to get correct day
+    const selectedDate = new Date(formData.date + 'T00:00:00')
+    const dayOfWeek = selectedDate.getDay() // 0 = Sun, 6 = Sat
+
+    if (dayOfWeek === 6) { // Saturday
+      return ALL_TIME_SLOTS.filter(time => {
+        const hour = parseInt(time.split(":")[0])
+        return hour < 14 // Saturday until 14h
+      })
+    }
+    
+    return ALL_TIME_SLOTS // Weekdays until 19h (slots go until 18h/18h30)
+  }, [formData.date])
 
   const handleBooking = (title: string) => (e: React.FormEvent) => {
     e.preventDefault()
@@ -172,7 +189,7 @@ export function Hero() {
                                     <SelectValue placeholder="Horário" />
                                   </SelectTrigger>
                                   <SelectContent className="rounded-2xl border-none shadow-xl">
-                                    {TIME_SLOTS.map(time => (
+                                    {availableTimeSlots.map(time => (
                                       <SelectItem key={time} value={time} className="rounded-xl">
                                         {time}
                                       </SelectItem>

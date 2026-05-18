@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Image from "next/image"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import { Badge } from "@/components/ui/badge"
@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-const TIME_SLOTS = [
+const ALL_TIME_SLOTS = [
   "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
   "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", 
   "17:00", "17:30", "18:00"
@@ -142,6 +142,20 @@ const categories = ["Todos", "Naturais", "Volumosos", "Mais Procurados", "Premiu
 export function StyleCatalog() {
   const [activeFilter, setActiveFilter] = useState("Todos")
   const [formData, setFormData] = useState({ name: "", date: "", time: "" })
+
+  const availableTimeSlots = useMemo(() => {
+    if (!formData.date) return ALL_TIME_SLOTS
+    const selectedDate = new Date(formData.date + 'T00:00:00')
+    const dayOfWeek = selectedDate.getDay()
+
+    if (dayOfWeek === 6) { // Saturday
+      return ALL_TIME_SLOTS.filter(time => {
+        const hour = parseInt(time.split(":")[0])
+        return hour < 14
+      })
+    }
+    return ALL_TIME_SLOTS
+  }, [formData.date])
 
   const filteredStyles = styles.filter(style => 
     activeFilter === "Todos" || style.tags.includes(activeFilter)
@@ -280,7 +294,7 @@ export function StyleCatalog() {
                             <SelectValue placeholder="Horário" />
                           </SelectTrigger>
                           <SelectContent className="rounded-2xl border-none shadow-xl">
-                            {TIME_SLOTS.map(time => (
+                            {availableTimeSlots.map(time => (
                               <SelectItem key={time} value={time} className="rounded-xl">
                                 {time}
                               </SelectItem>
