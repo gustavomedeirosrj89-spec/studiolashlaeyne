@@ -84,19 +84,6 @@ const styles = [
     tags: ["Naturais"]
   },
   {
-    id: "russian",
-    title: "Volume Russo",
-    category: "Premium",
-    price: "R$ 250",
-    duration: "2h 30min",
-    maintenance: "21 a 25 dias",
-    description: "Glamour e densidade.",
-    fullDescription: "Fans artesanais para um olhar com textura aveludada e densidade máxima. Perfeito para ocasiões especiais.",
-    imageId: "vol-russo",
-    benefits: ["Densidade máxima", "Textura aveludada", "Glamour"],
-    tags: ["Volumosos", "Premium"]
-  },
-  {
     id: "mega",
     title: "Mega Volume",
     category: "Premium",
@@ -216,7 +203,6 @@ export function StyleCatalog() {
 
               <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-background border-none rounded-[3.5rem] shadow-2xl animate-in zoom-in-95 duration-500">
                 <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
-                  {/* Lado Esquerdo - Imagem Full */}
                   <div className="lg:col-span-5 relative h-[300px] lg:h-auto">
                     {img && (
                       <Image 
@@ -229,7 +215,6 @@ export function StyleCatalog() {
                     )}
                   </div>
 
-                  {/* Lado Direito - Conteúdo Editorial */}
                   <div className="lg:col-span-7 p-8 lg:p-14 bg-background flex flex-col justify-center space-y-10">
                     <DialogHeader className="space-y-4 text-left">
                       <div className="flex items-center gap-2 text-primary">
@@ -244,7 +229,6 @@ export function StyleCatalog() {
                       </p>
                     </DialogHeader>
 
-                    {/* Blocos de Informação */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="p-8 bg-secondary/30 rounded-[2.5rem] border border-primary/5 flex flex-col items-center justify-center text-center space-y-2">
                         <p className="text-[9px] uppercase font-black tracking-[0.2em] text-muted-foreground">Ciclo de Manutenção</p>
@@ -259,7 +243,6 @@ export function StyleCatalog() {
                       </div>
                     </div>
 
-                    {/* Formulário de Dados */}
                     <form onSubmit={handleBooking(style.title)} className="space-y-6 text-left">
                       <div className="space-y-3">
                         <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Dados da Cliente</Label>

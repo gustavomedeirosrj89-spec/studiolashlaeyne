@@ -28,14 +28,14 @@ import {
 
 const services = [
   {
-    id: "russian",
-    title: "Volume Russo",
-    price: "R$ 250",
-    description: "Glamour extremo e densidade máxima.",
-    fullDescription: "A técnica de Volume Russo consiste na aplicação de pequenos 'fans' feitos à mão sobre cada cílio natural. O resultado é um olhar com densidade incrível e textura aveludada incomparável.",
-    imageId: "vol-russo",
-    tags: ["Luxo", "Densidade"],
-    benefits: ["Preenchimento máximo", "Efeito 5D a 7D", "Ideal para eventos de gala"]
+    id: "egyptian",
+    title: "Volume Egípcio",
+    price: "R$ 190",
+    description: "Volume tecnológico em W e alta retenção.",
+    fullDescription: "A técnica de Volume Egípcio utiliza fios tecnológicos em formato de W que garantem um preenchimento denso com extrema leveza. É ideal para quem busca durabilidade e um visual moderno.",
+    imageId: "vol-egipcio",
+    tags: ["Tendência", "Tecnologia"],
+    benefits: ["Alta durabilidade", "Efeito denso", "Visual marcante"]
   },
   {
     id: "brazilian",

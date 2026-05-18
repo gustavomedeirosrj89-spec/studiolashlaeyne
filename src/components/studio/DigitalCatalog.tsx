@@ -1,3 +1,4 @@
+
 import { 
   Clock, 
   Info,
@@ -16,7 +17,7 @@ export function DigitalCatalog() {
     { 
       label: "Manutenção 15 Dias", 
       price: "R$ 100", 
-      styles: "Mega Volume, Volume Russo",
+      styles: "Mega Volume, Volume Egípcio",
       desc: "Recomendado para quem exige cílios impecáveis, densos e com preenchimento total a todo momento." 
     },
     { 
@@ -54,7 +55,6 @@ export function DigitalCatalog() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Coluna de Manutenções */}
           <div className="space-y-8 bg-background p-8 md:p-12 rounded-[3rem] shadow-xl border border-primary/5 graceful-reveal">
             <div className="flex items-center gap-4 mb-8">
               <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
@@ -91,7 +91,6 @@ export function DigitalCatalog() {
             </div>
           </div>
 
-          {/* Coluna de Experiência Premium */}
           <div className="space-y-8">
             <div className="bg-foreground text-background p-8 md:p-12 rounded-[3rem] shadow-xl graceful-reveal" style={{ animationDelay: '0.2s' }}>
               <div className="flex items-center gap-4 mb-8">
@@ -116,7 +115,6 @@ export function DigitalCatalog() {
               </div>
             </div>
 
-            {/* Banner de Qualidade */}
             <div className="bg-primary/10 p-8 rounded-[2.5rem] border border-primary/20 flex items-center gap-6 graceful-reveal" style={{ animationDelay: '0.4s' }}>
               <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-primary shadow-lg shrink-0">
                 <ShieldCheck className="w-7 h-7" />
