@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Sparkles, Menu, X } from "lucide-react"
+import { Sparkles, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet"
 
@@ -40,28 +40,22 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", controlNavbar)
   }, [])
 
-  if (!mounted) {
-    return (
-      <nav className="fixed top-0 w-full z-50 px-4 pt-6 opacity-0 pointer-events-none">
-        <div className="max-w-5xl mx-auto h-16 rounded-full bg-white/40" />
-      </nav>
-    )
-  }
+  if (!mounted) return null
 
   return (
     <nav 
       className={`
-        fixed top-0 w-full z-50 px-4 pt-6 transition-all duration-500 pointer-events-none
+        fixed top-0 w-full z-50 px-4 pt-6 transition-all duration-500
         ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}
       `}
     >
-      <div className="max-w-5xl mx-auto flex items-center justify-center">
+      <div className="max-w-4xl mx-auto">
         <div 
           className={`
             flex items-center justify-between w-full px-8 h-16 rounded-full 
-            pointer-events-auto transition-all duration-500 border
+            transition-all duration-500 border
             ${scrolled 
-              ? "bg-white/70 backdrop-blur-xl border-primary/10 shadow-2xl scale-95" 
+              ? "bg-white/80 backdrop-blur-xl border-primary/10 shadow-2xl scale-95" 
               : "bg-white/40 backdrop-blur-md border-white/20 shadow-lg"
             }
           `}
@@ -73,33 +67,29 @@ export function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
-            {navItems.map((item) => (
-              <Link 
-                key={item.name} 
-                href={item.href}
-                className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-colors ${
-                  pathname === item.href ? "text-primary" : "text-muted-foreground hover:text-primary"
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <Button asChild size="sm" className="rounded-full bg-primary hover:bg-primary/90 text-white font-bold uppercase tracking-widest text-[10px] h-9 px-6 shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
-              <Link href={WHATSAPP_URL} target="_blank">Agendar</Link>
-            </Button>
-          </div>
-
-          <div className="lg:hidden">
+          <div className="flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-6 mr-4">
+              {navItems.map((item) => (
+                <Link 
+                  key={item.name} 
+                  href={item.href}
+                  className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors ${
+                    pathname === item.href ? "text-primary" : "text-muted-foreground hover:text-primary"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+            
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10">
+                <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/10 h-10 w-10">
                   <Menu className="w-5 h-5 text-foreground" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="bg-[#f5f2ed] border-none p-0 flex flex-col w-full sm:max-w-md">
                 <div className="p-8 md:p-12 flex flex-col h-full relative overflow-hidden">
-                  {/* Efeito de Marca D'água "L" */}
                   <span className="absolute -left-12 -top-12 text-[25rem] font-headline text-primary/5 select-none pointer-events-none">L</span>
                   
                   <SheetHeader className="mb-16 text-left space-y-0 relative z-10">

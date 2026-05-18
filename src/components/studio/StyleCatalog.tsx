@@ -175,15 +175,16 @@ export function StyleCatalog() {
   if (!mounted) return null
 
   return (
-    <section className="py-24 px-6 max-w-7xl mx-auto space-y-20">
-      <div className="flex flex-wrap justify-center gap-4 graceful-reveal">
+    <section className="py-24 px-6 max-w-4xl mx-auto space-y-20">
+      {/* Filtros Centralizados */}
+      <div className="flex flex-wrap justify-center gap-3 graceful-reveal">
         {categories.map(cat => (
           <button
             key={cat}
             onClick={() => setActiveFilter(cat)}
-            className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.25em] transition-all duration-500 border ${
+            className={`px-6 py-2.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] transition-all duration-500 border ${
               activeFilter === cat 
-                ? "bg-primary text-white border-primary shadow-2xl scale-105" 
+                ? "bg-primary text-white border-primary shadow-lg scale-105" 
                 : "bg-white/40 text-muted-foreground border-transparent hover:border-primary/20 hover:bg-white"
             }`}
           >
@@ -192,14 +193,15 @@ export function StyleCatalog() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Grid de Cards Unificado */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {filteredStyles.map((style, idx) => {
           const img = PlaceHolderImages.find(i => i.id === style.imageId)
           return (
             <Dialog key={style.id}>
               <DialogTrigger asChild>
                 <div 
-                  className="group relative h-[450px] md:h-[500px] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-lg transition-all duration-700 hover:-translate-y-2 graceful-reveal"
+                  className="group relative aspect-[3/4] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-lg transition-all duration-700 hover:-translate-y-2 graceful-reveal"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   {img && (
@@ -213,18 +215,18 @@ export function StyleCatalog() {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                   
-                  <div className="absolute bottom-0 w-full p-6 md:p-8 space-y-4">
+                  <div className="absolute bottom-0 w-full p-8 space-y-4">
                     <Badge className="bg-white/20 backdrop-blur-md text-white border-white/20 px-3 py-1 text-[8px] uppercase tracking-[0.2em] font-black">
                       {style.category}
                     </Badge>
                     <div className="space-y-1 text-left">
-                      <h3 className="text-2xl md:text-3xl font-headline text-white font-bold leading-tight">{style.title}</h3>
-                      <p className="text-white/60 text-xs md:text-sm font-light italic">{style.description}</p>
+                      <h3 className="text-2xl font-headline text-white font-bold leading-tight">{style.title}</h3>
+                      <p className="text-white/60 text-xs font-light italic">{style.description}</p>
                     </div>
                     
                     <div className="flex justify-between items-end pt-4 border-t border-white/10">
                       <div className="flex flex-col text-left">
-                        <span className="text-white font-headline text-xl md:text-2xl font-bold">{style.price}</span>
+                        <span className="text-white font-headline text-2xl font-bold">{style.price}</span>
                         <span className="text-white/40 text-[8px] uppercase font-black tracking-widest mt-1">Manut. {style.maintenance}</span>
                       </div>
                       <div className="bg-primary p-3 rounded-full text-white shadow-xl group-hover:scale-110 transition-all">
@@ -237,7 +239,7 @@ export function StyleCatalog() {
 
               <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[2.5rem] shadow-2xl max-h-[90vh]">
                 <div className="grid grid-cols-1 lg:grid-cols-12">
-                  <div className="lg:col-span-5 relative h-[250px] lg:h-auto">
+                  <div className="lg:col-span-5 relative h-[300px] lg:h-auto">
                     {img && (
                       <Image 
                         src={img.imageUrl} 
@@ -249,30 +251,30 @@ export function StyleCatalog() {
                     )}
                   </div>
 
-                  <div className="lg:col-span-7 p-6 md:p-10 lg:p-14 space-y-8">
+                  <div className="lg:col-span-7 p-8 md:p-12 space-y-8">
                     <div className="space-y-4 text-left">
                       <div className="flex items-center gap-2 text-primary">
                         <Sparkles className="w-4 h-4" />
                         <span className="text-[10px] uppercase tracking-[0.4em] font-black">Procedimento VIP</span>
                       </div>
-                      <DialogTitle className="text-4xl md:text-6xl font-headline leading-tight font-bold text-foreground">
+                      <DialogTitle className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">
                         {style.title}
                       </DialogTitle>
-                      <p className="text-muted-foreground font-light text-base md:text-lg leading-relaxed max-w-lg">
+                      <p className="text-muted-foreground font-light text-base leading-relaxed max-w-lg">
                         {style.fullDescription}
                       </p>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="p-6 bg-secondary/30 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2">
-                        <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Ciclo de Manutenção</p>
+                      <div className="p-6 bg-secondary/30 rounded-3xl flex flex-col items-center justify-center text-center space-y-2">
+                        <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Manutenção</p>
                         <div className="flex items-center gap-3 text-primary">
                           <Clock className="w-4 h-4" />
                           <span className="text-xl font-bold">{style.maintenance}</span>
                         </div>
                       </div>
-                      <div className="p-6 bg-primary/5 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2">
-                        <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Valor</p>
+                      <div className="p-6 bg-primary/5 rounded-3xl flex flex-col items-center justify-center text-center space-y-2">
+                        <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Investimento</p>
                         <p className="text-3xl font-headline text-primary font-bold">{style.price}</p>
                       </div>
                     </div>
