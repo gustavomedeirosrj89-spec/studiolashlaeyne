@@ -102,8 +102,6 @@ export function Hero() {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 w-full relative z-10 flex flex-col items-center text-center space-y-16">
-        
-        {/* Imagem Central em Destaque */}
         <div className="relative w-full aspect-square max-w-[350px] md:max-w-[450px] graceful-reveal">
           <div className="absolute inset-0 bg-primary/10 rounded-[4rem] translate-x-4 translate-y-4 -z-10" />
           <div className="w-full h-full blob-frame bg-secondary/30 relative shadow-2xl overflow-hidden group">
@@ -126,7 +124,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Conteúdo Textual */}
         <div className="space-y-12 w-full">
           <div className="space-y-6 graceful-reveal">
             <div className="flex items-center justify-center gap-3">
@@ -160,7 +157,6 @@ export function Hero() {
             </Button>
           </div>
 
-          {/* Cards de Destaque - Unificados com Estilo Editorial */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 graceful-reveal" style={{ animationDelay: '0.4s' }}>
             {topPickServices.map((pick) => {
               const img = PlaceHolderImages.find(img => img.id === pick.id)
@@ -180,10 +176,8 @@ export function Hero() {
                         />
                       )}
                       
-                      {/* Overlay Gradiente */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                       
-                      {/* Badge Categoria (Glassmorphism) */}
                       <div className="absolute top-6 left-6">
                         <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full">
                           <span className="text-white text-[8px] font-black uppercase tracking-[0.3em]">
@@ -192,8 +186,7 @@ export function Hero() {
                         </div>
                       </div>
 
-                      {/* Conteúdo Enquadrado */}
-                      <div className="absolute bottom-0 w-full p-6 space-y-4">
+                      <div className="absolute bottom-0 w-full p-6 space-y-4 text-left">
                         <div className="space-y-2">
                           <h4 className="text-2xl font-headline text-white leading-tight">
                             {titleWords.map((word, i) => (

@@ -163,7 +163,6 @@ export function StyleCatalog() {
 
   return (
     <section className="py-24 px-6 max-w-5xl mx-auto space-y-16">
-      {/* Filtros Centralizados */}
       <div className="flex flex-wrap justify-center gap-2 md:gap-4 graceful-reveal">
         {categories.map(cat => (
           <button
@@ -180,7 +179,6 @@ export function StyleCatalog() {
         ))}
       </div>
 
-      {/* Grid de Cards Unificado - Estilo Editorial da Referência */}
       <div className="flex flex-col gap-12 md:gap-20 items-center">
         {filteredStyles.map((style, idx) => {
           const img = PlaceHolderImages.find(i => i.id === style.imageId)
@@ -203,10 +201,8 @@ export function StyleCatalog() {
                     />
                   )}
                   
-                  {/* Overlay Gradiente Escuro no Rodapé */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                   
-                  {/* Badge de Categoria Flutuante (Glassmorphism) */}
                   <div className="absolute top-10 left-10">
                     <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full">
                       <span className="text-white text-[10px] font-black uppercase tracking-[0.4em] whitespace-nowrap">
@@ -215,15 +211,14 @@ export function StyleCatalog() {
                     </div>
                   </div>
 
-                  {/* Conteúdo do Card - Enquadrado conforme referência */}
-                  <div className="absolute bottom-0 w-full p-10 md:p-14 space-y-8">
+                  <div className="absolute bottom-0 w-full p-10 md:p-14 space-y-8 text-left">
                     <div className="space-y-4">
                       <h3 className="text-5xl md:text-7xl font-headline text-white leading-[0.85] tracking-tight">
                         {titleWords.map((word, i) => (
                           <span key={i} className="block">{word}</span>
                         ))}
                       </h3>
-                      <p className="text-white/60 text-sm md:text-base font-light italic tracking-wide max-w-[280px]">
+                      <p className="text-white/60 text-sm md:text-base font-light italic tracking-wide">
                         {style.description}
                       </p>
                     </div>
