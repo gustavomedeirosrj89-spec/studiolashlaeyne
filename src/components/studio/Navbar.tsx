@@ -18,12 +18,14 @@ const navItems = [
 const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20um%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
 
 export function Navbar() {
+  const [mounted, setMounted] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [scrolled, setScrolled] = useState(false)
   const lastScrollY = useRef(0)
   const pathname = usePathname()
 
   useEffect(() => {
+    setMounted(true)
     const controlNavbar = () => {
       const currentScrollY = window.scrollY
       
@@ -40,6 +42,17 @@ export function Navbar() {
     window.addEventListener("scroll", controlNavbar)
     return () => window.removeEventListener("scroll", controlNavbar)
   }, [])
+
+  // Evita erro de hidratação ao carregar componentes com IDs dinâmicos (como o Sheet)
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 w-full z-50 px-4 pt-6 pointer-events-none opacity-0">
+        <div className="max-w-5xl mx-auto flex items-center justify-center">
+          <div className="w-full h-16 rounded-full bg-white/40 backdrop-blur-md" />
+        </div>
+      </nav>
+    )
+  }
 
   return (
     <nav 
@@ -96,7 +109,6 @@ export function Navbar() {
               <SheetContent side="right" className="bg-[#f5f2ed] border-none p-0 flex flex-col w-full sm:max-w-md">
                 <div className="p-8 md:p-12 flex flex-col h-full relative">
                   
-                  {/* Header com Efeito no Nome (Referência Imagem) */}
                   <SheetHeader className="mb-16 text-left space-y-0">
                     <SheetTitle asChild>
                       <div className="relative inline-flex items-center gap-2">
@@ -110,7 +122,6 @@ export function Navbar() {
                     </SheetTitle>
                   </SheetHeader>
                   
-                  {/* Links Modernos e Editoriais */}
                   <div className="flex flex-col gap-6 flex-1">
                     {navItems.map((item) => (
                       <SheetClose asChild key={item.name}>
@@ -124,7 +135,6 @@ export function Navbar() {
                     ))}
                   </div>
 
-                  {/* Rodapé do Menu (Referência Imagem) */}
                   <div className="mt-auto space-y-8 pb-4">
                     <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#8a8a8a] font-bold text-center">
                       ARQUITETURA DE LUXO PARA SEU OLHAR
