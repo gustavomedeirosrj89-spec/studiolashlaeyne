@@ -201,9 +201,10 @@ export function StyleCatalog() {
                 </div>
               </DialogTrigger>
 
-              <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-background border-none rounded-[3.5rem] shadow-2xl animate-in zoom-in-95 duration-500">
-                <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
-                  <div className="lg:col-span-5 relative h-[300px] lg:h-auto">
+              <DialogContent className="max-w-[1000px] p-0 overflow-y-auto lg:overflow-hidden bg-background border-none rounded-[2.5rem] shadow-2xl animate-in zoom-in-95 duration-500 max-h-[90vh]">
+                <div className="grid grid-cols-1 lg:grid-cols-12 min-h-full lg:min-h-[600px]">
+                  {/* Imagem - Ocupa topo no mobile, lateral no desktop */}
+                  <div className="lg:col-span-5 relative h-[250px] lg:h-auto">
                     {img && (
                       <Image 
                         src={img.imageUrl} 
@@ -215,70 +216,73 @@ export function StyleCatalog() {
                     )}
                   </div>
 
-                  <div className="lg:col-span-7 p-8 lg:p-14 bg-background flex flex-col justify-center space-y-10">
-                    <DialogHeader className="space-y-4 text-left">
+                  {/* Conteúdo - Ajustado para mobile */}
+                  <div className="lg:col-span-7 p-6 md:p-10 lg:p-14 bg-background flex flex-col justify-center space-y-8 md:space-y-10">
+                    <div className="space-y-4 text-left">
                       <div className="flex items-center gap-2 text-primary">
                         <Sparkles className="w-4 h-4" />
                         <span className="text-[10px] uppercase tracking-[0.4em] font-black">Técnica Exclusiva</span>
                       </div>
-                      <DialogTitle className="text-5xl lg:text-7xl font-headline leading-none font-bold text-foreground">
+                      <DialogTitle className="text-4xl md:text-5xl lg:text-7xl font-headline leading-tight font-bold text-foreground">
                         {style.title}
                       </DialogTitle>
-                      <p className="text-muted-foreground font-light text-lg lg:text-xl leading-relaxed max-w-lg">
+                      <p className="text-muted-foreground font-light text-base md:text-lg lg:text-xl leading-relaxed max-w-lg">
                         {style.fullDescription}
                       </p>
-                    </DialogHeader>
+                    </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div className="p-8 bg-secondary/30 rounded-[2.5rem] border border-primary/5 flex flex-col items-center justify-center text-center space-y-2">
-                        <p className="text-[9px] uppercase font-black tracking-[0.2em] text-muted-foreground">Ciclo de Manutenção</p>
+                    {/* Boxes Pills - Referência da imagem */}
+                    <div className="grid grid-cols-1 gap-4 md:gap-6">
+                      <div className="p-6 md:p-8 bg-secondary/30 rounded-[3rem] border border-primary/5 flex flex-col items-center justify-center text-center space-y-2">
+                        <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Ciclo de Manutenção</p>
                         <div className="flex items-center gap-3 text-primary">
                           <Clock className="w-4 h-4" />
-                          <span className="text-xl font-bold tracking-tight">{style.maintenance}</span>
+                          <span className="text-xl md:text-2xl font-bold tracking-tight">{style.maintenance}</span>
                         </div>
                       </div>
-                      <div className="p-8 bg-primary/5 rounded-[2.5rem] border border-primary/10 flex flex-col items-center justify-center text-center space-y-2">
-                        <p className="text-[9px] uppercase font-black tracking-[0.2em] text-muted-foreground">Valor do Procedimento</p>
-                        <p className="text-4xl font-headline text-primary font-bold tracking-tight">{style.price}</p>
+                      <div className="p-6 md:p-8 bg-primary/5 rounded-[3rem] border border-primary/10 flex flex-col items-center justify-center text-center space-y-2">
+                        <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Valor do Procedimento</p>
+                        <p className="text-3xl md:text-4xl lg:text-5xl font-headline text-primary font-bold tracking-tight">{style.price}</p>
                       </div>
                     </div>
 
-                    <form onSubmit={handleBooking(style.title)} className="space-y-6 text-left">
+                    {/* Formulário - Enquadrado */}
+                    <form onSubmit={handleBooking(style.title)} className="space-y-6 text-left border-t border-primary/10 pt-8">
                       <div className="space-y-3">
                         <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Dados da Cliente</Label>
                         <Input 
                           required 
                           placeholder="Seu nome completo" 
-                          className="h-16 bg-secondary/10 border-none rounded-2xl focus:ring-primary/20 text-lg px-8 placeholder:text-muted-foreground/40" 
+                          className="h-14 md:h-16 bg-secondary/10 border-none rounded-2xl focus:ring-primary/20 text-base md:text-lg px-6 md:px-8 placeholder:text-muted-foreground/40" 
                           value={formData.name}
                           onChange={(e) => setFormData(p => ({...p, name: e.target.value}))}
                         />
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Input 
                           type="date" 
                           required 
-                          className="h-16 bg-secondary/10 border-none rounded-2xl px-8 focus:ring-primary/20" 
+                          className="h-14 md:h-16 bg-secondary/10 border-none rounded-2xl px-6 md:px-8 focus:ring-primary/20" 
                           value={formData.date}
                           onChange={(e) => setFormData(p => ({...p, date: e.target.value}))}
                         />
-                        <div className="space-y-1">
-                          <Input 
-                            type="time" 
-                            required 
-                            min="09:00"
-                            max="19:00"
-                            className="h-16 bg-secondary/10 border-none rounded-2xl px-8 focus:ring-primary/20" 
-                            value={formData.time}
-                            onChange={(e) => setFormData(p => ({...p, time: e.target.value}))}
-                          />
-                        </div>
+                        <Input 
+                          type="time" 
+                          required 
+                          min="09:00"
+                          max="19:00"
+                          className="h-14 md:h-16 bg-secondary/10 border-none rounded-2xl px-6 md:px-8 focus:ring-primary/20" 
+                          value={formData.time}
+                          onChange={(e) => setFormData(p => ({...p, time: e.target.value}))}
+                        />
                       </div>
-                      <p className="text-[10px] text-muted-foreground font-light px-8">Atendimento: 09h às 19h (Sáb: 14h)</p>
-                      <Button className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.25em] flex gap-4 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] text-sm md:text-base">
-                        <MessageCircle className="w-6 h-6" />
-                        AGENDAR VIA WHATSAPP
-                      </Button>
+                      <div className="space-y-4">
+                        <p className="text-[10px] text-muted-foreground font-light text-center">Horário: 09h às 19h (Sáb: 14h)</p>
+                        <Button className="w-full h-16 md:h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.25em] flex gap-4 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] text-xs md:text-base">
+                          <MessageCircle className="w-6 h-6" />
+                          AGENDAR VIA WHATSAPP
+                        </Button>
+                      </div>
                     </form>
                   </div>
                 </div>
