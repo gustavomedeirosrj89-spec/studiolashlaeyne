@@ -1,8 +1,7 @@
-
 'use client';
 
 import Link from "next/link"
-import { Instagram, MapPin, Clock, Sparkles, MessageCircle } from "lucide-react"
+import { Instagram, MapPin, Clock, Sparkles, MessageCircle, Settings } from "lucide-react"
 
 const WHATSAPP_MESSAGE = "Oi, tudo bem? gostaria de marcar um agendamento. qual dia e horario você tem disponivel?"
 const WHATSAPP_URL = `https://wa.me/5588996363178?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`
@@ -26,7 +25,6 @@ export function Footer() {
     <footer className="bg-foreground text-background py-32 px-6 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col items-center text-center space-y-20">
         
-        {/* Identidade Centralizada - Estilo Imagem de Referência */}
         <div className="space-y-12 flex flex-col items-center graceful-reveal">
           <Link href="/" className="flex flex-col items-center gap-4 group">
             <div className="relative">
@@ -47,7 +45,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Informações de Contato */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 w-full max-w-4xl graceful-reveal" style={{ animationDelay: '0.1s' }}>
           <div className="flex flex-col items-center space-y-4">
             <div className="p-4 rounded-full bg-white/5">
@@ -65,7 +62,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Redes Sociais */}
         <div className="flex gap-8 graceful-reveal" style={{ animationDelay: '0.2s' }}>
           <Link href="https://instagram.com" target="_blank" className="p-4 bg-white/5 rounded-full hover:text-primary transition-all">
             <Instagram className="w-6 h-6" />
@@ -75,6 +71,9 @@ export function Footer() {
           </Link>
           <Link href="#" className="p-4 bg-white/5 rounded-full hover:text-primary transition-all">
             <TikTokIcon className="w-6 h-6" />
+          </Link>
+          <Link href="/admin" className="p-4 bg-white/5 rounded-full hover:text-primary transition-all group">
+            <Settings className="w-6 h-6 group-hover:rotate-45 transition-transform" />
           </Link>
         </div>
 
