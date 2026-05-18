@@ -1,29 +1,23 @@
+
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { 
   collection, 
   query, 
   orderBy, 
-  where,
-  Timestamp,
   deleteDoc,
   doc
 } from 'firebase/firestore';
 import { 
   useFirestore, 
-  useCollection, 
-  useUser, 
-  useAuth 
+  useCollection
 } from '@/firebase';
-import { 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  signOut 
-} from 'firebase/auth';
 import { Navbar } from "@/components/studio/Navbar";
 import { Footer } from "@/components/studio/Footer";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { 
   Table, 
   TableBody, 
@@ -34,24 +28,35 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
-  Calendar, 
   Clock, 
   User, 
   Sparkles, 
   LogOut, 
-  ChevronRight, 
   Trash2,
-  CalendarDays
+  CalendarDays,
+  Lock,
+  UserCircle
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { format, addDays, startOfDay, endOfDay, isWithinInterval } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { useToast } from '@/hooks/use-toast';
+
+const ADMIN_USER = "laeyne.admin";
+const ADMIN_PASS = "Lx#8472Studio";
 
 export default function AdminPanel() {
-  const { user, isLoading: userLoading } = useUser();
-  const auth = useAuth();
+  const { toast } = useToast();
   const firestore = useFirestore();
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [filter, setFilter] = useState<'all' | 'week'>('week');
+
+  useEffect(() => {
+    const auth = sessionStorage.getItem("laeyne_auth");
+    setIsAuthorized(auth === "true");
+  }, []);
 
   const appointmentsQuery = useMemo(() => {
     if (!firestore) return null;
@@ -90,33 +95,89 @@ export default function AdminPanel() {
     return { total: filteredAppointments.length, services };
   }, [filteredAppointments]);
 
-  const handleLogin = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
-  };
-
-  const handleLogout = () => signOut(auth);
-
-  const handleDelete = async (id: string) => {
-    if (confirm("Deseja realmente remover este agendamento?")) {
-      await deleteDoc(doc(firestore, "appointments", id));
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username === ADMIN_USER && password === ADMIN_PASS) {
+      sessionStorage.setItem("laeyne_auth", "true");
+      setIsAuthorized(true);
+      toast({
+        title: "Acesso Autorizado",
+        description: "Bem-vinda de volta, Laeyne.",
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Erro de Acesso",
+        description: "Usuário ou senha incorretos.",
+      });
     }
   };
 
-  if (userLoading) return null;
+  const handleLogout = () => {
+    sessionStorage.removeItem("laeyne_auth");
+    setIsAuthorized(false);
+  };
 
-  if (!user) {
+  const handleDelete = async (id: string) => {
+    if (confirm("Deseja realmente remover este agendamento?")) {
+      if (firestore) {
+        await deleteDoc(doc(firestore, "appointments", id));
+      }
+    }
+  };
+
+  if (isAuthorized === null) return null;
+
+  if (!isAuthorized) {
     return (
-      <main className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
-        <div className="space-y-8 max-w-md graceful-reveal">
+      <main className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+        <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-[120px] -mr-48 -mt-48" />
+        
+        <div className="w-full max-w-md space-y-12 relative z-10 graceful-reveal">
           <div className="flex flex-col items-center gap-4">
             <Sparkles className="w-12 h-12 text-primary animate-pulse" />
-            <h1 className="text-4xl font-headline uppercase tracking-widest">Painel Administrativo</h1>
-            <p className="text-muted-foreground italic">Acesso exclusivo para gestão do Laeyne Studio.</p>
+            <h1 className="text-4xl md:text-5xl font-headline uppercase tracking-widest text-foreground">
+              Acesso <br />
+              <span className="text-primary italic">Restrito</span>
+            </h1>
+            <p className="text-muted-foreground italic text-sm">Portal administrativo Laeyne Studio.</p>
           </div>
-          <Button onClick={handleLogin} size="lg" className="w-full h-16 rounded-full bg-primary text-white text-lg font-bold uppercase tracking-widest shadow-2xl">
-            Entrar com Google
-          </Button>
+
+          <form onSubmit={handleLogin} className="space-y-6 text-left bg-white/40 backdrop-blur-xl p-10 rounded-[3rem] border border-white/20 shadow-2xl">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label className="text-[10px] uppercase font-black tracking-widest text-muted-foreground ml-4">Usuário</Label>
+                <div className="relative">
+                  <UserCircle className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40" />
+                  <Input 
+                    required 
+                    placeholder="Seu usuário" 
+                    className="h-14 pl-12 bg-white/50 border-none rounded-2xl focus-visible:ring-1 focus-visible:ring-primary/20" 
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-[10px] uppercase font-black tracking-widest text-muted-foreground ml-4">Senha</Label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/40" />
+                  <Input 
+                    type="password" 
+                    required 
+                    placeholder="Sua senha" 
+                    className="h-14 pl-12 bg-white/50 border-none rounded-2xl focus-visible:ring-1 focus-visible:ring-primary/20" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+            <Button type="submit" className="w-full h-16 rounded-full bg-primary text-white text-sm font-black uppercase tracking-[0.3em] shadow-xl hover:scale-[1.02] transition-transform">
+              Entrar no Painel
+            </Button>
+          </form>
         </div>
       </main>
     );
@@ -201,7 +262,7 @@ export default function AdminPanel() {
                   <TableCell colSpan={4} className="h-40 text-center italic text-muted-foreground">Carregando agendamentos...</TableCell>
                 </TableRow>
               ) : filteredAppointments.length > 0 ? (
-                filteredAppointments.map((app: any, idx) => (
+                filteredAppointments.map((app: any) => (
                   <TableRow key={app.id} className="group border-b border-primary/5 hover:bg-primary/5 transition-colors">
                     <TableCell className="py-6 px-8">
                       <div className="flex flex-col gap-1">

@@ -39,12 +39,12 @@
   },
   "auth": {
     "providers": [
-      "google.com"
+      "password"
     ]
   },
   "firestore": {
     "appointments/{appointmentId}": {
-      "schema": "#/entities/Appointment",
+      "schema": "#/backend/entities/Appointment",
       "description": "Coleção de agendamentos realizados pelas clientes."
     }
   }
