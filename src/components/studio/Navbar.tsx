@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Sparkles, Menu, ArrowRight } from "lucide-react"
+import { Sparkles, Menu, ArrowRight, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet"
 
@@ -27,16 +27,13 @@ export function Navbar() {
     const controlNavbar = () => {
       const currentScrollY = window.scrollY
       
-      // Determina se a barra deve ser visível (esconde ao descer, mostra ao subir)
       if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
         setIsVisible(false)
       } else {
         setIsVisible(true)
       }
 
-      // Determina se a barra já saiu do topo para aplicar estilos de vidro
       setScrolled(currentScrollY > 20)
-      
       lastScrollY.current = currentScrollY
     }
 
@@ -62,7 +59,7 @@ export function Navbar() {
             }
           `}
         >
-          {/* Logo */}
+          {/* Logo Desktop */}
           <Link href="/" className="flex items-center gap-3 group">
             <Sparkles className="w-5 h-5 text-primary" />
             <span className="font-headline text-lg md:text-xl font-medium tracking-[0.1em] text-foreground uppercase">
@@ -96,31 +93,43 @@ export function Navbar() {
                   <Menu className="w-5 h-5 text-foreground" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-background border-none p-0 flex flex-col w-full sm:max-w-md">
-                <div className="p-10 flex flex-col h-full">
-                  <SheetHeader className="text-left mb-16">
-                    <SheetTitle className="font-headline text-3xl font-bold tracking-tight text-foreground uppercase">LAEYNE STUDIO</SheetTitle>
-                  </SheetHeader>
+              <SheetContent side="right" className="bg-[#f5f2ed] border-none p-0 flex flex-col w-full sm:max-w-md">
+                <div className="p-8 md:p-12 flex flex-col h-full relative">
                   
-                  <div className="flex flex-col gap-8 flex-1">
+                  {/* Header com Efeito no Nome (Referência Imagem) */}
+                  <div className="mb-16 relative">
+                    <div className="flex items-center gap-2">
+                      <div className="relative">
+                        <span className="absolute -left-2 -top-1 text-4xl font-headline text-primary/20 select-none">L</span>
+                        <span className="font-headline text-2xl md:text-3xl font-semibold tracking-tight text-foreground uppercase relative z-10">
+                          LAEYNE STUDIO
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Links Modernos e Editoriais */}
+                  <div className="flex flex-col gap-6 flex-1">
                     {navItems.map((item) => (
                       <SheetClose asChild key={item.name}>
                         <Link 
                           href={item.href}
-                          className="text-4xl font-headline font-light hover:text-primary transition-all flex items-center justify-between group"
+                          className="text-4xl md:text-5xl font-headline font-light text-[#2a2a2a] hover:text-primary transition-all flex items-center justify-between group py-2"
                         >
                           {item.name}
-                          <ArrowRight className="w-8 h-8 opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0 text-primary" />
                         </Link>
                       </SheetClose>
                     ))}
                   </div>
 
-                  <div className="mt-auto space-y-6">
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold text-center">Arquitetura de Luxo para seu Olhar</p>
-                    <Button asChild className="rounded-full w-full bg-primary h-16 text-lg font-bold uppercase tracking-widest text-white shadow-xl shadow-primary/20">
+                  {/* Rodapé do Menu (Referência Imagem) */}
+                  <div className="mt-auto space-y-8 pb-4">
+                    <p className="text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#8a8a8a] font-bold text-center">
+                      ARQUITETURA DE LUXO PARA SEU OLHAR
+                    </p>
+                    <Button asChild className="rounded-full w-full bg-primary hover:bg-primary/90 h-16 md:h-20 text-lg md:text-xl font-bold uppercase tracking-[0.2em] text-white shadow-2xl shadow-primary/30 transition-transform active:scale-95">
                       <Link href={WHATSAPP_URL} target="_blank">
-                        WhatsApp
+                        WHATSAPP
                       </Link>
                     </Button>
                   </div>
