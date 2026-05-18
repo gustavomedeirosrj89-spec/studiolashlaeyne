@@ -210,10 +210,12 @@ export function Portfolio() {
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold">Horário</Label>
+                            <Label className="text-[10px] uppercase tracking-widest font-bold">Horário (09h-19h)</Label>
                             <Input 
                               required
                               type="time" 
+                              min="09:00"
+                              max="19:00"
                               className="h-12 bg-secondary/20 border-primary/10"
                               value={formData.time}
                               onChange={(e) => setFormData(prev => ({ ...prev, time: e.target.value }))}

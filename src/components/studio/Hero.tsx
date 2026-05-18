@@ -148,11 +148,25 @@ export function Hero() {
                               </div>
                             </div>
                             <form onSubmit={handleBooking(pick.name)} className="space-y-4">
-                              <Input required placeholder="Seu nome" className="h-14 bg-secondary/10 border-none rounded-2xl" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
+                              <div className="space-y-2">
+                                <Label className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground ml-2">Dados da Agenda</Label>
+                                <Input required placeholder="Seu nome" className="h-14 bg-secondary/10 border-none rounded-2xl" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
+                              </div>
                               <div className="grid grid-cols-2 gap-4">
                                 <Input type="date" required className="h-14 bg-secondary/10 border-none rounded-2xl" value={formData.date} onChange={(e) => setFormData(p => ({...p, date: e.target.value}))} />
-                                <Input type="time" required className="h-14 bg-secondary/10 border-none rounded-2xl" value={formData.time} onChange={(e) => setFormData(p => ({...p, time: e.target.value}))} />
+                                <div className="relative">
+                                  <Input 
+                                    type="time" 
+                                    required 
+                                    min="09:00" 
+                                    max="19:00"
+                                    className="h-14 bg-secondary/10 border-none rounded-2xl" 
+                                    value={formData.time} 
+                                    onChange={(e) => setFormData(p => ({...p, time: e.target.value}))} 
+                                  />
+                                </div>
                               </div>
+                              <p className="text-[9px] text-muted-foreground italic px-2">Horários: Seg-Sex: 09h às 19h | Sáb: 09h às 14h</p>
                               <Button className="w-full h-16 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-widest flex gap-3 shadow-lg">
                                 <MessageCircle className="w-6 h-6" />
                                 Agendar no WhatsApp

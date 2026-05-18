@@ -262,14 +262,19 @@ export function StyleCatalog() {
                           value={formData.date}
                           onChange={(e) => setFormData(p => ({...p, date: e.target.value}))}
                         />
-                        <Input 
-                          type="time" 
-                          required 
-                          className="h-16 bg-secondary/10 border-none rounded-2xl px-8 focus:ring-primary/20" 
-                          value={formData.time}
-                          onChange={(e) => setFormData(p => ({...p, time: e.target.value}))}
-                        />
+                        <div className="space-y-1">
+                          <Input 
+                            type="time" 
+                            required 
+                            min="09:00"
+                            max="19:00"
+                            className="h-16 bg-secondary/10 border-none rounded-2xl px-8 focus:ring-primary/20" 
+                            value={formData.time}
+                            onChange={(e) => setFormData(p => ({...p, time: e.target.value}))}
+                          />
+                        </div>
                       </div>
+                      <p className="text-[10px] text-muted-foreground font-light px-8">Atendimento: 09h às 19h (Sáb: 14h)</p>
                       <Button className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.25em] flex gap-4 shadow-2xl shadow-primary/30 transition-all hover:scale-[1.02] text-sm md:text-base">
                         <MessageCircle className="w-6 h-6" />
                         AGENDAR VIA WHATSAPP
