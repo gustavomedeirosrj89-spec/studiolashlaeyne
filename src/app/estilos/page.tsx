@@ -37,18 +37,22 @@ export default function EstilosPage() {
       
       <Gallery />
 
-      {/* CTA Final */}
-      <section className="py-24 px-6 bg-foreground text-background text-center">
-        <div className="max-w-3xl mx-auto space-y-10 graceful-reveal">
-          <h2 className="text-4xl md:text-6xl font-headline leading-tight">
-            Transforme seu olhar com um estilo <span className="text-primary italic">feito para você.</span>
+      {/* CTA Final - Refatorado para o visual da imagem */}
+      <section className="py-24 px-6 bg-foreground text-background text-center overflow-hidden">
+        <div className="max-w-3xl mx-auto space-y-12 graceful-reveal">
+          <h2 className="text-4xl md:text-6xl font-headline leading-tight font-light">
+            Transforme seu olhar com <br />
+            um estilo <span className="text-primary italic font-serif">feito para você.</span>
           </h2>
-          <Button asChild size="lg" className="rounded-full px-12 h-16 bg-primary hover:bg-primary/90 text-white text-lg font-bold uppercase tracking-widest shadow-2xl shadow-primary/40 group transition-all">
-            <Link href={WHATSAPP_URL} target="_blank" className="flex items-center">
-              <MessageCircle className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
-              Agendar pelo WhatsApp
-            </Link>
-          </Button>
+          
+          <div className="flex justify-center">
+            <Button asChild size="lg" className="rounded-full px-10 h-16 md:h-20 bg-primary hover:bg-primary/90 text-white text-lg md:text-xl font-bold uppercase tracking-[0.15em] shadow-2xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 group">
+              <Link href={WHATSAPP_URL} target="_blank" className="flex items-center gap-4">
+                <MessageCircle className="w-6 h-6 md:w-8 md:h-8 group-hover:rotate-12 transition-transform" />
+                Agendar pelo WhatsApp
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
