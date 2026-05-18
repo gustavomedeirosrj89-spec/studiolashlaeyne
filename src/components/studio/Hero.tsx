@@ -1,11 +1,10 @@
-
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, ArrowRight, Star, Clock, Sparkles } from "lucide-react"
+import { MessageCircle, ArrowRight, Star, Clock } from "lucide-react"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -176,11 +175,11 @@ export function Hero() {
                         />
                       )}
                       
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                       
                       <div className="absolute top-6 left-6">
                         <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full">
-                          <span className="text-white text-[8px] font-black uppercase tracking-[0.3em]">
+                          <span className="text-white text-[8px] font-black uppercase tracking-[0.3em] whitespace-nowrap">
                             {pick.category}
                           </span>
                         </div>
@@ -201,11 +200,11 @@ export function Hero() {
                         <div className="w-full h-[1px] bg-white/20" />
 
                         <div className="flex justify-between items-end">
-                          <div className="flex flex-col">
-                            <span className="text-white font-headline text-2xl">{pick.price}</span>
-                            <span className="text-white/40 text-[7px] font-black uppercase tracking-[0.2em]">MANUT. {pick.maintenance.toUpperCase()}</span>
+                          <div className="flex flex-col text-left">
+                            <span className="text-white font-headline text-2xl leading-none">{pick.price}</span>
+                            <span className="text-white/40 text-[7px] font-black uppercase tracking-[0.2em] pt-1 block">MANUT. {pick.maintenance.toUpperCase()}</span>
                           </div>
-                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white">
+                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                             <ArrowRight className="w-4 h-4" />
                           </div>
                         </div>
@@ -218,7 +217,7 @@ export function Hero() {
                     </DialogHeader>
                     <div className="grid grid-cols-1 lg:grid-cols-12">
                       <div className="lg:col-span-5 relative aspect-square lg:aspect-auto h-[250px] lg:h-auto">
-                        {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" />}
+                        {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" unoptimized={img.imageUrl.includes('ibb.co')} />}
                       </div>
                       <div className="lg:col-span-7 p-6 md:p-10 space-y-8">
                         <div className="space-y-4 text-left">
