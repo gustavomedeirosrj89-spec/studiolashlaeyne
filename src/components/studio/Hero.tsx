@@ -5,7 +5,7 @@ import { useState, useMemo, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, ArrowRight, Star, Clock } from "lucide-react"
+import { MessageCircle, ArrowRight, Star, Clock, Sparkles } from "lucide-react"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -38,7 +38,7 @@ const topPickServices = [
     id: "vol-brasileiro", 
     name: "Volume Brasileiro", 
     price: "R$ 180", 
-    tag: "Mais Amado",
+    category: "Mais Amado",
     maintenance: "21 dias",
     description: "Moderno e marcante.",
     fullDescription: "Fios em formato de Y que proporcionam volume moderado com extrema leveza. É a escolha perfeita para quem quer sair do clássico sem perder a sofisticação.",
@@ -47,7 +47,7 @@ const topPickServices = [
     id: "vol-egipcio", 
     name: "Volume Egípcio", 
     price: "R$ 190", 
-    tag: "Tecnológico",
+    category: "Tecnológico",
     maintenance: "21 dias",
     description: "Preenchimento e durabilidade.",
     fullDescription: "A técnica que utiliza fios em W para criar um efeito de volume denso e marcante com excelente retenção e leveza absoluta.",
@@ -56,7 +56,7 @@ const topPickServices = [
     id: "fox-eyes", 
     name: "Fox Eyes", 
     price: "R$ 220", 
-    tag: "Tendência",
+    category: "Tendência",
     maintenance: "21 dias",
     description: "Efeito lifting sensual.",
     fullDescription: "Mapeamento estratégico que alonga o canto externo para um olhar de supermodelo, criando um efeito lifting imediato e sofisticado.",
@@ -160,36 +160,81 @@ export function Hero() {
             </Button>
           </div>
 
-          {/* Cards de Destaque - Unificados */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 graceful-reveal" style={{ animationDelay: '0.4s' }}>
+          {/* Cards de Destaque - Unificados com Estilo Editorial */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 graceful-reveal" style={{ animationDelay: '0.4s' }}>
             {topPickServices.map((pick) => {
               const img = PlaceHolderImages.find(img => img.id === pick.id)
+              const titleWords = pick.name.split(' ')
+              
               return (
                 <Dialog key={pick.id}>
                   <DialogTrigger asChild>
-                    <div className="group bg-white/40 backdrop-blur-md p-4 rounded-[2.5rem] border border-white/20 hover:border-primary/20 hover:bg-white/80 transition-all duration-500 cursor-pointer shadow-sm hover:shadow-xl">
-                      <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden mb-4">
-                        {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover transition-transform duration-700 group-hover:scale-110" />}
+                    <div className="group relative aspect-[4/5] w-full rounded-[2.5rem] overflow-hidden cursor-pointer shadow-xl transition-all duration-700 hover:scale-[1.02]">
+                      {img && (
+                        <Image 
+                          src={img.imageUrl} 
+                          alt={pick.name} 
+                          fill 
+                          className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                          unoptimized={img.imageUrl.includes('ibb.co')}
+                        />
+                      )}
+                      
+                      {/* Overlay Gradiente */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                      
+                      {/* Badge Categoria (Glassmorphism) */}
+                      <div className="absolute top-6 left-6">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full">
+                          <span className="text-white text-[8px] font-black uppercase tracking-[0.3em]">
+                            {pick.category}
+                          </span>
+                        </div>
                       </div>
-                      <div className="space-y-1 text-center">
-                        <h4 className="text-[10px] font-black uppercase tracking-wider">{pick.name}</h4>
-                        <p className="text-primary font-bold text-sm">{pick.price}</p>
+
+                      {/* Conteúdo Enquadrado */}
+                      <div className="absolute bottom-0 w-full p-6 space-y-4">
+                        <div className="space-y-2">
+                          <h4 className="text-2xl font-headline text-white leading-tight">
+                            {titleWords.map((word, i) => (
+                              <span key={i} className="block">{word}</span>
+                            ))}
+                          </h4>
+                          <p className="text-white/60 text-[10px] font-light italic tracking-wide">
+                            {pick.description}
+                          </p>
+                        </div>
+
+                        <div className="w-full h-[1px] bg-white/20" />
+
+                        <div className="flex justify-between items-end">
+                          <div className="flex flex-col">
+                            <span className="text-white font-headline text-2xl">{pick.price}</span>
+                            <span className="text-white/40 text-[7px] font-black uppercase tracking-[0.2em]">MANUT. {pick.maintenance.toUpperCase()}</span>
+                          </div>
+                          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white">
+                            <ArrowRight className="w-4 h-4" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </DialogTrigger>
                   <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[2.5rem] shadow-2xl max-h-[90vh]">
+                    <DialogHeader className="sr-only">
+                      <DialogTitle>{pick.name}</DialogTitle>
+                    </DialogHeader>
                     <div className="grid grid-cols-1 lg:grid-cols-12">
                       <div className="lg:col-span-5 relative aspect-square lg:aspect-auto h-[250px] lg:h-auto">
                         {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" />}
                       </div>
                       <div className="lg:col-span-7 p-6 md:p-10 space-y-8">
-                        <DialogHeader className="space-y-4 text-left">
+                        <div className="space-y-4 text-left">
                           <div className="flex flex-col gap-4">
                             <Badge className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full w-fit">Destaque</Badge>
-                            <DialogTitle className="text-4xl font-headline leading-tight">{pick.name}</DialogTitle>
+                            <h2 className="text-4xl font-headline leading-tight">{pick.name}</h2>
                           </div>
                           <p className="text-muted-foreground font-light leading-relaxed">{pick.fullDescription}</p>
-                        </DialogHeader>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div className="p-6 bg-secondary/30 rounded-[2rem] flex flex-col items-center justify-center text-center">
                             <p className="text-[10px] uppercase font-bold text-muted-foreground mb-1">Manutenção</p>

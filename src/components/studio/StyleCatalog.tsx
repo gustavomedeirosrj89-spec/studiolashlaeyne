@@ -84,19 +84,6 @@ const styles = [
     tags: ["Volumosos", "Premium"]
   },
   {
-    id: "express",
-    title: "Lash Express",
-    category: "Praticidade",
-    price: "R$ 120",
-    duration: "1h",
-    maintenance: "15 a 21 dias",
-    description: "Preenchimento estratégico.",
-    fullDescription: "A cliente escolhe o modelo desejado, mas a aplicação é realizada de forma estratégica para garantir rapidez sem perder a harmonia.",
-    imageId: "lash-express",
-    benefits: ["Rapidez", "Visual leve", "Preenchimento estratégico"],
-    tags: ["Naturais"]
-  },
-  {
     id: "mega",
     title: "Mega Volume",
     category: "Premium",
@@ -182,7 +169,7 @@ export function StyleCatalog() {
           <button
             key={cat}
             onClick={() => setActiveFilter(cat)}
-            className={`px-6 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.25em] transition-all duration-300 border ${
+            className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-300 border ${
               activeFilter === cat 
                 ? "bg-primary text-white border-primary shadow-lg" 
                 : "bg-white/40 text-muted-foreground border-transparent hover:border-primary/20 hover:bg-white"
@@ -193,10 +180,12 @@ export function StyleCatalog() {
         ))}
       </div>
 
-      {/* Grid de Cards Unificado */}
-      <div className="flex flex-col gap-12 md:gap-16 items-center">
+      {/* Grid de Cards Unificado - Estilo Editorial da Referência */}
+      <div className="flex flex-col gap-12 md:gap-20 items-center">
         {filteredStyles.map((style, idx) => {
           const img = PlaceHolderImages.find(i => i.id === style.imageId)
+          const titleWords = style.title.split(' ')
+          
           return (
             <Dialog key={style.id}>
               <DialogTrigger asChild>
@@ -214,42 +203,45 @@ export function StyleCatalog() {
                     />
                   )}
                   
-                  {/* Overlay Gradiente */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                  {/* Overlay Gradiente Escuro no Rodapé */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                   
-                  {/* Badge de Categoria */}
-                  <div className="absolute top-8 left-10">
+                  {/* Badge de Categoria Flutuante (Glassmorphism) */}
+                  <div className="absolute top-10 left-10">
                     <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full">
-                      <span className="text-white text-[9px] font-black uppercase tracking-[0.3em]">
+                      <span className="text-white text-[10px] font-black uppercase tracking-[0.4em] whitespace-nowrap">
                         {style.category}
                       </span>
                     </div>
                   </div>
 
-                  {/* Conteúdo do Card */}
-                  <div className="absolute bottom-0 w-full p-10 md:p-12 space-y-8">
-                    <div className="space-y-3">
-                      <h3 className="text-4xl md:text-5xl font-headline text-white leading-tight">
-                        {style.title}
+                  {/* Conteúdo do Card - Enquadrado conforme referência */}
+                  <div className="absolute bottom-0 w-full p-10 md:p-14 space-y-8">
+                    <div className="space-y-4">
+                      <h3 className="text-5xl md:text-7xl font-headline text-white leading-[0.85] tracking-tight">
+                        {titleWords.map((word, i) => (
+                          <span key={i} className="block">{word}</span>
+                        ))}
                       </h3>
-                      <p className="text-white/60 text-sm font-light italic tracking-wide max-w-xs">
+                      <p className="text-white/60 text-sm md:text-base font-light italic tracking-wide max-w-[280px]">
                         {style.description}
                       </p>
                     </div>
 
-                    {/* Alinhamento Preço + Botão igual à referência */}
-                    <div className="flex justify-between items-center pt-4 border-t border-white/10">
+                    <div className="w-full h-[1px] bg-white/20" />
+
+                    <div className="flex justify-between items-end">
                       <div className="flex flex-col space-y-1">
-                        <span className="text-white font-headline text-4xl font-medium tracking-tight">
+                        <span className="text-white font-headline text-4xl md:text-6xl block leading-none">
                           {style.price}
                         </span>
-                        <span className="text-white/40 text-[9px] font-black uppercase tracking-[0.2em]">
-                          MANUT. {style.maintenance}
+                        <span className="text-white/40 text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] block pt-1">
+                          MANUT. {style.maintenance.toUpperCase()}
                         </span>
                       </div>
                       
-                      <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500">
-                        <ArrowRight className="w-7 h-7" />
+                      <div className="w-16 h-16 md:w-20 md:h-20 bg-primary rounded-full flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                        <ArrowRight className="w-7 h-7 md:w-9 md:h-9" />
                       </div>
                     </div>
                   </div>
@@ -257,7 +249,9 @@ export function StyleCatalog() {
               </DialogTrigger>
 
               <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh]">
-                <DialogTitle className="sr-only">{style.title}</DialogTitle>
+                <DialogHeader className="sr-only">
+                  <DialogTitle>{style.title}</DialogTitle>
+                </DialogHeader>
                 <div className="grid grid-cols-1 lg:grid-cols-12">
                   <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
                     {img && (
