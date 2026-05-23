@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -31,9 +30,9 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { AdminProvider } from './AdminContext';
 
 const ADMIN_USER = "laeyne.admin";
 const ADMIN_PASS = "Lx#8472Studio";
@@ -171,7 +170,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </header>
           <main className="flex-1 p-10 overflow-y-auto custom-scrollbar">
-            {children}
+            <AdminProvider>{children}</AdminProvider>
           </main>
         </SidebarInset>
       </div>
