@@ -65,7 +65,9 @@ function reducer(state: AppState, action: any): AppState {
           const novasIndicacoes = c.indicacoes + 1;
           const novosCupons = [...c.cupons];
           const novasEtiquetas = [...c.etiquetas];
+          // Lógica de recompensa: Novo cupom a cada 3 indicações
           if (novasIndicacoes % 3 === 0) novosCupons.push(`BONUS_${novasIndicacoes}`);
+          // Etiqueta VIP após 5 indicações
           if (novasIndicacoes >= 5 && !novasEtiquetas.includes('VIP')) novasEtiquetas.push('VIP');
           if (!novasEtiquetas.includes('Indicadora')) novasEtiquetas.push('Indicadora');
           return { ...c, indicacoes: novasIndicacoes, cupons: novosCupons, etiquetas: novasEtiquetas };
