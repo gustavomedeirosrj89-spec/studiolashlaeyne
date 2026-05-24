@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0A0A0A"/>
+  <text x="256" y="300" font-family="Georgia,serif" font-size="220" font-weight="700" fill="#C9A84C" text-anchor="middle">L</text>
+  <text x="256" y="385" font-family="Arial,sans-serif" font-size="50" fill="#C9A84C" text-anchor="middle" opacity="0.65" letter-spacing="14">AEYNE</text>
+</svg>

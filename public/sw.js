@@ -1,78 +1,55 @@
-// ── LAEYNE STUDIO — Service Worker ──
-const CACHE_NAME = 'laeyne-v1';
-const STATIC_CACHE = 'laeyne-static-v1';
+const CACHE_V = 'laeyne-v1';
+const STATIC_V = 'laeyne-static-v1';
+const PRECACHE = ['/', '/admin', '/manifest.json', '/icons/icon-192x192.png', '/icons/icon-512x512.png'];
 
-const PRECACHE_URLS = [
-  '/',
-  '/admin',
-  '/manifest.json'
-];
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => {
-      return cache.addAll(PRECACHE_URLS).catch(() => {});
-    }).then(() => self.skipWaiting())
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(STATIC_V)
+      .then(c => c.addAll(PRECACHE).catch(() => {}))
+      .then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME && key !== STATIC_CACHE)
-          .map((key) => caches.delete(key))
-      )
-    ).then(() => self.clients.claim())
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE_V && k !== STATIC_V).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
+self.addEventListener('fetch', e => {
+  const url = new URL(e.request.url);
+  if (!url.protocol.startsWith('http') || e.request.method !== 'GET') return;
 
-  if (!url.protocol.startsWith('http')) return;
-  if (request.method !== 'GET') return;
-
+  // _next/static → Cache First (hash no nome = nunca fica velho)
   if (url.pathname.startsWith('/_next/static/')) {
-    event.respondWith(
-      caches.match(request).then((cached) => {
-        if (cached) return cached;
-        return fetch(request).then((response) => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(STATIC_CACHE).then((cache) => cache.put(request, clone));
-          }
-          return response;
-        });
-      })
+    e.respondWith(caches.match(e.request).then(c => c || fetch(e.request).then(r => {
+      if (r.ok) caches.open(STATIC_V).then(cache => cache.put(e.request, r.clone()));
+      return r;
+    })));
+    return;
+  }
+
+  // Ícones e manifest → Cache First
+  if (url.pathname.startsWith('/icons/') || url.pathname.startsWith('/splash/') || url.pathname === '/manifest.json') {
+    e.respondWith(caches.match(e.request).then(c => c || fetch(e.request)));
+    return;
+  }
+
+  // Páginas HTML → Network First
+  if (e.request.headers.get('accept')?.includes('text/html')) {
+    e.respondWith(
+      fetch(e.request)
+        .then(r => { if (r.ok) caches.open(CACHE_V).then(c => c.put(e.request, r.clone())); return r; })
+        .catch(() => caches.match(e.request).then(c => c || caches.match('/admin')))
     );
     return;
   }
 
-  if (request.headers.get('accept')?.includes('text/html')) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match('/admin')))
-    );
-    return;
-  }
-
-  event.respondWith(
-    fetch(request).catch(() => caches.match(request))
-  );
+  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
 });
 
-self.addEventListener('message', (event) => {
-  if (event.data?.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+self.addEventListener('message', e => {
+  if (e.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });

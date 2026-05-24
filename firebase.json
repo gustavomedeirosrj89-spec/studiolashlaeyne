@@ -7,7 +7,7 @@
       {
         "source": "/sw.js",
         "headers": [
-          { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+          { "key": "Cache-Control",          "value": "no-cache, no-store, must-revalidate" },
           { "key": "Service-Worker-Allowed", "value": "/" }
         ]
       },
@@ -20,61 +20,25 @@
       },
       {
         "source": "/icons/**",
-        "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }
-        ]
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }]
       },
       {
         "source": "/splash/**",
-        "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }
-        ]
-      },
-      {
-        "source": "**/*.@(js|css|json)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
-          }
-        ]
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }]
       },
       {
         "source": "/_next/static/**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31536000, immutable"
-          }
-        ]
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
       },
       {
         "source": "**",
         "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
-          },
-          {
-            "key": "X-Content-Type-Options",
-            "value": "nosniff"
-          },
-          {
-            "key": "X-Frame-Options",
-            "value": "DENY"
-          },
-          {
-            "key": "Referrer-Policy",
-            "value": "strict-origin-when-cross-origin"
-          }
+          { "key": "Cache-Control",          "value": "no-cache, no-store, must-revalidate" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "X-Frame-Options",        "value": "DENY" }
         ]
       }
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
+    "rewrites": [{ "source": "**", "destination": "/index.html" }]
   }
 }

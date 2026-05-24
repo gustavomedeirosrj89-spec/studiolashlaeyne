@@ -88,19 +88,6 @@ const styles = [
     tags: ["Volumosos", "Premium"]
   },
   {
-    id: "mega",
-    title: "Mega Volume",
-    category: "Premium",
-    price: "R$ 300",
-    duration: "3h",
-    maintenance: "21 a 25 dias",
-    description: "Intenso e sofisticado.",
-    fullDescription: "Para quem busca o máximo de destaque. Olhar poderoso e arquitetura imponente com preenchimento total.",
-    imageId: "mega-vol",
-    benefits: ["Olhar intenso", "Volume extremo", "Editorial"],
-    tags: ["Volumosos", "Premium"]
-  },
-  {
     id: "fox",
     title: "Fox Eyes",
     category: "Tendência",
@@ -112,19 +99,6 @@ const styles = [
     imageId: "fox-eyes",
     benefits: ["Lifting visual", "Sensualidade", "Design moderno"],
     tags: ["Premium", "Mais Procurados"]
-  },
-  {
-    id: "hybrid",
-    title: "Estilo Híbrido",
-    category: "Equilibrado",
-    price: "R$ 170",
-    duration: "1h 45min",
-    maintenance: "15 a 21 dias",
-    description: "Equilíbrio perfeito.",
-    fullDescription: "A mistura ideal entre o clássico e o volume para um visual texturizado e moderno.",
-    imageId: "hibrido",
-    benefits: ["Textura", "Versatilidade", "Equilíbrio"],
-    tags: ["Equilibrado"]
   }
 ]
 
@@ -288,7 +262,6 @@ export function StyleCatalog() {
                   <div className="lg:col-span-7 p-10 md:p-14 space-y-10">
                     <div className="space-y-4 text-left">
                       <div className="flex items-center gap-2 text-primary">
-                        <Sparkles className="w-4 h-4" />
                         <span className="text-[10px] uppercase tracking-[0.4em] font-black">Procedimento VIP</span>
                       </div>
                       <h2 className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">

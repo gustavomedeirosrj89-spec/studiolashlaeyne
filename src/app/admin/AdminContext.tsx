@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { createContext, useContext, useReducer } from 'react';
@@ -11,14 +12,11 @@ export interface Cupom { id: string; nome: string; tipo: 'percentual' | 'fixo'; 
 export interface AppState { servicos: Servico[]; clientes: Cliente[]; agendamentos: Agendamento[]; cupons: Cupom[]; horariosBase: string[]; }
 
 // ─── ESTADO INICIAL ZERADO ───
-// Serviços mantidos pois são configuração do negócio.
-// Clientes, agendamentos e cupons começam vazios para uso real.
 const ESTADO_INICIAL: AppState = {
   servicos: [
     { id: 's1', nome: 'Volume Russo',  valor: 180, duracao: 120, descricao: 'Fios 0.05 a 0.07 em leque', foto: null, ativo: true },
     { id: 's2', nome: 'Fio a Fio',     valor: 120, duracao: 90,  descricao: 'Clássico e natural',        foto: null, ativo: true },
     { id: 's3', nome: 'Manutenção',    valor: 80,  duracao: 60,  descricao: 'Retoque a cada 3 semanas',  foto: null, ativo: true },
-    { id: 's4', nome: 'Mega Volume',   valor: 220, duracao: 150, descricao: 'Volume máximo dramático',   foto: null, ativo: true },
   ],
   clientes: [],
   agendamentos: [],
