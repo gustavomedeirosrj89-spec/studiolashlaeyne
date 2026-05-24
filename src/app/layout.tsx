@@ -1,4 +1,3 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
@@ -7,6 +6,11 @@ import { Toaster } from '@/components/ui/toaster';
 export const metadata: Metadata = {
   title: 'LAEYNE STUDIO LASH | Extensões de Cílios de Luxo',
   description: 'Estilos de volume especializados e experiências de beleza personalizadas em uma atmosfera editorial.',
+  // Impede cache de página no navegador após redeploy
+  other: {
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+  },
 };
 
 export default function RootLayout({
