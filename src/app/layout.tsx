@@ -44,6 +44,8 @@ export const metadata: Metadata = {
     'mobile-web-app-capable':  'yes',
     'msapplication-TileColor': '#0A0A0A',
     'msapplication-TileImage': '/icons/icon-144x144.png',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
   },
 };
 

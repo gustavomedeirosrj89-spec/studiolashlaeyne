@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { createContext, useContext, useReducer } from 'react';
@@ -17,6 +16,7 @@ const ESTADO_INICIAL: AppState = {
     { id: 's1', nome: 'Volume Russo',  valor: 180, duracao: 120, descricao: 'Fios 0.05 a 0.07 em leque', foto: null, ativo: true },
     { id: 's2', nome: 'Fio a Fio',     valor: 120, duracao: 90,  descricao: 'Clássico e natural',        foto: null, ativo: true },
     { id: 's3', nome: 'Manutenção',    valor: 80,  duracao: 60,  descricao: 'Retoque a cada 3 semanas',  foto: null, ativo: true },
+    { id: 's4', nome: 'Volume Express', valor: 130, duracao: 45,  descricao: 'Versão express mais rápida e leve de qualquer estilo.', foto: null, ativo: true },
   ],
   clientes: [],
   agendamentos: [],

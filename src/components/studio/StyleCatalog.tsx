@@ -62,6 +62,19 @@ const styles = [
     tags: ["Mais Procurados"]
   },
   {
+    id: "express",
+    title: "Volume Express",
+    category: "Praticidade",
+    price: "R$ 130",
+    duration: "45min",
+    maintenance: "15 dias",
+    description: "Versão express mais rápida e leve.",
+    fullDescription: "A cliente pode escolher qualquer estilo disponível do catálogo, porém aplicado na versão express com procedimento mais rápido e leve.",
+    imageId: "lash-express",
+    benefits: ["Rapidez", "Leveza", "Qualquer estilo"],
+    tags: ["Naturais", "Mais Procurados"]
+  },
+  {
     id: "brazilian-marrom",
     title: "Volume Brasileiro Marrom",
     category: "Tendência",
