@@ -68,6 +68,12 @@
       "imageHint": "eyelash quick"
     },
     {
+      "id": "sirena-effect",
+      "description": "Efeito Sirena Delicado",
+      "imageUrl": "https://i.ibb.co/cKd84pGc/download-14.jpg",
+      "imageHint": "delicate lashes"
+    },
+    {
       "id": "gallery-real-1",
       "description": "Resultado Real Volume Brasileiro",
       "imageUrl": "https://i.ibb.co/Cs5hGW80/c-lios-volume-brasileiro.jpg",
@@ -102,12 +108,6 @@
       "description": "Resultado Real 3",
       "imageUrl": "https://picsum.photos/seed/res3/600/900",
       "imageHint": "beauty portrait"
-    },
-    {
-      "id": "technique-detail",
-      "description": "Detalhe da aplicação profissional de cílios",
-      "imageUrl": "https://picsum.photos/seed/tech100/1000/1250",
-      "imageHint": "beauty application"
     }
   ]
 }

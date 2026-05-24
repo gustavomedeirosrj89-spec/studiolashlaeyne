@@ -75,6 +75,19 @@ const styles = [
     tags: ["Naturais", "Mais Procurados"]
   },
   {
+    id: "sirena",
+    title: "Efeito Sirena",
+    category: "Delicadeza",
+    price: "R$ 160",
+    duration: "1h 40min",
+    maintenance: "15 a 21 dias",
+    description: "Natural, delicado e elegante.",
+    fullDescription: "Um efeito natural, delicado e menos preenchido, trazendo leveza e elegância ao olhar. Ideal para quem busca um realce sofisticado sem excessos.",
+    imageId: "sirena-effect",
+    benefits: ["Leveza", "Naturalidade", "Elegância"],
+    tags: ["Naturais", "Premium"]
+  },
+  {
     id: "brazilian-marrom",
     title: "Volume Brasileiro Marrom",
     category: "Tendência",

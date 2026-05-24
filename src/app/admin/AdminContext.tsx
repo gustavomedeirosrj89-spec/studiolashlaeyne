@@ -17,6 +17,7 @@ const ESTADO_INICIAL: AppState = {
     { id: 's2', nome: 'Fio a Fio',     valor: 120, duracao: 90,  descricao: 'Clássico e natural',        foto: null, ativo: true },
     { id: 's3', nome: 'Manutenção',    valor: 80,  duracao: 60,  descricao: 'Retoque a cada 3 semanas',  foto: null, ativo: true },
     { id: 's4', nome: 'Volume Express', valor: 130, duracao: 45,  descricao: 'Versão express mais rápida e leve de qualquer estilo.', foto: null, ativo: true },
+    { id: 's5', nome: 'Efeito Sirena',  valor: 160, duracao: 100, descricao: 'Um efeito natural, delicado e menos preenchido, trazendo leveza e elegância ao olhar.', foto: null, ativo: true },
   ],
   clientes: [],
   agendamentos: [],
