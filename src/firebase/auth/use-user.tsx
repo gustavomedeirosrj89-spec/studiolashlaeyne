@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -10,6 +9,7 @@ export function useUser() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
 
   useEffect(() => {
+    if (!auth) return;
     return onAuthStateChanged(auth, (u) => setUser(u));
   }, [auth]);
 

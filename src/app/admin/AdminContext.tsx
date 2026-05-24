@@ -3,21 +3,22 @@
 import React, { createContext, useContext, useReducer } from 'react';
 
 // ─── TIPOS ───
-export type Status = 'confirmado' | 'remarcado' | 'cancelado' | 'finalizado';
+export type Status = 'pendente' | 'confirmado' | 'remarcado' | 'cancelado' | 'finalizado';
 export interface Servico { id: string; nome: string; valor: number; duracao: number; descricao: string; foto: null; ativo: boolean; }
 export interface Cliente { id: string; nome: string; telefone: string; indicacoes: number; cupons: string[]; etiquetas: string[]; }
 export interface Agendamento { id: string; clienteId: string; servicoId: string; data: string; horario: string; status: Status; }
 export interface Cupom { id: string; nome: string; tipo: 'percentual' | 'fixo'; valor: number; ativo: boolean; }
 export interface AppState { servicos: Servico[]; clientes: Cliente[]; agendamentos: Agendamento[]; cupons: Cupom[]; horariosBase: string[]; }
 
-// ─── ESTADO INICIAL ZERADO ───
+// ─── ESTADO INICIAL ───
 const ESTADO_INICIAL: AppState = {
   servicos: [
-    { id: 's1', nome: 'Volume Russo',  valor: 180, duracao: 120, descricao: 'Fios 0.05 a 0.07 em leque', foto: null, ativo: true },
-    { id: 's2', nome: 'Fio a Fio',     valor: 120, duracao: 90,  descricao: 'Clássico e natural',        foto: null, ativo: true },
-    { id: 's3', nome: 'Manutenção',    valor: 80,  duracao: 60,  descricao: 'Retoque a cada 3 semanas',  foto: null, ativo: true },
-    { id: 's4', nome: 'Volume Express', valor: 130, duracao: 45,  descricao: 'Versão express mais rápida e leve de qualquer estilo.', foto: null, ativo: true },
-    { id: 's5', nome: 'Efeito Sirena',  valor: 160, duracao: 100, descricao: 'Um efeito natural, delicado e menos preenchido, trazendo leveza e elegância ao olhar.', foto: null, ativo: true },
+    { id: 's1', nome: 'Efeito Rimel',  valor: 150, duracao: 90,  descricao: 'Aplicação individual, elegância discreta.', foto: null, ativo: true },
+    { id: 's2', nome: 'Volume Brasileiro', valor: 180, duracao: 120, descricao: 'Fios em Y, volume e leveza.', foto: null, ativo: true },
+    { id: 's3', nome: 'Volume Express', valor: 130, duracao: 45,  descricao: 'Versão express mais rápida e leve de qualquer estilo.', foto: null, ativo: true },
+    { id: 's4', nome: 'Efeito Sirena',  valor: 160, duracao: 100, descricao: 'Natural, delicado e elegante.', foto: null, ativo: true },
+    { id: 's5', nome: 'Volume Egípcio',  valor: 190, duracao: 120, descricao: 'Fios em W, volume tecnológico.', foto: null, ativo: true },
+    { id: 's6', nome: 'Fox Eyes',       valor: 220, duracao: 135, descricao: 'Efeito lifting sensual alongado.', foto: null, ativo: true },
   ],
   clientes: [],
   agendamentos: [],
@@ -28,8 +29,6 @@ const ESTADO_INICIAL: AppState = {
 // ─── REDUCER ───
 function reducer(state: AppState, action: any): AppState {
   switch (action.type) {
-
-    // ── Agendamentos ──
     case 'CRIAR_AGENDAMENTO':
       return { ...state, agendamentos: [...state.agendamentos, { id: `ag_${Date.now()}`, ...action.payload, status: 'confirmado' as Status }] };
     case 'REMARCAR_AGENDAMENTO':
@@ -38,8 +37,6 @@ function reducer(state: AppState, action: any): AppState {
       return { ...state, agendamentos: state.agendamentos.map(ag => ag.id === action.payload.id ? { ...ag, status: 'cancelado' as Status } : ag) };
     case 'FINALIZAR_AGENDAMENTO':
       return { ...state, agendamentos: state.agendamentos.map(ag => ag.id === action.payload.id ? { ...ag, status: 'finalizado' as Status } : ag) };
-
-    // ── Serviços ──
     case 'CRIAR_SERVICO':
       return { ...state, servicos: [...state.servicos, { id: `s_${Date.now()}`, ...action.payload, foto: null, ativo: true }] };
     case 'EDITAR_SERVICO':
@@ -48,8 +45,6 @@ function reducer(state: AppState, action: any): AppState {
       return { ...state, servicos: state.servicos.map(s => s.id === action.payload.id ? { ...s, ativo: !s.ativo } : s) };
     case 'EXCLUIR_SERVICO':
       return { ...state, servicos: state.servicos.filter(s => s.id !== action.payload.id) };
-
-    // ── Clientes ──
     case 'CRIAR_CLIENTE':
       return { ...state, clientes: [...state.clientes, { id: `c_${Date.now()}`, ...action.payload, indicacoes: 0, cupons: [], etiquetas: ['Nova cliente'] }] };
     case 'EDITAR_CLIENTE':
@@ -74,23 +69,19 @@ function reducer(state: AppState, action: any): AppState {
           return { ...c, indicacoes: novasIndicacoes, cupons: novosCupons, etiquetas: novasEtiquetas };
         }),
       };
-
-    // ── Cupons ──
     case 'CRIAR_CUPOM':
       return { ...state, cupons: [...state.cupons, { id: `cup_${Date.now()}`, ...action.payload, ativo: true }] };
     case 'TOGGLE_CUPOM':
       return { ...state, cupons: state.cupons.map(c => c.id === action.payload.id ? { ...c, ativo: !c.ativo } : c) };
     case 'EXCLUIR_CUPOM':
       return { ...state, cupons: state.cupons.filter(c => c.id !== action.payload.id) };
-
     default:
       return state;
   }
 }
 
-// ─── CONTEXT ───
 interface AppContextType { state: AppState; dispatch: React.Dispatch<any>; }
-const AppContext = createContext<AppContextType | null>(null);
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, ESTADO_INICIAL);
@@ -99,6 +90,6 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
 export function useAdmin() {
   const ctx = useContext(AppContext);
-  if (!ctx) throw new Error('useAdmin deve ser usado dentro de AdminProvider');
+  if (!ctx) return { state: ESTADO_INICIAL, dispatch: () => {} }; // Fallback para SSR
   return ctx;
 }

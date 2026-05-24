@@ -1,4 +1,3 @@
-
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
@@ -13,7 +12,11 @@ export function FirebaseClientProvider({ children }: { children: ReactNode }) {
     setServices(initializeFirebase());
   }, []);
 
-  if (!services) return null;
+  // Renderiza os filhos mesmo sem os serviços estarem prontos no servidor
+  // para evitar erros de hidratação (Internal Server Error)
+  if (!services) {
+    return <>{children}</>;
+  }
 
   return (
     <FirebaseProvider 

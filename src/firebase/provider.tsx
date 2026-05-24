@@ -1,4 +1,3 @@
-
 'use client';
 
 import { createContext, useContext, ReactNode } from 'react';
@@ -29,10 +28,10 @@ export function FirebaseProvider({
 
 export function useFirebase() {
   const context = useContext(FirebaseContext);
-  if (!context) throw new Error('useFirebase must be used within a FirebaseProvider');
+  // Retorna undefined em vez de erro para evitar crash durante SSR no Next.js 15
   return context;
 }
 
-export const useFirebaseApp = () => useFirebase().app;
-export const useFirestore = () => useFirebase().firestore;
-export const useAuth = () => useFirebase().auth;
+export const useFirebaseApp = () => useFirebase()?.app;
+export const useFirestore = () => useFirebase()?.firestore;
+export const useAuth = () => useFirebase()?.auth;
