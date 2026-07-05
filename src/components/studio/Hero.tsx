@@ -5,7 +5,7 @@ import { useState, useMemo, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, ArrowRight, Star, Clock, Sparkles } from "lucide-react"
+import { MessageCircle, ArrowRight, Star, Clock, Sparkles, Calendar as CalendarIcon } from "lucide-react"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -15,6 +15,14 @@ import {
   DialogTrigger,
   DialogHeader,
 } from "@/components/ui/dialog"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { format, parseISO } from "date-fns"
+import { ptBR } from "date-fns/locale"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -28,6 +36,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 import { useFirestore } from "@/firebase"
 import { errorEmitter } from "@/firebase/error-emitter"
 import { FirestorePermissionError } from "@/firebase/errors"
+import { cn } from "@/lib/utils"
 
 const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20um%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
 
@@ -79,7 +88,7 @@ export function Hero() {
 
   const availableTimeSlots = useMemo(() => {
     if (!formData.date) return ALL_TIME_SLOTS
-    const selectedDate = new Date(formData.date + 'T00:00:00')
+    const selectedDate = parseISO(formData.date)
     const dayOfWeek = selectedDate.getDay() 
 
     if (dayOfWeek === 6) { // Sábado
@@ -94,7 +103,6 @@ export function Hero() {
   const handleBooking = (title: string) => (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Salvar no Firestore de forma não-bloqueante
     if (firestore) {
       const data = {
         clientName: formData.name,
@@ -114,7 +122,8 @@ export function Hero() {
       })
     }
 
-    const msg = `Olá! Vi no site o estilo ${title.toUpperCase()} e gostaria de agendar!\nNome: ${formData.name}\nData: ${formData.date}\nHora: ${formData.time}`
+    const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
+    const msg = `Olá! Vi no site o estilo ${title.toUpperCase()} e gostaria de agendar!\nNome: ${formData.name}\nData: ${dataFormatada}\nHora: ${formData.time}`
     window.open(`https://wa.me/5588996363178?text=${encodeURIComponent(msg)}`, "_blank")
   }
 
@@ -274,7 +283,30 @@ export function Hero() {
                             <Input required placeholder="Seu nome completo" className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <Input type="date" required className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.date} onChange={(e) => setFormData(p => ({...p, date: e.target.value}))} />
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "h-14 w-full justify-start text-left font-normal bg-secondary/10 border-none rounded-2xl px-6",
+                                    !formData.date && "text-muted-foreground"
+                                  )}
+                                >
+                                  <CalendarIcon className="mr-2 h-4 w-4" />
+                                  {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-0 rounded-3xl border-none shadow-2xl" align="start">
+                                <Calendar
+                                  mode="single"
+                                  selected={formData.date ? parseISO(formData.date) : undefined}
+                                  onSelect={(date) => setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }))}
+                                  disabled={(date) => date < new Date() || date.getDay() === 0}
+                                  initialFocus
+                                  locale={ptBR}
+                                />
+                              </PopoverContent>
+                            </Popover>
                             <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required>
                               <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
                                 <SelectValue placeholder="Horário" />

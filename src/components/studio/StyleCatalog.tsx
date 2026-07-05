@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Sparkles, MessageCircle, Clock, ArrowRight } from "lucide-react"
+import { Sparkles, MessageCircle, Clock, ArrowRight, Calendar as CalendarIcon } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -16,6 +16,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { format, parseISO } from "date-fns"
+import { ptBR } from "date-fns/locale"
 import {
   Select,
   SelectContent,
@@ -27,6 +35,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore"
 import { useFirestore } from "@/firebase"
 import { errorEmitter } from "@/firebase/error-emitter"
 import { FirestorePermissionError } from "@/firebase/errors"
+import { cn } from "@/lib/utils"
 
 const ALL_TIME_SLOTS = [
   "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
@@ -142,7 +151,7 @@ export function StyleCatalog() {
 
   const availableTimeSlots = useMemo(() => {
     if (!formData.date) return ALL_TIME_SLOTS
-    const selectedDate = new Date(formData.date + 'T00:00:00')
+    const selectedDate = parseISO(formData.date)
     const dayOfWeek = selectedDate.getDay()
 
     if (dayOfWeek === 6) { // Sábado
@@ -180,7 +189,8 @@ export function StyleCatalog() {
       })
     }
 
-    const msg = `Olá! Gostaria de agendar: ${title.toUpperCase()}\nNome: ${formData.name}\nData: ${formData.date}\nHora: ${formData.time}`
+    const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
+    const msg = `Olá! Gostaria de agendar: ${title.toUpperCase()}\nNome: ${formData.name}\nData: ${dataFormatada}\nHora: ${formData.time}`
     window.open(`https://wa.me/5588996363178?text=${encodeURIComponent(msg)}`, "_blank")
   }
 
@@ -324,13 +334,30 @@ export function StyleCatalog() {
                         />
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <Input 
-                          type="date" 
-                          required 
-                          className="h-14 bg-secondary/10 border-none rounded-2xl px-6" 
-                          value={formData.date}
-                          onChange={(e) => setFormData(p => ({...p, date: e.target.value}))}
-                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "h-14 w-full justify-start text-left font-normal bg-secondary/10 border-none rounded-2xl px-6",
+                                !formData.date && "text-muted-foreground"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0 rounded-3xl border-none shadow-2xl" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={formData.date ? parseISO(formData.date) : undefined}
+                              onSelect={(date) => setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }))}
+                              disabled={(date) => date < new Date() || date.getDay() === 0}
+                              initialFocus
+                              locale={ptBR}
+                            />
+                          </PopoverContent>
+                        </Popover>
                         <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required>
                           <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
                             <SelectValue placeholder="Horário" />

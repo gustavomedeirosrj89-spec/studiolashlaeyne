@@ -15,7 +15,7 @@ import {
   Sparkles, 
   CheckCircle2, 
   X, 
-  Calendar, 
+  Calendar as CalendarIcon, 
   Clock 
 } from "lucide-react"
 import {
@@ -26,12 +26,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { format, parseISO } from "date-fns"
+import { ptBR } from "date-fns/locale"
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 
 const ALL_TIME_SLOTS = [
   "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
@@ -92,7 +101,7 @@ export function Portfolio() {
 
   const availableTimeSlots = useMemo(() => {
     if (!formData.date) return ALL_TIME_SLOTS
-    const selectedDate = new Date(formData.date + 'T00:00:00')
+    const selectedDate = parseISO(formData.date)
     const dayOfWeek = selectedDate.getDay()
 
     if (dayOfWeek === 6) { // Saturday
@@ -111,7 +120,8 @@ export function Portfolio() {
       return
     }
 
-    const message = `Olá! Gostaria de agendar o procedimento ${selectedService.title.toUpperCase()} ✨\nMeu nome é ${formData.name}.\nData desejada: ${formData.date}.\nHorário desejado: ${formData.time}.`
+    const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
+    const message = `Olá! Gostaria de agendar o procedimento ${selectedService.title.toUpperCase()} ✨\nMeu nome é ${formData.name}.\nData desejada: ${dataFormatada}.\nHorário desejado: ${formData.time}.`
 
     const whatsappUrl = `https://wa.me/5588996363178?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
@@ -228,13 +238,30 @@ export function Portfolio() {
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <Label className="text-[10px] uppercase tracking-widest font-bold">Data Desejada</Label>
-                            <Input 
-                              required
-                              type="date" 
-                              className="h-12 bg-secondary/20 border-primary/10"
-                              value={formData.date}
-                              onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                            />
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "h-12 w-full justify-start text-left font-normal bg-secondary/20 border-primary/10 focus:border-primary/30",
+                                    !formData.date && "text-muted-foreground"
+                                  )}
+                                >
+                                  <CalendarIcon className="mr-2 h-4 w-4" />
+                                  {formData.date ? format(parseISO(formData.date), "dd/MM/yy") : <span>Data</span>}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-0 rounded-3xl border-none shadow-2xl" align="start">
+                                <Calendar
+                                  mode="single"
+                                  selected={formData.date ? parseISO(formData.date) : undefined}
+                                  onSelect={(date) => setFormData(prev => ({ ...prev, date: date ? format(date, "yyyy-MM-dd") : "" }))}
+                                  disabled={(date) => date < new Date() || date.getDay() === 0}
+                                  initialFocus
+                                  locale={ptBR}
+                                />
+                              </PopoverContent>
+                            </Popover>
                           </div>
                           <div className="space-y-2">
                             <Label className="text-[10px] uppercase tracking-widest font-bold">Horário</Label>
