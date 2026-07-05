@@ -331,7 +331,7 @@ export function StyleCatalog() {
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="relative">
-                          <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                          <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>
                             <PopoverTrigger asChild>
                               <Button
                                 type="button"
@@ -350,7 +350,6 @@ export function StyleCatalog() {
                               align="center"
                               side="top"
                               sideOffset={10}
-                              modal={true}
                             >
                               <Calendar
                                 mode="single"

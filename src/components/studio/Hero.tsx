@@ -279,7 +279,7 @@ export function Hero() {
                             <Input required placeholder="Seu nome completo" className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                            <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>
                               <PopoverTrigger asChild>
                                 <Button
                                   type="button"
@@ -298,7 +298,6 @@ export function Hero() {
                                 align="center"
                                 side="top"
                                 sideOffset={10}
-                                modal={true}
                               >
                                 <Calendar
                                   mode="single"

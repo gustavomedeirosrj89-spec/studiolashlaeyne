@@ -227,7 +227,7 @@ export function Portfolio() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div className="space-y-2 text-left">
                             <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Data Desejada</Label>
-                            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                            <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>
                               <PopoverTrigger asChild>
                                 <Button
                                   type="button"
@@ -246,7 +246,6 @@ export function Portfolio() {
                                 align="center"
                                 side="top"
                                 sideOffset={10}
-                                modal={true}
                               >
                                 <Calendar
                                   mode="single"
