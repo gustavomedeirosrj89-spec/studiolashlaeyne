@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -41,36 +40,34 @@ import { cn } from "@/lib/utils"
 const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20um%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
 
 const ALL_TIME_SLOTS = [
-  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
-  "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", 
-  "17:00", "17:30", "18:00"
+  "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
 ]
 
 const topPickServices = [
   { 
     id: "vol-brasileiro", 
     name: "Volume Brasileiro", 
-    price: "R$ 180", 
+    price: "R$ 90", 
     category: "Mais Amado",
-    maintenance: "21 dias",
+    maintenance: "R$ 60",
     description: "Moderno e marcante.",
     fullDescription: "Fios em formato de Y que proporcionam volume moderado com extrema leveza. É a escolha perfeita para quem quer sair do clássico sem perder a sofisticação.",
   },
   { 
     id: "vol-egipcio", 
     name: "Volume Egípcio", 
-    price: "R$ 190", 
+    price: "R$ 90", 
     category: "Tecnológico",
-    maintenance: "21 dias",
+    maintenance: "R$ 65",
     description: "Preenchimento e durabilidade.",
     fullDescription: "A técnica que utiliza fios em W para criar um efeito de volume denso e marcante com excelente retenção e leveza absoluta.",
   },
   { 
     id: "fox-eyes", 
     name: "Fox Eyes", 
-    price: "R$ 220", 
+    price: "R$ 110", 
     category: "Tendência",
-    maintenance: "21 dias",
+    maintenance: "R$ 65",
     description: "Efeito lifting sensual.",
     fullDescription: "Mapeamento estratégico que alonga o canto externo para um olhar de supermodelo, criando um efeito lifting imediato e sofisticado.",
   }
@@ -248,9 +245,6 @@ export function Hero() {
                     </div>
                   </DialogTrigger>
                   <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh]">
-                    <DialogHeader className="sr-only">
-                      <DialogTitle>{pick.name}</DialogTitle>
-                    </DialogHeader>
                     <div className="grid grid-cols-1 lg:grid-cols-12">
                       <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
                         {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" unoptimized={img.imageUrl.includes('ibb.co')} />}

@@ -10,15 +10,16 @@ export interface Agendamento { id: string; clienteId: string; servicoId: string;
 export interface Cupom { id: string; nome: string; tipo: 'percentual' | 'fixo'; valor: number; ativo: boolean; }
 export interface AppState { servicos: Servico[]; clientes: Cliente[]; agendamentos: Agendamento[]; cupons: Cupom[]; horariosBase: string[]; }
 
-// ─── ESTADO INICIAL ───
+// ─── ESTADO INICIAL ATUALIZADO COM NOVOS PREÇOS ───
 const ESTADO_INICIAL: AppState = {
   servicos: [
-    { id: 's1', nome: 'Efeito Rimel',  valor: 150, duracao: 90,  descricao: 'Aplicação individual, elegância discreta.', foto: null, ativo: true },
-    { id: 's2', nome: 'Volume Brasileiro', valor: 180, duracao: 120, descricao: 'Fios em Y, volume e leveza.', foto: null, ativo: true },
-    { id: 's3', nome: 'Volume Express', valor: 130, duracao: 45,  descricao: 'Versão express mais rápida e leve de qualquer estilo.', foto: null, ativo: true },
-    { id: 's4', nome: 'Efeito Sirena',  valor: 160, duracao: 100, descricao: 'Natural, delicado e elegante.', foto: null, ativo: true },
-    { id: 's5', nome: 'Volume Egípcio',  valor: 190, duracao: 120, descricao: 'Fios em W, volume tecnológico.', foto: null, ativo: true },
-    { id: 's6', nome: 'Fox Eyes',       valor: 220, duracao: 135, descricao: 'Efeito lifting sensual alongado.', foto: null, ativo: true },
+    { id: 's1', nome: 'Efeito Rímel',      valor: 90,  duracao: 90,  descricao: 'Aplicação individual, elegância discreta.', foto: null, ativo: true },
+    { id: 's2', nome: 'Volume Brasileiro', valor: 90,  duracao: 120, descricao: 'Fios em Y, volume e leveza.', foto: null, ativo: true },
+    { id: 's3', nome: 'Volume Express',    valor: 75,  duracao: 45,  descricao: 'Versão express mais rápida e leve.', foto: null, ativo: true },
+    { id: 's4', nome: 'Efeito Sirena',     valor: 80,  duracao: 100, descricao: 'Natural, delicado e elegante.', foto: null, ativo: true },
+    { id: 's5', nome: 'Volume Egípcio',    valor: 90,  duracao: 120, descricao: 'Fios em W, volume tecnológico.', foto: null, ativo: true },
+    { id: 's6', nome: 'Fox Eyes',          valor: 110, duracao: 135, descricao: 'Efeito lifting sensual alongado.', foto: null, ativo: true },
+    { id: 's7', nome: 'Volume Marrom',     valor: 90,  duracao: 120, descricao: 'Efeito ultra natural e sofisticado.', foto: null, ativo: true },
   ],
   clientes: [],
   agendamentos: [],
@@ -90,6 +91,6 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
 export function useAdmin() {
   const ctx = useContext(AppContext);
-  if (!ctx) return { state: ESTADO_INICIAL, dispatch: () => {} }; // Fallback para SSR
+  if (!ctx) return { state: ESTADO_INICIAL, dispatch: () => {} };
   return ctx;
 }

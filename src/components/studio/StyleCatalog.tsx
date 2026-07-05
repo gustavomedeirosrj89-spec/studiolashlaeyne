@@ -37,19 +37,30 @@ import { FirestorePermissionError } from "@/firebase/errors"
 import { cn } from "@/lib/utils"
 
 const ALL_TIME_SLOTS = [
-  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
-  "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", 
-  "17:00", "17:30", "18:00"
+  "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
 ]
 
 const styles = [
   {
+    id: "express",
+    title: "Volume Express",
+    category: "Praticidade",
+    price: "R$ 75",
+    duration: "45min",
+    maintenance: "R$ 45",
+    description: "Versão express mais rápida e leve.",
+    fullDescription: "A cliente pode escolher qualquer estilo disponível do catálogo, porém aplicado na versão express com procedimento mais rápido e leve. Ideal para quem tem pouco tempo.",
+    imageId: "lash-express",
+    benefits: ["Rapidez", "Leveza", "Qualquer estilo"],
+    tags: ["Naturais", "Mais Procurados"]
+  },
+  {
     id: "fio",
-    title: "Efeito Rimel",
+    title: "Efeito Rímel",
     category: "Natural",
-    price: "R$ 150",
+    price: "R$ 90",
     duration: "1h 30min",
-    maintenance: "15 a 30 dias",
+    maintenance: "R$ 50",
     description: "Naturalidade pura.",
     fullDescription: "Aplicação individual para um efeito de 'rímel perfeito' e elegância discreta. Ideal para o uso cotidiano.",
     imageId: "fio-a-fio",
@@ -57,38 +68,12 @@ const styles = [
     tags: ["Naturais"]
   },
   {
-    id: "brazilian",
-    title: "Volume Brasileiro",
-    category: "Mais Procurado",
-    price: "R$ 180",
-    duration: "2h",
-    maintenance: "21 dias",
-    description: "Moderno e marcante.",
-    fullDescription: "Fios em formato de Y que proporcionam volume moderado com extrema leveza. Queridinho do estúdio.",
-    imageId: "vol-brasileiro",
-    benefits: ["Efeito moderno", "Leveza", "Visual preenchido"],
-    tags: ["Mais Procurados"]
-  },
-  {
-    id: "express",
-    title: "Volume Express",
-    category: "Praticidade",
-    price: "R$ 130",
-    duration: "45min",
-    maintenance: "15 dias",
-    description: "Versão express mais rápida e leve.",
-    fullDescription: "A cliente pode escolher qualquer estilo disponível do catálogo, porém aplicado na versão express com procedimento mais rápido e leve.",
-    imageId: "lash-express",
-    benefits: ["Rapidez", "Leveza", "Qualquer estilo"],
-    tags: ["Naturais", "Mais Procurados"]
-  },
-  {
     id: "sirena",
     title: "Efeito Sirena",
     category: "Delicadeza",
-    price: "R$ 160",
+    price: "R$ 80",
     duration: "1h 40min",
-    maintenance: "15 a 21 dias",
+    maintenance: "R$ 50",
     description: "Natural, delicado e elegante.",
     fullDescription: "Um efeito natural, delicado e menos preenchido, trazendo leveza e elegância ao olhar. Ideal para quem busca um realce sofisticado sem excessos.",
     imageId: "sirena-effect",
@@ -96,25 +81,25 @@ const styles = [
     tags: ["Naturais", "Premium"]
   },
   {
-    id: "brazilian-marrom",
-    title: "Volume Brasileiro Marrom",
-    category: "Tendência",
-    price: "R$ 200",
+    id: "brazilian",
+    title: "Volume Brasileiro",
+    category: "Mais Procurado",
+    price: "R$ 90",
     duration: "2h",
-    maintenance: "21 dias",
-    description: "Elegância sutil e natural.",
-    fullDescription: "A técnica queridinha agora em tons de marrom chocolate. Perfeito para loiras ou para quem busca um olhar suave e sofisticado.",
-    imageId: "vol-brasileiro-marrom",
-    benefits: ["Efeito ultra natural", "Suavidade no olhar", "Ideal para peles claras"],
-    tags: ["Naturais", "Premium"]
+    maintenance: "R$ 60",
+    description: "Moderno e marcante.",
+    fullDescription: "Fios em formato de Y que proporcionam volume moderado com extrema leveza. Queridinho do estúdio.",
+    imageId: "vol-brasileiro",
+    benefits: ["Efeito moderno", "Leveza", "Visual preenchido"],
+    tags: ["Mais Procurados"]
   },
   {
     id: "egyptian",
     title: "Volume Egípcio",
     category: "Tendência",
-    price: "R$ 190",
+    price: "R$ 90",
     duration: "2h",
-    maintenance: "21 dias",
+    maintenance: "R$ 65",
     description: "Volume tecnológico em W.",
     fullDescription: "Fios em formato de W que garantem um volume mais denso que o brasileiro, com excelente retenção e um visual moderno e preenchido.",
     imageId: "vol-egipcio",
@@ -122,12 +107,25 @@ const styles = [
     tags: ["Volumosos", "Premium"]
   },
   {
+    id: "brazilian-marrom",
+    title: "Volume Marrom",
+    category: "Tendência",
+    price: "R$ 90",
+    duration: "2h",
+    maintenance: "R$ 65",
+    description: "Elegância sutil e natural.",
+    fullDescription: "A técnica queridinha agora em tons de marrom chocolate. Perfeito para loiras ou para quem busca um olhar suave e sofisticado.",
+    imageId: "vol-brasileiro-marrom",
+    benefits: ["Efeito ultra natural", "Suavidade no olhar", "Ideal para peles claras"],
+    tags: ["Naturais", "Premium"]
+  },
+  {
     id: "fox",
     title: "Fox Eyes",
-    category: "Tendência",
-    price: "R$ 220",
+    category: "Premium",
+    price: "R$ 110",
     duration: "2h 15min",
-    maintenance: "21 dias",
+    maintenance: "R$ 65",
     description: "Efeito lifting sensual.",
     fullDescription: "Mapeamento que alonga o canto externo para um olhar de supermodelo, criando um efeito lifting imediato.",
     imageId: "fox-eyes",
@@ -136,7 +134,7 @@ const styles = [
   }
 ]
 
-const categories = ["Todos", "Naturais", "Volumosos", "Mais Procurados", "Premium", "Equilibrado"]
+const categories = ["Todos", "Naturais", "Volumosos", "Mais Procurados", "Premium"]
 
 export function StyleCatalog() {
   const [activeFilter, setActiveFilter] = useState("Todos")
@@ -266,7 +264,7 @@ export function StyleCatalog() {
                           {style.price}
                         </span>
                         <span className="text-white/40 text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] block pt-1">
-                          MANUT. {style.maintenance.toUpperCase()}
+                          MANUTENÇÃO {style.maintenance.toUpperCase()}
                         </span>
                       </div>
                       
@@ -279,9 +277,6 @@ export function StyleCatalog() {
               </DialogTrigger>
 
               <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh]">
-                <DialogHeader className="sr-only">
-                  <DialogTitle>{style.title}</DialogTitle>
-                </DialogHeader>
                 <div className="grid grid-cols-1 lg:grid-cols-12">
                   <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
                     {img && (

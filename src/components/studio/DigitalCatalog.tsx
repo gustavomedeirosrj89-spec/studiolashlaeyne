@@ -1,4 +1,3 @@
-
 import { 
   Clock, 
   Info,
@@ -15,22 +14,22 @@ import { Separator } from "@/components/ui/separator"
 export function DigitalCatalog() {
   const maintenances = [
     { 
-      label: "Manutenção 15 Dias", 
-      price: "R$ 100", 
-      styles: "Mega Volume, Volume Egípcio",
-      desc: "Recomendado para quem exige cílios impecáveis, densos e com preenchimento total a todo momento." 
+      label: "Express & Clássicos", 
+      price: "A partir de R$ 45", 
+      styles: "Volume Express, Efeito Rímel, Sirena",
+      desc: "Manutenção rápida para quem busca praticidade e naturalidade no dia a dia." 
     },
     { 
-      label: "Manutenção 21 Dias", 
-      price: "R$ 130", 
-      styles: "Volume Brasileiro, Fox Eyes, Híbrido",
-      desc: "O intervalo ideal para a maioria das técnicas, mantendo a arquitetura e o design original do olhar." 
+      label: "Volumes Tecnológicos", 
+      price: "A partir de R$ 60", 
+      styles: "Brasileiro, Egípcio, Marrom",
+      desc: "Ciclo ideal de 21 dias para manter o preenchimento e a leveza dos fios tecnológicos." 
     },
     { 
-      label: "Manutenção 30 Dias", 
-      price: "R$ 160", 
-      styles: "Efeito Rimel",
-      desc: "Para fios com ciclo de crescimento lento ou para quem busca apenas um realce sutil e natural." 
+      label: "Premium & Design", 
+      price: "R$ 65", 
+      styles: "Fox Eyes",
+      desc: "Manutenção minuciosa para preservar o design lifting e a arquitetura do olhar." 
     }
   ]
 
@@ -86,7 +85,7 @@ export function DigitalCatalog() {
             <div className="p-6 rounded-2xl bg-secondary/30 flex gap-4 items-start">
               <Info className="w-5 h-5 text-accent shrink-0 mt-0.5" />
               <p className="text-xs text-muted-foreground italic leading-relaxed">
-                * Manutenções após 30 dias serão cobradas como uma nova aplicação completa devido ao ciclo natural de renovação dos fios.
+                * Manutenções após 21 dias podem estar sujeitas a reavaliação conforme o ciclo natural de renovação dos fios.
               </p>
             </div>
           </div>
@@ -109,7 +108,6 @@ export function DigitalCatalog() {
                     <span className="text-lg font-light tracking-wide text-primary-foreground/90 group-hover:text-primary transition-colors">
                       {item.label}
                     </span>
-                    {i < premiumFeatures.length - 1 && <Separator className="bg-muted/10 hidden" />}
                   </div>
                 ))}
               </div>
