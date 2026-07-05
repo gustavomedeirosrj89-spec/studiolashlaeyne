@@ -131,12 +131,16 @@ export function Hero() {
         const [bH, bM] = booking.time.split(':').map(Number)
         const bStart = new Date(selectedDate)
         bStart.setHours(bH, bM, 0, 0)
+        
+        // Se o agendamento no banco não tem duração, assume manutenção (90 min)
         const bDuration = booking.duration || 90
         const bEnd = addMinutes(bStart, bDuration)
         
         const newStart = currentSlot
         const newEnd = slotEndTime
 
+        // Lógica de sobreposição de intervalos [start, end]
+        // (A_start < B_end && B_start < A_end)
         return (newStart < bEnd && bStart < newEnd)
       })
 

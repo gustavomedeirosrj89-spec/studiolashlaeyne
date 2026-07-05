@@ -142,6 +142,7 @@ export function Portfolio() {
         const [bH, bM] = booking.time.split(':').map(Number)
         const bStart = new Date(selectedDate)
         bStart.setHours(bH, bM, 0, 0)
+        
         const bDuration = booking.duration || 90
         const bEnd = addMinutes(bStart, bDuration)
         
