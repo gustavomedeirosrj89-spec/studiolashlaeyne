@@ -77,7 +77,6 @@ const topPickServices = [
 export function Hero() {
   const [mounted, setMounted] = useState(false)
   const [formData, setFormData] = useState({ name: "", serviceType: "", date: "", time: "" })
-  const [calendarOpen, setCalendarOpen] = useState(false)
   const [existingBookings, setExistingBookings] = useState<any[]>([])
   const firestore = useFirestore()
   const specialistImg = PlaceHolderImages.find(img => img.id === "specialist-photo")
@@ -109,25 +108,25 @@ export function Hero() {
     if (dayOfWeek === 0) return []
 
     const isSaturday = dayOfWeek === 6
-    const startHour = isSaturday ? 8 : 9
-    const endHour = isSaturday ? 14 : 17
-    const endMinute = isSaturday ? 0 : 30
+    const closingTime = new Date(selectedDate)
+    closingTime.setHours(isSaturday ? 14 : 17, isSaturday ? 0 : 30, 0, 0)
+
+    let lastAvailableStartTime = new Date(selectedDate)
+    if (formData.serviceType === 'cilios_completo') {
+      // Regra especial: Último horário fixo às 17:00 (Seg-Sex) ou 13:30 (Sábado)
+      lastAvailableStartTime.setHours(isSaturday ? 13 : 17, isSaturday ? 30 : 0, 0, 0)
+    } else {
+      // Regra normal: Início + Duração <= Fechamento
+      lastAvailableStartTime = new Date(closingTime.getTime() - (selectedService.duration * 60000))
+    }
 
     const slots: string[] = []
-    const closingTime = new Date(selectedDate)
-    closingTime.setHours(endHour, endMinute, 0, 0)
-
     let currentSlot = new Date(selectedDate)
-    currentSlot.setHours(startHour, 0, 0, 0)
+    currentSlot.setHours(isSaturday ? 8 : 9, 0, 0, 0)
 
-    // Gerar horários de 30 em 30 minutos
-    while (true) {
+    while (currentSlot <= lastAvailableStartTime) {
       const slotEndTime = addMinutes(currentSlot, selectedService.duration)
       
-      // Regra de Corte: Início + Duração <= Fechamento
-      if (slotEndTime > closingTime) break
-
-      // Verificação de conflito (Sobreposição de intervalos)
       const isConflicting = existingBookings.some(booking => {
         const [bH, bM] = booking.time.split(':').map(Number)
         const bStart = new Date(selectedDate)
@@ -138,7 +137,6 @@ export function Hero() {
         const newStart = currentSlot
         const newEnd = slotEndTime
 
-        // Sobreposição: [newStart, newEnd) se sobrepõe a [bStart, bEnd)
         return (newStart < bEnd && bStart < newEnd)
       })
 
@@ -146,7 +144,7 @@ export function Hero() {
         slots.push(format(currentSlot, "HH:mm"))
       }
 
-      currentSlot = addMinutes(currentSlot, 30) // Passo fixo de 30 minutos
+      currentSlot = addMinutes(currentSlot, 30)
     }
 
     return slots
@@ -383,7 +381,6 @@ export function Hero() {
                                     selected={formData.date ? parseISO(formData.date) : undefined}
                                     onSelect={(date) => {
                                       setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }));
-                                      setCalendarOpen(false);
                                     }}
                                     disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
                                     initialFocus
