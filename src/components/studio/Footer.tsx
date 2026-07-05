@@ -58,7 +58,11 @@ export function Footer() {
               <Clock className="w-6 h-6 text-primary" />
             </div>
             <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-primary">Atendimento</p>
-            <p className="text-muted font-light">Seg-Sex: 09h às 19h | Sáb: 09h às 14h</p>
+            <p className="text-muted font-light">
+              Seg-Sex: 09:00 às 17:30 <br />
+              Sáb: 08:00 às 14:00 <br />
+              Dom: Fechado
+            </p>
           </div>
         </div>
 

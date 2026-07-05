@@ -1,7 +1,6 @@
-
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Image from "next/image"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import { Badge } from "@/components/ui/badge"
@@ -28,7 +27,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import { format, parseISO } from "date-fns"
+import { format, parseISO, addMinutes, isBefore, startOfDay, getDay } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import {
   Select,
@@ -37,10 +36,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore"
+import { useFirestore } from "@/firebase"
+import { errorEmitter } from "@/firebase/error-emitter"
+import { FirestorePermissionError } from "@/firebase/errors"
 import { cn } from "@/lib/utils"
 
-const ALL_TIME_SLOTS = [
-  "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
+const SERVICE_TYPES = [
+  { id: "cilios_completo", label: "Cílios completo (aplicação)", duration: 180 },
+  { id: "manutencao", label: "Manutenção", duration: 90 },
 ]
 
 const services = [
@@ -88,29 +92,93 @@ const services = [
 
 export function Portfolio() {
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null)
-  const [formData, setFormData] = useState({ name: "", date: "", time: "" })
+  const [formData, setFormData] = useState({ name: "", serviceType: "", date: "", time: "" })
   const [calendarOpen, setCalendarOpen] = useState(false)
+  const [existingBookings, setExistingBookings] = useState<any[]>([])
+  const firestore = useFirestore()
+
+  useEffect(() => {
+    async function fetchBookings() {
+      if (!firestore || !formData.date) return
+      const q = query(collection(firestore, "appointments"), where("date", "==", formData.date))
+      const querySnapshot = await getDocs(q)
+      const bookings = querySnapshot.docs.map(doc => doc.data())
+      setExistingBookings(bookings)
+    }
+    fetchBookings()
+  }, [firestore, formData.date])
 
   const availableTimeSlots = useMemo(() => {
-    if (!formData.date) return ALL_TIME_SLOTS
-    const selectedDate = parseISO(formData.date)
-    const dayOfWeek = selectedDate.getDay()
+    if (!formData.date || !formData.serviceType) return []
 
-    if (dayOfWeek === 6) { // Saturday
-      return ALL_TIME_SLOTS.filter(time => {
-        const hour = parseInt(time.split(":")[0])
-        return hour < 14
+    const selectedType = SERVICE_TYPES.find(s => s.id === formData.serviceType)
+    if (!selectedType) return []
+
+    const selectedDate = parseISO(formData.date)
+    const dayOfWeek = getDay(selectedDate) 
+    if (dayOfWeek === 0) return []
+
+    const isSaturday = dayOfWeek === 6
+    const startHour = isSaturday ? 8 : 9
+    const endHour = isSaturday ? 14 : 17
+    const endMinute = isSaturday ? 0 : 30
+
+    const slots: string[] = []
+    const closingTime = new Date(selectedDate)
+    closingTime.setHours(endHour, endMinute, 0)
+
+    let currentSlot = new Date(selectedDate)
+    currentSlot.setHours(startHour, 0, 0)
+
+    while (true) {
+      const slotEndTime = addMinutes(currentSlot, selectedType.duration)
+      if (isBefore(closingTime, slotEndTime)) break
+
+      const timeString = format(currentSlot, "HH:mm")
+      const isConflicting = existingBookings.some(booking => {
+        const bStart = parseISO(`${booking.date}T${booking.time}`)
+        const bDuration = booking.duration || 90
+        const bEnd = addMinutes(bStart, bDuration)
+        return (currentSlot < bEnd && bStart < slotEndTime)
       })
+
+      if (!isConflicting) slots.push(timeString)
+      currentSlot = addMinutes(currentSlot, selectedType.duration)
     }
-    return ALL_TIME_SLOTS
-  }, [formData.date])
+    return slots
+  }, [formData.date, formData.serviceType, existingBookings])
 
   const handleBooking = (e: React.FormEvent) => {
     e.preventDefault()
     if (!selectedService || !formData.name || !formData.date || !formData.time) return
 
+    const selectedType = SERVICE_TYPES.find(s => s.id === formData.serviceType)
+
+    if (firestore) {
+      const data = {
+        clientName: formData.name,
+        serviceName: selectedService.title,
+        tipoServico: formData.serviceType,
+        duration: selectedType?.duration || 0,
+        date: formData.date,
+        time: formData.time,
+        status: "pendente",
+        createdAt: serverTimestamp(),
+      }
+      
+      addDoc(collection(firestore, "appointments"), data).catch(async () => {
+        const permissionError = new FirestorePermissionError({
+          path: "appointments",
+          operation: "create",
+          requestResourceData: data,
+        })
+        errorEmitter.emit("permission-error", permissionError)
+      })
+    }
+
     const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
-    const message = `Olá! Gostaria de agendar o procedimento ${selectedService.title.toUpperCase()} ✨\nMeu nome é ${formData.name}.\nData desejada: ${dataFormatada}.\nHorário desejado: ${formData.time}.`
+    const typeLabel = selectedType?.label || ""
+    const message = `Olá! Gostaria de agendar o procedimento ${selectedService.title.toUpperCase()} (${typeLabel}) ✨\nMeu nome é ${formData.name}.\nData desejada: ${dataFormatada}.\nHorário desejado: ${formData.time}.`
 
     const whatsappUrl = `https://wa.me/5588996363178?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
@@ -200,7 +268,7 @@ export function Portfolio() {
                     </div>
 
                     <div className="p-8 md:p-10 space-y-6 flex flex-col justify-center">
-                      <DialogHeader className="space-y-2">
+                      <DialogHeader className="space-y-2 text-left">
                         <div className="flex items-center gap-2 text-primary">
                           <Sparkles className="w-4 h-4" />
                           <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Procedimento Premium</span>
@@ -215,25 +283,43 @@ export function Portfolio() {
 
                       <form onSubmit={handleBooking} className="space-y-4 pt-4 border-t border-primary/10">
                         <div className="space-y-2 text-left">
-                          <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Seu Nome Completo</Label>
+                          <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Nome Completo</Label>
                           <Input 
                             required
-                            placeholder="Ex: Maria Silva" 
-                            className="h-12 bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl"
+                            placeholder="Seu nome" 
+                            className="h-12 bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl px-6"
                             value={formData.name}
                             onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                           />
                         </div>
+
+                        <div className="space-y-2 text-left">
+                          <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Tipo de Serviço *</Label>
+                          <Select onValueChange={(val) => setFormData(p => ({...p, serviceType: val, date: "", time: ""}))} required>
+                            <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0 rounded-2xl px-6">
+                              <SelectValue placeholder="Selecione" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
+                              {SERVICE_TYPES.map(st => (
+                                <SelectItem key={st.id} value={st.id} className="rounded-xl">
+                                  {st.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div className="space-y-2 text-left">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Data Desejada</Label>
+                            <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Data</Label>
                             <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>
                               <PopoverTrigger asChild>
                                 <Button
                                   type="button"
+                                  disabled={!formData.serviceType}
                                   variant={"outline"}
                                   className={cn(
-                                    "h-12 w-full justify-start text-left font-normal bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl",
+                                    "h-12 w-full justify-start text-left font-normal bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl px-6",
                                     !formData.date && "text-muted-foreground"
                                   )}
                                 >
@@ -254,7 +340,7 @@ export function Portfolio() {
                                     setFormData(prev => ({ ...prev, date: date ? format(date, "yyyy-MM-dd") : "" }));
                                     setCalendarOpen(false);
                                   }}
-                                  disabled={(date) => date < new Date() || date.getDay() === 0}
+                                  disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
                                   initialFocus
                                   locale={ptBR}
                                 />
@@ -263,8 +349,8 @@ export function Portfolio() {
                           </div>
                           <div className="space-y-2 text-left">
                             <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Horário</Label>
-                            <Select onValueChange={(val) => setFormData(prev => ({ ...prev, time: val }))} required>
-                              <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0 rounded-2xl">
+                            <Select onValueChange={(val) => setFormData(prev => ({ ...prev, time: val }))} required disabled={!formData.date}>
+                              <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0 rounded-2xl px-6">
                                 <SelectValue placeholder="Selecione" />
                               </SelectTrigger>
                               <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
@@ -280,7 +366,7 @@ export function Portfolio() {
 
                         <Button type="submit" className="w-full h-14 rounded-full bg-primary text-white hover:bg-primary/90 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-widest shadow-lg shadow-primary/20 mt-4">
                           <MessageCircle className="w-5 h-5" />
-                          Confirmar Agendamento
+                          CONFIRMAR AGENDAMENTO
                         </Button>
                       </form>
                     </div>

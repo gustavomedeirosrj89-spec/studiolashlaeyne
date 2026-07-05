@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -21,7 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import { format, parseISO } from "date-fns"
+import { format, parseISO, addMinutes, isBefore, startOfDay, getDay } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import {
   Select,
@@ -30,14 +29,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore"
 import { useFirestore } from "@/firebase"
 import { errorEmitter } from "@/firebase/error-emitter"
 import { FirestorePermissionError } from "@/firebase/errors"
 import { cn } from "@/lib/utils"
 
-const ALL_TIME_SLOTS = [
-  "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
+const SERVICE_TYPES = [
+  { id: "cilios_completo", label: "Cílios completo (aplicação)", duration: 180 },
+  { id: "manutencao", label: "Manutenção", duration: 90 },
 ]
 
 const styles = [
@@ -138,28 +138,66 @@ const categories = ["Todos", "Naturais", "Volumosos", "Mais Procurados", "Premiu
 
 export function StyleCatalog() {
   const [activeFilter, setActiveFilter] = useState("Todos")
-  const [formData, setFormData] = useState({ name: "", date: "", time: "" })
+  const [formData, setFormData] = useState({ name: "", serviceType: "", date: "", time: "" })
   const [mounted, setMounted] = useState(false)
   const [calendarOpen, setCalendarOpen] = useState(false)
+  const [existingBookings, setExistingBookings] = useState<any[]>([])
   const firestore = useFirestore()
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  const availableTimeSlots = useMemo(() => {
-    if (!formData.date) return ALL_TIME_SLOTS
-    const selectedDate = parseISO(formData.date)
-    const dayOfWeek = selectedDate.getDay()
-
-    if (dayOfWeek === 6) { // Sábado
-      return ALL_TIME_SLOTS.filter(time => {
-        const hour = parseInt(time.split(":")[0])
-        return hour < 14
-      })
+  useEffect(() => {
+    async function fetchBookings() {
+      if (!firestore || !formData.date) return
+      const q = query(collection(firestore, "appointments"), where("date", "==", formData.date))
+      const querySnapshot = await getDocs(q)
+      const bookings = querySnapshot.docs.map(doc => doc.data())
+      setExistingBookings(bookings)
     }
-    return ALL_TIME_SLOTS
-  }, [formData.date])
+    fetchBookings()
+  }, [firestore, formData.date])
+
+  const availableTimeSlots = useMemo(() => {
+    if (!formData.date || !formData.serviceType) return []
+
+    const selectedService = SERVICE_TYPES.find(s => s.id === formData.serviceType)
+    if (!selectedService) return []
+
+    const selectedDate = parseISO(formData.date)
+    const dayOfWeek = getDay(selectedDate) 
+    if (dayOfWeek === 0) return []
+
+    const isSaturday = dayOfWeek === 6
+    const startHour = isSaturday ? 8 : 9
+    const endHour = isSaturday ? 14 : 17
+    const endMinute = isSaturday ? 0 : 30
+
+    const slots: string[] = []
+    const closingTime = new Date(selectedDate)
+    closingTime.setHours(endHour, endMinute, 0)
+
+    let currentSlot = new Date(selectedDate)
+    currentSlot.setHours(startHour, 0, 0)
+
+    while (true) {
+      const slotEndTime = addMinutes(currentSlot, selectedService.duration)
+      if (isBefore(closingTime, slotEndTime)) break
+
+      const timeString = format(currentSlot, "HH:mm")
+      const isConflicting = existingBookings.some(booking => {
+        const bStart = parseISO(`${booking.date}T${booking.time}`)
+        const bDuration = booking.duration || 90
+        const bEnd = addMinutes(bStart, bDuration)
+        return (currentSlot < bEnd && bStart < slotEndTime)
+      })
+
+      if (!isConflicting) slots.push(timeString)
+      currentSlot = addMinutes(currentSlot, selectedService.duration)
+    }
+    return slots
+  }, [formData.date, formData.serviceType, existingBookings])
 
   const filteredStyles = styles.filter(style => 
     activeFilter === "Todos" || style.tags.includes(activeFilter)
@@ -167,11 +205,14 @@ export function StyleCatalog() {
 
   const handleBooking = (title: string) => (e: React.FormEvent) => {
     e.preventDefault()
+    const selectedService = SERVICE_TYPES.find(s => s.id === formData.serviceType)
 
     if (firestore) {
       const data = {
         clientName: formData.name,
         serviceName: title,
+        tipoServico: formData.serviceType,
+        duration: selectedService?.duration || 0,
         date: formData.date,
         time: formData.time,
         status: "pendente",
@@ -189,7 +230,8 @@ export function StyleCatalog() {
     }
 
     const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
-    const msg = `Olá! Gostaria de agendar: ${title.toUpperCase()}\nNome: ${formData.name}\nData: ${dataFormatada}\nHora: ${formData.time}`
+    const serviceLabel = selectedService?.label || ""
+    const msg = `Olá! Gostaria de agendar: ${title.toUpperCase()} (${serviceLabel})\nNome: ${formData.name}\nData: ${dataFormatada}\nHora: ${formData.time}`
     window.open(`https://wa.me/5588996363178?text=${encodeURIComponent(msg)}`, "_blank")
   }
 
@@ -320,21 +362,34 @@ export function StyleCatalog() {
 
                     <form onSubmit={handleBooking(style.title)} className="space-y-6 text-left border-t border-primary/10 pt-10 pb-8">
                       <div className="space-y-2">
-                        <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Solicitar Agendamento</Label>
-                        <Input 
-                          required 
-                          placeholder="Seu nome completo" 
-                          className="h-14 bg-secondary/10 border-none rounded-2xl px-6" 
-                          value={formData.name}
-                          onChange={(e) => setFormData(p => ({...p, name: e.target.value}))}
-                        />
+                        <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Seu Nome</Label>
+                        <Input required placeholder="Nome completo" className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
                       </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Tipo de Serviço *</Label>
+                        <Select onValueChange={(val) => setFormData(p => ({...p, serviceType: val, date: "", time: ""}))} required>
+                          <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
+                            <SelectValue placeholder="Selecione o serviço" />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
+                            {SERVICE_TYPES.map(st => (
+                              <SelectItem key={st.id} value={st.id} className="rounded-xl">
+                                {st.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="relative">
+                        <div className="space-y-2">
+                          <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Data</Label>
                           <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>
                             <PopoverTrigger asChild>
                               <Button
                                 type="button"
+                                disabled={!formData.serviceType}
                                 variant={"outline"}
                                 className={cn(
                                   "h-14 w-full justify-start text-left font-normal bg-secondary/10 border-none rounded-2xl px-6",
@@ -342,7 +397,7 @@ export function StyleCatalog() {
                                 )}
                               >
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
+                                {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Escolha a data</span>}
                               </Button>
                             </PopoverTrigger>
                             <PopoverContent 
@@ -358,25 +413,28 @@ export function StyleCatalog() {
                                   setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }));
                                   setCalendarOpen(false);
                                 }}
-                                disabled={(date) => date < new Date() || date.getDay() === 0}
+                                disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
                                 initialFocus
                                 locale={ptBR}
                               />
                             </PopoverContent>
                           </Popover>
                         </div>
-                        <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required>
-                          <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
-                            <SelectValue placeholder="Horário" />
-                          </SelectTrigger>
-                          <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
-                            {availableTimeSlots.map(time => (
-                              <SelectItem key={time} value={time} className="rounded-xl">
-                                {time}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <div className="space-y-2">
+                          <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Horário</Label>
+                          <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required disabled={!formData.date}>
+                            <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
+                              <SelectValue placeholder="Selecione o horário" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
+                              {availableTimeSlots.map(time => (
+                                <SelectItem key={time} value={time} className="rounded-xl">
+                                  {time}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
                       <Button className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.25em] flex gap-4 shadow-2xl transition-all hover:scale-[1.02]">
                         <MessageCircle className="w-7 h-7" />
