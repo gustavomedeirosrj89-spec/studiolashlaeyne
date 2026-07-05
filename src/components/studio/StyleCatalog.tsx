@@ -337,7 +337,7 @@ export function StyleCatalog() {
                 </div>
               </DialogTrigger>
 
-              <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh] z-[150]">
+              <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh] z-[150] flex flex-col">
                 {isSuccess ? (
                   <div className="p-20 text-center space-y-8 graceful-reveal">
                     <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
@@ -357,126 +357,128 @@ export function StyleCatalog() {
                     </Button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
-                    <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
-                      {img && (
-                        <Image 
-                          src={img.imageUrl} 
-                          alt={style.title} 
-                          fill 
-                          className="object-cover" 
-                          unoptimized={img.imageUrl.includes('ibb.co')}
-                        />
-                      )}
-                    </div>
-
-                    <div className="lg:col-span-7 p-10 md:p-14 space-y-10">
-                      <DialogHeader className="space-y-4 text-left">
-                        <div className="flex items-center gap-2 text-primary">
-                          <span className="text-[10px] uppercase tracking-[0.4em] font-black">Procedimento VIP</span>
-                        </div>
-                        <DialogTitle className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">
-                          {style.title}
-                        </DialogTitle>
-                        <p className="text-muted-foreground font-light text-base leading-relaxed max-w-lg">
-                          {style.fullDescription}
-                        </p>
-                      </DialogHeader>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-8 bg-secondary/30 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2">
-                          <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Manutenção</p>
-                          <div className="flex items-center gap-3 text-primary">
-                            <Clock className="w-5 h-5" />
-                            <span className="text-xl font-bold">{style.maintenance}</span>
-                          </div>
-                        </div>
-                        <div className="p-8 bg-primary/10 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2 border border-primary/10">
-                          <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Investimento</p>
-                          <p className="text-3xl font-headline text-primary font-bold">{style.price}</p>
-                        </div>
+                  <div className="flex-1 overflow-y-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-12">
+                      <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
+                        {img && (
+                          <Image 
+                            src={img.imageUrl} 
+                            alt={style.title} 
+                            fill 
+                            className="object-cover" 
+                            unoptimized={img.imageUrl.includes('ibb.co')}
+                          />
+                        )}
                       </div>
 
-                      <form onSubmit={handleBooking(style.title)} className="space-y-6 text-left border-t border-primary/10 pt-10 pb-8">
-                        <div className="space-y-2">
-                          <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Seu Nome</Label>
-                          <Input required placeholder="Nome completo" className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Tipo de Serviço *</Label>
-                          <Select onValueChange={(val) => setFormData(p => ({...p, serviceType: val, date: "", time: ""}))} required>
-                            <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
-                              <SelectValue placeholder="Selecione o serviço" />
-                            </SelectTrigger>
-                            <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
-                              {SERVICE_TYPES.map(st => (
-                                <SelectItem key={st.id} value={st.id} className="rounded-xl">
-                                  {st.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
+                      <div className="lg:col-span-7 p-10 md:p-14 space-y-10">
+                        <DialogHeader className="space-y-4 text-left">
+                          <div className="flex items-center gap-2 text-primary">
+                            <span className="text-[10px] uppercase tracking-[0.4em] font-black">Procedimento VIP</span>
+                          </div>
+                          <DialogTitle className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">
+                            {style.title}
+                          </DialogTitle>
+                          <p className="text-muted-foreground font-light text-base leading-relaxed max-w-lg">
+                            {style.fullDescription}
+                          </p>
+                        </DialogHeader>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Data</Label>
-                            <Popover modal={true}>
-                              <PopoverTrigger asChild>
-                                <Button
-                                  type="button"
-                                  disabled={!formData.serviceType}
-                                  variant={"outline"}
-                                  className={cn(
-                                    "h-14 w-full justify-start text-left font-normal bg-secondary/10 border-none rounded-2xl px-6",
-                                    !formData.date && "text-muted-foreground"
-                                  )}
-                                >
-                                  <CalendarIcon className="mr-2 h-4 w-4" />
-                                  {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Escolha a data</span>}
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent 
-                                className="w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[300] bg-white overflow-hidden" 
-                                align="center"
-                                side="top"
-                                sideOffset={10}
-                              >
-                                <Calendar
-                                  mode="single"
-                                  selected={formData.date ? parseISO(formData.date) : undefined}
-                                  onSelect={(date) => {
-                                    setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }));
-                                  }}
-                                  disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
-                                  initialFocus
-                                  locale={ptBR}
-                                />
-                              </PopoverContent>
-                            </Popover>
+                          <div className="p-8 bg-secondary/30 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2">
+                            <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Manutenção</p>
+                            <div className="flex items-center gap-3 text-primary">
+                              <Clock className="w-5 h-5" />
+                              <span className="text-xl font-bold">{style.maintenance}</span>
+                            </div>
                           </div>
+                          <div className="p-8 bg-primary/10 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2 border border-primary/10">
+                            <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Investimento</p>
+                            <p className="text-3xl font-headline text-primary font-bold">{style.price}</p>
+                          </div>
+                        </div>
+
+                        <form onSubmit={handleBooking(style.title)} className="space-y-6 text-left border-t border-primary/10 pt-10 pb-8">
                           <div className="space-y-2">
-                            <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Horário</Label>
-                            <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required disabled={!formData.date}>
+                            <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Seu Nome</Label>
+                            <Input required placeholder="Nome completo" className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Tipo de Serviço *</Label>
+                            <Select onValueChange={(val) => setFormData(p => ({...p, serviceType: val, date: "", time: ""}))} required>
                               <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
-                                <SelectValue placeholder="Selecione o horário" />
+                                <SelectValue placeholder="Selecione o serviço" />
                               </SelectTrigger>
                               <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
-                                {availableTimeSlots.map(time => (
-                                  <SelectItem key={time} value={time} className="rounded-xl">
-                                    {time}
+                                {SERVICE_TYPES.map(st => (
+                                  <SelectItem key={st.id} value={st.id} className="rounded-xl">
+                                    {st.label}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
                           </div>
-                        </div>
-                        <Button className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.25em] flex gap-4 shadow-2xl transition-all hover:scale-[1.02]">
-                          <MessageCircle className="w-7 h-7" />
-                          SOLICITAR AGENDAMENTO
-                        </Button>
-                      </form>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Data</Label>
+                              <Popover modal={true}>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    type="button"
+                                    disabled={!formData.serviceType}
+                                    variant={"outline"}
+                                    className={cn(
+                                      "h-14 w-full justify-start text-left font-normal bg-secondary/10 border-none rounded-2xl px-6",
+                                      !formData.date && "text-muted-foreground"
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Escolha a data</span>}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent 
+                                  className="w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[300] bg-white overflow-hidden" 
+                                  align="center"
+                                  side="top"
+                                  sideOffset={10}
+                                >
+                                  <Calendar
+                                    mode="single"
+                                    selected={formData.date ? parseISO(formData.date) : undefined}
+                                    onSelect={(date) => {
+                                      setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }));
+                                    }}
+                                    disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
+                                    initialFocus
+                                    locale={ptBR}
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                            </div>
+                            <div className="space-y-2">
+                              <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Horário</Label>
+                              <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required disabled={!formData.date}>
+                                <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
+                                  <SelectValue placeholder="Selecione o horário" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
+                                  {availableTimeSlots.map(time => (
+                                    <SelectItem key={time} value={time} className="rounded-xl">
+                                      {time}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          <Button className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.25em] flex gap-4 shadow-2xl transition-all hover:scale-[1.02]">
+                            <MessageCircle className="w-7 h-7" />
+                            SOLICITAR AGENDAMENTO
+                          </Button>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 )}

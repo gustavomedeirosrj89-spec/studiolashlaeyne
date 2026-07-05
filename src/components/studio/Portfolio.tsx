@@ -257,127 +257,129 @@ export function Portfolio() {
                   </div>
                 </DialogTrigger>
 
-                <DialogContent className="max-w-4xl p-0 overflow-hidden border-none bg-background rounded-[2rem] shadow-2xl z-[150]">
-                  <div className="grid grid-cols-1 md:grid-cols-2">
-                    <div className="relative aspect-square md:aspect-auto h-[250px] md:h-full">
-                      {img && (
-                        <Image 
-                          src={img.imageUrl} 
-                          alt={service.title}
-                          fill
-                          className="object-cover"
-                          unoptimized={img.imageUrl.includes('ibb.co')}
-                        />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-6 left-6">
-                         <span className="bg-primary text-white px-4 py-2 rounded-xl text-xl font-headline">
-                           {service.price}
-                         </span>
-                      </div>
-                    </div>
-
-                    <div className="p-8 md:p-10 space-y-6 flex flex-col justify-center">
-                      <DialogHeader className="space-y-2 text-left">
-                        <div className="flex items-center gap-2 text-primary">
-                          <Sparkles className="w-4 h-4" />
-                          <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Procedimento Premium</span>
-                        </div>
-                        <DialogTitle className="text-3xl md:text-4xl font-headline text-foreground leading-tight">
-                          {service.title}
-                        </DialogTitle>
-                        <p className="text-muted-foreground leading-relaxed text-sm font-light">
-                          {service.fullDescription}
-                        </p>
-                      </DialogHeader>
-
-                      <form onSubmit={handleBooking} className="space-y-4 pt-4 border-t border-primary/10">
-                        <div className="space-y-2 text-left">
-                          <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Nome Completo</Label>
-                          <Input 
-                            required
-                            placeholder="Seu nome" 
-                            className="h-12 bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl px-6"
-                            value={formData.name}
-                            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                <DialogContent className="max-w-4xl p-0 overflow-hidden border-none bg-background rounded-[2rem] shadow-2xl z-[150] flex flex-col max-h-[90vh]">
+                  <div className="flex-1 overflow-y-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2">
+                      <div className="relative aspect-square md:aspect-auto h-[250px] md:h-full">
+                        {img && (
+                          <Image 
+                            src={img.imageUrl} 
+                            alt={service.title}
+                            fill
+                            className="object-cover"
+                            unoptimized={img.imageUrl.includes('ibb.co')}
                           />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                        <div className="absolute bottom-6 left-6">
+                           <span className="bg-primary text-white px-4 py-2 rounded-xl text-xl font-headline">
+                             {service.price}
+                           </span>
                         </div>
+                      </div>
 
-                        <div className="space-y-2 text-left">
-                          <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Tipo de Serviço *</Label>
-                          <Select onValueChange={(val) => setFormData(p => ({...p, serviceType: val, date: "", time: ""}))} required>
-                            <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0 rounded-2xl px-6">
-                              <SelectValue placeholder="Selecione" />
-                            </SelectTrigger>
-                            <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
-                              {SERVICE_TYPES.map(st => (
-                                <SelectItem key={st.id} value={st.id} className="rounded-xl">
-                                  {st.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="space-y-2 text-left">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Data</Label>
-                            <Popover modal={true}>
-                              <PopoverTrigger asChild>
-                                <Button
-                                  type="button"
-                                  disabled={!formData.serviceType}
-                                  variant={"outline"}
-                                  className={cn(
-                                    "h-12 w-full justify-start text-left font-normal bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl px-6",
-                                    !formData.date && "text-muted-foreground"
-                                  )}
-                                >
-                                  <CalendarIcon className="mr-2 h-4 w-4" />
-                                  {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
-                                </Button>
-                              </PopoverTrigger>
-                              <PopoverContent 
-                                className="w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[300] bg-white overflow-hidden" 
-                                align="center"
-                                side="top"
-                                sideOffset={10}
-                              >
-                                <Calendar
-                                  mode="single"
-                                  selected={formData.date ? parseISO(formData.date) : undefined}
-                                  onSelect={(date) => {
-                                    setFormData(prev => ({ ...prev, date: date ? format(date, "yyyy-MM-dd") : "" }));
-                                  }}
-                                  disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
-                                  initialFocus
-                                  locale={ptBR}
-                                />
-                              </PopoverContent>
-                            </Popover>
+                      <div className="p-8 md:p-10 space-y-6 flex flex-col justify-center">
+                        <DialogHeader className="space-y-2 text-left">
+                          <div className="flex items-center gap-2 text-primary">
+                            <Sparkles className="w-4 h-4" />
+                            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Procedimento Premium</span>
                           </div>
+                          <DialogTitle className="text-3xl md:text-4xl font-headline text-foreground leading-tight">
+                            {service.title}
+                          </DialogTitle>
+                          <p className="text-muted-foreground leading-relaxed text-sm font-light">
+                            {service.fullDescription}
+                          </p>
+                        </DialogHeader>
+
+                        <form onSubmit={handleBooking} className="space-y-4 pt-4 border-t border-primary/10">
                           <div className="space-y-2 text-left">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Horário</Label>
-                            <Select onValueChange={(val) => setFormData(prev => ({ ...prev, time: val }))} required disabled={!formData.date}>
+                            <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Nome Completo</Label>
+                            <Input 
+                              required
+                              placeholder="Seu nome" 
+                              className="h-12 bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl px-6"
+                              value={formData.name}
+                              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                            />
+                          </div>
+
+                          <div className="space-y-2 text-left">
+                            <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Tipo de Serviço *</Label>
+                            <Select onValueChange={(val) => setFormData(p => ({...p, serviceType: val, date: "", time: ""}))} required>
                               <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0 rounded-2xl px-6">
                                 <SelectValue placeholder="Selecione" />
                               </SelectTrigger>
                               <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
-                                {availableTimeSlots.map(time => (
-                                  <SelectItem key={time} value={time} className="rounded-xl">
-                                    {time}
+                                {SERVICE_TYPES.map(st => (
+                                  <SelectItem key={st.id} value={st.id} className="rounded-xl">
+                                    {st.label}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
                             </Select>
                           </div>
-                        </div>
 
-                        <Button type="submit" className="w-full h-14 rounded-full bg-primary text-white hover:bg-primary/90 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-widest shadow-lg shadow-primary/20 mt-4">
-                          <MessageCircle className="w-5 h-5" />
-                          CONFIRMAR AGENDAMENTO
-                        </Button>
-                      </form>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-2 text-left">
+                              <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Data</Label>
+                              <Popover modal={true}>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    type="button"
+                                    disabled={!formData.serviceType}
+                                    variant={"outline"}
+                                    className={cn(
+                                      "h-12 w-full justify-start text-left font-normal bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl px-6",
+                                      !formData.date && "text-muted-foreground"
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent 
+                                  className="w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[300] bg-white overflow-hidden" 
+                                  align="center"
+                                  side="top"
+                                  sideOffset={10}
+                                >
+                                  <Calendar
+                                    mode="single"
+                                    selected={formData.date ? parseISO(formData.date) : undefined}
+                                    onSelect={(date) => {
+                                      setFormData(prev => ({ ...prev, date: date ? format(date, "yyyy-MM-dd") : "" }));
+                                    }}
+                                    disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
+                                    initialFocus
+                                    locale={ptBR}
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                            </div>
+                            <div className="space-y-2 text-left">
+                              <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Horário</Label>
+                              <Select onValueChange={(val) => setFormData(prev => ({ ...prev, time: val }))} required disabled={!formData.date}>
+                                <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0 rounded-2xl px-6">
+                                  <SelectValue placeholder="Selecione" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
+                                  {availableTimeSlots.map(time => (
+                                    <SelectItem key={time} value={time} className="rounded-xl">
+                                      {time}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+
+                          <Button type="submit" className="w-full h-14 rounded-full bg-primary text-white hover:bg-primary/90 flex items-center justify-center gap-3 text-sm font-bold uppercase tracking-widest shadow-lg shadow-primary/20 mt-4">
+                            <MessageCircle className="w-5 h-5" />
+                            CONFIRMAR AGENDAMENTO
+                          </Button>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </DialogContent>
