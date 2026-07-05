@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useMemo } from "react"
@@ -229,6 +230,7 @@ export function Portfolio() {
                             <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                               <PopoverTrigger asChild>
                                 <Button
+                                  type="button"
                                   variant={"outline"}
                                   className={cn(
                                     "h-12 w-full justify-start text-left font-normal bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl",
@@ -240,10 +242,11 @@ export function Portfolio() {
                                 </Button>
                               </PopoverTrigger>
                               <PopoverContent 
-                                className="w-screen max-w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[200] bg-white" 
+                                className="w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[300] bg-white overflow-hidden" 
                                 align="center"
                                 side="top"
                                 sideOffset={10}
+                                modal={true}
                               >
                                 <Calendar
                                   mode="single"

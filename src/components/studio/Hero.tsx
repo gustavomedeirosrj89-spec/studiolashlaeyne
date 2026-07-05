@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -281,6 +282,7 @@ export function Hero() {
                             <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                               <PopoverTrigger asChild>
                                 <Button
+                                  type="button"
                                   variant={"outline"}
                                   className={cn(
                                     "h-14 w-full justify-start text-left font-normal bg-secondary/10 border-none rounded-2xl px-6",
@@ -292,10 +294,11 @@ export function Hero() {
                                 </Button>
                               </PopoverTrigger>
                               <PopoverContent 
-                                className="w-screen max-w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[200] bg-white" 
+                                className="w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[300] bg-white overflow-hidden" 
                                 align="center"
                                 side="top"
                                 sideOffset={10}
+                                modal={true}
                               >
                                 <Calendar
                                   mode="single"
