@@ -142,6 +142,7 @@ export function StyleCatalog() {
   const [activeFilter, setActiveFilter] = useState("Todos")
   const [formData, setFormData] = useState({ name: "", date: "", time: "" })
   const [mounted, setMounted] = useState(false)
+  const [calendarOpen, setCalendarOpen] = useState(false)
   const firestore = useFirestore()
 
   useEffect(() => {
@@ -333,7 +334,7 @@ export function StyleCatalog() {
                         />
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <Popover>
+                        <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                           <PopoverTrigger asChild>
                             <Button
                               variant={"outline"}
@@ -346,11 +347,14 @@ export function StyleCatalog() {
                               {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0 rounded-3xl border-none shadow-2xl z-[150]" align="start">
+                          <PopoverContent className="w-[320px] p-0 rounded-3xl border-none shadow-2xl z-[150] bg-white" align="center">
                             <Calendar
                               mode="single"
                               selected={formData.date ? parseISO(formData.date) : undefined}
-                              onSelect={(date) => setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }))}
+                              onSelect={(date) => {
+                                setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }));
+                                setCalendarOpen(false);
+                              }}
                               disabled={(date) => date < new Date() || date.getDay() === 0}
                               initialFocus
                               locale={ptBR}
