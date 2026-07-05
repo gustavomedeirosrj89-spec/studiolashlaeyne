@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -291,17 +292,17 @@ export function StyleCatalog() {
                   </div>
 
                   <div className="lg:col-span-7 p-10 md:p-14 space-y-10">
-                    <div className="space-y-4 text-left">
+                    <DialogHeader className="space-y-4 text-left">
                       <div className="flex items-center gap-2 text-primary">
                         <span className="text-[10px] uppercase tracking-[0.4em] font-black">Procedimento VIP</span>
                       </div>
-                      <h2 className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">
+                      <DialogTitle className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">
                         {style.title}
-                      </h2>
+                      </DialogTitle>
                       <p className="text-muted-foreground font-light text-base leading-relaxed max-w-lg">
                         {style.fullDescription}
                       </p>
-                    </div>
+                    </DialogHeader>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="p-8 bg-secondary/30 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2">

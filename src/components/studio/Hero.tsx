@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -37,7 +38,7 @@ import { errorEmitter } from "@/firebase/error-emitter"
 import { FirestorePermissionError } from "@/firebase/errors"
 import { cn } from "@/lib/utils"
 
-const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20um%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
+const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20un%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
 
 const ALL_TIME_SLOTS = [
   "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
@@ -250,14 +251,14 @@ export function Hero() {
                         {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" unoptimized={img.imageUrl.includes('ibb.co')} />}
                       </div>
                       <div className="lg:col-span-7 p-10 md:p-14 space-y-10">
-                        <div className="space-y-4 text-left">
+                        <DialogHeader className="space-y-4 text-left">
                           <div className="flex items-center gap-2 text-primary">
                             <Sparkles className="w-4 h-4" />
                             <span className="text-[10px] uppercase tracking-[0.4em] font-black">Procedimento VIP</span>
                           </div>
-                          <h2 className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">{pick.name}</h2>
+                          <DialogTitle className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">{pick.name}</DialogTitle>
                           <p className="text-muted-foreground font-light text-base leading-relaxed max-w-lg">{pick.fullDescription}</p>
-                        </div>
+                        </DialogHeader>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div className="p-8 bg-secondary/30 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2">
                             <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Manutenção</p>
