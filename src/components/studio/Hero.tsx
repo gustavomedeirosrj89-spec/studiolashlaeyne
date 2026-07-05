@@ -5,7 +5,7 @@ import { useState, useMemo, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { MessageCircle, ArrowRight, Star, Clock, Sparkles, Calendar as CalendarIcon } from "lucide-react"
+import { MessageCircle, ArrowRight, Star, Clock, Sparkles, Calendar as CalendarIcon, CheckCircle2 } from "lucide-react"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import {
   Dialog,
@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar } from "@/components/ui/calendar"
-import { format, parseISO, addMinutes, isBefore, startOfDay, getDay } from "date-fns"
+import { format, parseISO, addMinutes, startOfDay, getDay } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -31,13 +31,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore"
+import { collection, addDoc, serverTimestamp, query, where, onSnapshot } from "firebase/firestore"
 import { useFirestore } from "@/firebase"
 import { errorEmitter } from "@/firebase/error-emitter"
 import { FirestorePermissionError } from "@/firebase/errors"
 import { cn } from "@/lib/utils"
 
-const WHATSAPP_URL = "https://wa.me/5588996363178?text=Oi%2C%20tudo%20bem%3F%20gostaria%20de%20marcar%20un%20agendamento.%20qual%20dia%20e%20horario%20voc%C3%AA%20tem%20disponivel%3F"
+const WHATSAPP_URL = "https://wa.me/5588996363178?text=Olá!%20Gostaria%20de%20solicitar%20um%20agendamento%20no%20LAEYNE%20Studio%20Lash.%20✨"
 
 const SERVICE_TYPES = [
   { id: "cilios_completo", label: "Cílios completo (aplicação)", duration: 180 },
@@ -78,6 +78,7 @@ export function Hero() {
   const [mounted, setMounted] = useState(false)
   const [formData, setFormData] = useState({ name: "", serviceType: "", date: "", time: "" })
   const [existingBookings, setExistingBookings] = useState<any[]>([])
+  const [isSuccess, setIsSuccess] = useState(false)
   const firestore = useFirestore()
   const specialistImg = PlaceHolderImages.find(img => img.id === "specialist-photo")
 
@@ -85,15 +86,21 @@ export function Hero() {
     setMounted(true)
   }, [])
 
+  // Listener em tempo real para agendamentos da data selecionada
   useEffect(() => {
-    async function fetchBookings() {
-      if (!firestore || !formData.date) return
-      const q = query(collection(firestore, "appointments"), where("date", "==", formData.date))
-      const querySnapshot = await getDocs(q)
-      const bookings = querySnapshot.docs.map(doc => doc.data())
+    if (!firestore || !formData.date) return
+    
+    const q = query(
+      collection(firestore, "appointments"), 
+      where("date", "==", formData.date)
+    )
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const bookings = snapshot.docs.map(doc => doc.data())
       setExistingBookings(bookings)
-    }
-    fetchBookings()
+    })
+
+    return () => unsubscribe()
   }, [firestore, formData.date])
 
   const availableTimeSlots = useMemo(() => {
@@ -113,10 +120,8 @@ export function Hero() {
 
     let lastAvailableStartTime = new Date(selectedDate)
     if (formData.serviceType === 'cilios_completo') {
-      // Regra especial: Último horário fixo às 17:00 (Seg-Sex) ou 13:30 (Sábado)
       lastAvailableStartTime.setHours(isSaturday ? 13 : 17, isSaturday ? 30 : 0, 0, 0)
     } else {
-      // Regra normal: Início + Duração <= Fechamento
       lastAvailableStartTime = new Date(closingTime.getTime() - (selectedService.duration * 60000))
     }
 
@@ -128,20 +133,16 @@ export function Hero() {
       const slotEndTime = addMinutes(currentSlot, selectedService.duration)
       
       const isConflicting = existingBookings.some(booking => {
+        if (booking.status === 'cancelado') return false
+        
         const [bH, bM] = booking.time.split(':').map(Number)
         const bStart = new Date(selectedDate)
         bStart.setHours(bH, bM, 0, 0)
         
-        // Se o agendamento no banco não tem duração, assume manutenção (90 min)
         const bDuration = booking.duration || 90
         const bEnd = addMinutes(bStart, bDuration)
         
-        const newStart = currentSlot
-        const newEnd = slotEndTime
-
-        // Lógica de sobreposição de intervalos [start, end]
-        // (A_start < B_end && B_start < A_end)
-        return (newStart < bEnd && bStart < newEnd)
+        return (currentSlot < bEnd && bStart < slotEndTime)
       })
 
       if (!isConflicting) {
@@ -171,20 +172,26 @@ export function Hero() {
         createdAt: serverTimestamp(),
       }
       
-      addDoc(collection(firestore, "appointments"), data).catch(async () => {
-        const permissionError = new FirestorePermissionError({
-          path: "appointments",
-          operation: "create",
-          requestResourceData: data,
+      addDoc(collection(firestore, "appointments"), data)
+        .then(() => {
+          setIsSuccess(true)
         })
-        errorEmitter.emit("permission-error", permissionError)
-      });
+        .catch(async () => {
+          const permissionError = new FirestorePermissionError({
+            path: "appointments",
+            operation: "create",
+            requestResourceData: data,
+          })
+          errorEmitter.emit("permission-error", permissionError)
+        });
     }
 
     const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
     const serviceLabel = selectedService?.label || ""
-    const msg = `Olá! Vi no site o estilo ${title.toUpperCase()} (${serviceLabel}) e gostaria de agendar!\nNome: ${formData.name}\nData: ${dataFormatada}\nHora: ${formData.time}`
-    window.open(`https://wa.me/5588996363178?text=${encodeURIComponent(msg)}`, "_blank")
+    
+    const elegantMsg = `Olá! Meu nome é ${formData.name}. Gostaria de solicitar um agendamento no LAEYNE Studio Lash. ✨\n\n💎 Estilo: ${title.toUpperCase()}\n🎀 Serviço: ${serviceLabel}\n📅 Data: ${dataFormatada}\n🕐 Horário: ${formData.time}\n\nAguardo a confirmação, obrigada! 🤍`
+    
+    window.open(`https://wa.me/5588996363178?text=${encodeURIComponent(elegantMsg)}`, "_blank")
   }
 
   if (!mounted) return null
@@ -258,7 +265,7 @@ export function Hero() {
               const titleWords = pick.name.split(' ')
               
               return (
-                <Dialog key={pick.id}>
+                <Dialog key={pick.id} onOpenChange={(open) => { if (!open) setIsSuccess(false) }}>
                   <DialogTrigger asChild>
                     <div className="group relative aspect-[4/5] w-full max-w-[480px] mx-auto rounded-[3.5rem] overflow-hidden cursor-pointer shadow-2xl transition-all duration-700 hover:scale-[1.01]">
                       {img && (
@@ -307,115 +314,135 @@ export function Hero() {
                       </div>
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh] z-[150]">
-                    <div className="grid grid-cols-1 lg:grid-cols-12">
-                      <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
-                        {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" unoptimized={img.imageUrl.includes('ibb.co')} />}
-                      </div>
-                      <div className="lg:col-span-7 p-10 md:p-14 space-y-10">
-                        <DialogHeader className="space-y-4 text-left">
-                          <div className="flex items-center gap-2 text-primary">
-                            <Sparkles className="w-4 h-4" />
-                            <span className="text-[10px] uppercase tracking-[0.4em] font-black">Procedimento VIP</span>
-                          </div>
-                          <DialogTitle className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">{pick.name}</DialogTitle>
-                          <p className="text-muted-foreground font-light text-base leading-relaxed max-w-lg">{pick.fullDescription}</p>
-                        </DialogHeader>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div className="p-8 bg-secondary/30 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2">
-                            <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Manutenção</p>
-                            <div className="flex items-center gap-3 text-primary">
-                              <Clock className="w-5 h-5" />
-                              <span className="text-xl font-bold">{pick.maintenance}</span>
-                            </div>
-                          </div>
-                          <div className="p-8 bg-primary/10 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2 border border-primary/10">
-                            <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Investimento</p>
-                            <p className="text-3xl font-headline text-primary font-bold">{pick.price}</p>
-                          </div>
+                  <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh] z-[150]">
+                    {isSuccess ? (
+                      <div className="p-20 text-center space-y-8 graceful-reveal">
+                        <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                          <CheckCircle2 className="w-12 h-12 text-primary animate-in zoom-in duration-500" />
                         </div>
-                        <form onSubmit={handleBooking(pick.name)} className="space-y-6 text-left border-t border-primary/10 pt-10 pb-8">
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Nome Completo</Label>
-                            <Input required placeholder="Seu nome" className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
-                          </div>
-                          
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Tipo de Serviço *</Label>
-                            <Select onValueChange={(val) => setFormData(p => ({...p, serviceType: val, date: "", time: ""}))} required>
-                              <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
-                                <SelectValue placeholder="Selecione o serviço" />
-                              </SelectTrigger>
-                              <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
-                                {SERVICE_TYPES.map(st => (
-                                  <SelectItem key={st.id} value={st.id} className="rounded-xl">
-                                    {st.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Data</Label>
-                              <Popover modal={true}>
-                                <PopoverTrigger asChild>
-                                  <Button
-                                    type="button"
-                                    disabled={!formData.serviceType}
-                                    variant={"outline"}
-                                    className={cn(
-                                      "h-14 w-full justify-start text-left font-normal bg-secondary/10 border-none rounded-2xl px-6",
-                                      !formData.date && "text-muted-foreground"
-                                    )}
-                                  >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Escolha a data</span>}
-                                  </Button>
-                                </PopoverTrigger>
-                                <PopoverContent 
-                                  className="w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[300] bg-white overflow-hidden" 
-                                  align="center"
-                                  side="top"
-                                  sideOffset={10}
-                                >
-                                  <Calendar
-                                    mode="single"
-                                    selected={formData.date ? parseISO(formData.date) : undefined}
-                                    onSelect={(date) => {
-                                      setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }));
-                                    }}
-                                    disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
-                                    initialFocus
-                                    locale={ptBR}
-                                  />
-                                </PopoverContent>
-                              </Popover>
+                        <div className="space-y-4">
+                          <h2 className="text-4xl font-headline text-foreground">Solicitação enviada com sucesso! 🤍</h2>
+                          <p className="text-muted-foreground text-lg font-light max-w-md mx-auto">
+                            Obrigada por escolher o LAEYNE Studio. Em breve confirmaremos seu horário através do WhatsApp.
+                          </p>
+                        </div>
+                        <Button 
+                          onClick={() => setIsSuccess(false)}
+                          className="rounded-full px-12 h-16 bg-primary text-white font-bold uppercase tracking-widest"
+                        >
+                          Concluir
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
+                        <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
+                          {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" unoptimized={img.imageUrl.includes('ibb.co')} />}
+                        </div>
+                        <div className="lg:col-span-7 p-10 md:p-14 space-y-10">
+                          <DialogHeader className="space-y-4 text-left">
+                            <div className="flex items-center gap-2 text-primary">
+                              <Sparkles className="w-4 h-4" />
+                              <span className="text-[10px] uppercase tracking-[0.4em] font-black">Procedimento VIP</span>
                             </div>
+                            <DialogTitle className="text-4xl md:text-5xl font-headline leading-tight font-bold text-foreground">{pick.name}</DialogTitle>
+                            <p className="text-muted-foreground font-light text-base leading-relaxed max-w-lg">{pick.fullDescription}</p>
+                          </DialogHeader>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="p-8 bg-secondary/30 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2">
+                              <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Manutenção</p>
+                              <div className="flex items-center gap-3 text-primary">
+                                <Clock className="w-5 h-5" />
+                                <span className="text-xl font-bold">{pick.maintenance}</span>
+                              </div>
+                            </div>
+                            <div className="p-8 bg-primary/10 rounded-[2.5rem] flex flex-col items-center justify-center text-center space-y-2 border border-primary/10">
+                              <p className="text-[9px] uppercase font-black tracking-[0.3em] text-muted-foreground">Investimento</p>
+                              <p className="text-3xl font-headline text-primary font-bold">{pick.price}</p>
+                            </div>
+                          </div>
+                          <form onSubmit={handleBooking(pick.name)} className="space-y-6 text-left border-t border-primary/10 pt-10 pb-8">
                             <div className="space-y-2">
-                              <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Horário</Label>
-                              <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required disabled={!formData.date}>
+                              <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Nome Completo</Label>
+                              <Input required placeholder="Seu nome" className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Tipo de Serviço *</Label>
+                              <Select onValueChange={(val) => setFormData(p => ({...p, serviceType: val, date: "", time: ""}))} required>
                                 <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
-                                  <SelectValue placeholder="Selecione o horário" />
+                                  <SelectValue placeholder="Selecione o serviço" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
-                                  {availableTimeSlots.map(time => (
-                                    <SelectItem key={time} value={time} className="rounded-xl">
-                                      {time}
+                                  {SERVICE_TYPES.map(st => (
+                                    <SelectItem key={st.id} value={st.id} className="rounded-xl">
+                                      {st.label}
                                     </SelectItem>
                                   ))}
                                 </SelectContent>
                               </Select>
                             </div>
-                          </div>
-                          <Button className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.25em] flex gap-4 shadow-2xl transition-all hover:scale-[1.02]">
-                            <MessageCircle className="w-7 h-7" />
-                            CONFIRMAR NO WHATSAPP
-                          </Button>
-                        </form>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Data</Label>
+                                <Popover modal={true}>
+                                  <PopoverTrigger asChild>
+                                    <Button
+                                      type="button"
+                                      disabled={!formData.serviceType}
+                                      variant={"outline"}
+                                      className={cn(
+                                        "h-14 w-full justify-start text-left font-normal bg-secondary/10 border-none rounded-2xl px-6",
+                                        !formData.date && "text-muted-foreground"
+                                      )}
+                                    >
+                                      <CalendarIcon className="mr-2 h-4 w-4" />
+                                      {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Escolha a data</span>}
+                                    </Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent 
+                                    className="w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[300] bg-white overflow-hidden" 
+                                    align="center"
+                                    side="top"
+                                    sideOffset={10}
+                                  >
+                                    <Calendar
+                                      mode="single"
+                                      selected={formData.date ? parseISO(formData.date) : undefined}
+                                      onSelect={(date) => {
+                                        setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }));
+                                      }}
+                                      disabled={(date) => date < startOfDay(new Date()) || getDay(date) === 0}
+                                      initialFocus
+                                      locale={ptBR}
+                                    />
+                                  </PopoverContent>
+                                </Popover>
+                              </div>
+                              <div className="space-y-2">
+                                <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Horário</Label>
+                                <Select onValueChange={(val) => setFormData(p => ({...p, time: val}))} required disabled={!formData.date}>
+                                  <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
+                                    <SelectValue placeholder="Selecione o horário" />
+                                  </SelectTrigger>
+                                  <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
+                                    {availableTimeSlots.map(time => (
+                                      <SelectItem key={time} value={time} className="rounded-xl">
+                                        {time}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+                            <Button className="w-full h-20 rounded-full bg-primary hover:bg-primary/90 text-white uppercase font-black tracking-[0.25em] flex gap-4 shadow-2xl transition-all hover:scale-[1.02]">
+                              <MessageCircle className="w-7 h-7" />
+                              SOLICITAR AGENDAMENTO
+                            </Button>
+                          </form>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </DialogContent>
                 </Dialog>
               )

@@ -1,16 +1,19 @@
+
 'use client';
 
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
 
 // ─── TIPOS ───
 export type Status = 'pendente' | 'confirmado' | 'remarcado' | 'cancelado' | 'finalizado';
 export interface Servico { id: string; nome: string; valor: number; duracao: number; descricao: string; foto: null; ativo: boolean; }
 export interface Cliente { id: string; nome: string; telefone: string; indicacoes: number; cupons: string[]; etiquetas: string[]; }
-export interface Agendamento { id: string; clienteId: string; servicoId: string; data: string; horario: string; status: Status; }
+export interface Agendamento { id: string; clientName: string; serviceName: string; date: string; time: string; status: Status; tipoServico?: string; duration?: number; }
 export interface Cupom { id: string; nome: string; tipo: 'percentual' | 'fixo'; valor: number; ativo: boolean; }
 export interface AppState { servicos: Servico[]; clientes: Cliente[]; agendamentos: Agendamento[]; cupons: Cupom[]; horariosBase: string[]; }
 
-// ─── ESTADO INICIAL ATUALIZADO COM NOVOS PREÇOS ───
+// ─── ESTADO INICIAL ───
 const ESTADO_INICIAL: AppState = {
   servicos: [
     { id: 's1', nome: 'Efeito Rímel',      valor: 90,  duracao: 90,  descricao: 'Aplicação individual, elegância discreta.', foto: null, ativo: true },
@@ -24,58 +27,22 @@ const ESTADO_INICIAL: AppState = {
   clientes: [],
   agendamentos: [],
   cupons: [],
-  horariosBase: ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'],
+  horariosBase: ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00'],
 };
 
 // ─── REDUCER ───
 function reducer(state: AppState, action: any): AppState {
   switch (action.type) {
-    case 'CRIAR_AGENDAMENTO':
-      return { ...state, agendamentos: [...state.agendamentos, { id: `ag_${Date.now()}`, ...action.payload, status: 'confirmado' as Status }] };
-    case 'REMARCAR_AGENDAMENTO':
-      return { ...state, agendamentos: state.agendamentos.map(ag => ag.id === action.payload.id ? { ...ag, data: action.payload.novaData, horario: action.payload.novoHorario, status: 'remarcado' as Status } : ag) };
-    case 'CANCELAR_AGENDAMENTO':
-      return { ...state, agendamentos: state.agendamentos.map(ag => ag.id === action.payload.id ? { ...ag, status: 'cancelado' as Status } : ag) };
-    case 'FINALIZAR_AGENDAMENTO':
-      return { ...state, agendamentos: state.agendamentos.map(ag => ag.id === action.payload.id ? { ...ag, status: 'finalizado' as Status } : ag) };
-    case 'CRIAR_SERVICO':
-      return { ...state, servicos: [...state.servicos, { id: `s_${Date.now()}`, ...action.payload, foto: null, ativo: true }] };
-    case 'EDITAR_SERVICO':
-      return { ...state, servicos: state.servicos.map(s => s.id === action.payload.id ? { ...s, ...action.payload } : s) };
-    case 'TOGGLE_SERVICO':
-      return { ...state, servicos: state.servicos.map(s => s.id === action.payload.id ? { ...s, ativo: !s.ativo } : s) };
-    case 'EXCLUIR_SERVICO':
-      return { ...state, servicos: state.servicos.filter(s => s.id !== action.payload.id) };
+    case 'SYNC_AGENDAMENTOS':
+      return { ...state, agendamentos: action.payload };
     case 'CRIAR_CLIENTE':
       return { ...state, clientes: [...state.clientes, { id: `c_${Date.now()}`, ...action.payload, indicacoes: 0, cupons: [], etiquetas: ['Nova cliente'] }] };
     case 'EDITAR_CLIENTE':
       return { ...state, clientes: state.clientes.map(c => c.id === action.payload.id ? { ...c, nome: action.payload.nome, telefone: action.payload.telefone } : c) };
     case 'EXCLUIR_CLIENTE':
-      return {
-        ...state,
-        clientes: state.clientes.filter(c => c.id !== action.payload.id),
-        agendamentos: state.agendamentos.filter(ag => ag.clienteId !== action.payload.id),
-      };
-    case 'ADICIONAR_INDICACAO':
-      return {
-        ...state,
-        clientes: state.clientes.map(c => {
-          if (c.id !== action.payload.clienteId) return c;
-          const novasIndicacoes = c.indicacoes + 1;
-          const novosCupons = [...c.cupons];
-          const novasEtiquetas = [...c.etiquetas];
-          if (novasIndicacoes % 3 === 0) novosCupons.push(`BONUS_${novasIndicacoes}`);
-          if (novasIndicacoes >= 5 && !novasEtiquetas.includes('VIP')) novasEtiquetas.push('VIP');
-          if (!novasEtiquetas.includes('Indicadora')) novasEtiquetas.push('Indicadora');
-          return { ...c, indicacoes: novasIndicacoes, cupons: novosCupons, etiquetas: novasEtiquetas };
-        }),
-      };
+      return { ...state, clientes: state.clientes.filter(c => c.id !== action.payload.id) };
     case 'CRIAR_CUPOM':
       return { ...state, cupons: [...state.cupons, { id: `cup_${Date.now()}`, ...action.payload, ativo: true }] };
-    case 'TOGGLE_CUPOM':
-      return { ...state, cupons: state.cupons.map(c => c.id === action.payload.id ? { ...c, ativo: !c.ativo } : c) };
-    case 'EXCLUIR_CUPOM':
-      return { ...state, cupons: state.cupons.filter(c => c.id !== action.payload.id) };
     default:
       return state;
   }
@@ -86,6 +53,24 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, ESTADO_INICIAL);
+  const firestore = useFirestore();
+
+  useEffect(() => {
+    if (!firestore) return;
+    
+    // Sincronização em tempo real com Firestore
+    const q = query(collection(firestore, 'appointments'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const appointments = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Agendamento[];
+      dispatch({ type: 'SYNC_AGENDAMENTOS', payload: appointments });
+    });
+
+    return () => unsubscribe();
+  }, [firestore]);
+
   return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 }
 
