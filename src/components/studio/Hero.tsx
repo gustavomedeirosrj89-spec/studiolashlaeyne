@@ -6,7 +6,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { MessageCircle, ArrowRight, Star, Clock, Sparkles, Calendar as CalendarIcon } from "lucide-react"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
-import { Badge } from "@/components/ui/badge"
 import {
   Dialog,
   DialogContent,

@@ -3,7 +3,6 @@
 import { useState, useMemo, useEffect } from "react"
 import Image from "next/image"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -277,7 +276,7 @@ export function StyleCatalog() {
                 </div>
               </DialogTrigger>
 
-              <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh]">
+              <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh] z-[150]">
                 <div className="grid grid-cols-1 lg:grid-cols-12">
                   <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
                     {img && (

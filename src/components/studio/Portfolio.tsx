@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useMemo } from "react"
@@ -10,11 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { 
   ArrowRight, 
-  Star, 
-  MessageCircle, 
   Sparkles, 
-  CheckCircle2, 
-  X, 
+  MessageCircle, 
   Calendar as CalendarIcon, 
   Clock 
 } from "lucide-react"
@@ -43,16 +39,14 @@ import {
 import { cn } from "@/lib/utils"
 
 const ALL_TIME_SLOTS = [
-  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
-  "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", 
-  "17:00", "17:30", "18:00"
+  "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"
 ]
 
 const services = [
   {
     id: "egyptian",
     title: "Volume Egípcio",
-    price: "R$ 190",
+    price: "R$ 90",
     description: "Volume tecnológico em W e alta retenção.",
     fullDescription: "A técnica de Volume Egípcio utiliza fios tecnológicos em formato de W que garantem um preenchimento denso com extrema leveza. É ideal para quem busca durabilidade e um visual moderno.",
     imageId: "vol-egipcio",
@@ -62,7 +56,7 @@ const services = [
   {
     id: "brazilian",
     title: "Volume Brasileiro",
-    price: "R$ 180",
+    price: "R$ 90",
     description: "Volume moderado com fios em formato de Y.",
     fullDescription: "Utiliza fios tecnológicos em Y que proporcionam volume e leveza simultaneamente. É o equilíbrio perfeito entre o clássico e o dramático.",
     imageId: "vol-brasileiro",
@@ -72,7 +66,7 @@ const services = [
   {
     id: "fox",
     title: "Fox Eyes",
-    price: "R$ 220",
+    price: "R$ 110",
     description: "Efeito lifting e olhar sensual alongado.",
     fullDescription: "Mapeamento estratégico que alonga o canto externo dos olhos, criando um efeito de lifting imediato inspirado nas supermodelos internacionais.",
     imageId: "fox-eyes",
@@ -82,7 +76,7 @@ const services = [
   {
     id: "classic",
     title: "Efeito Rimel",
-    price: "R$ 150",
+    price: "R$ 90",
     description: "Elegância discreta e naturalidade pura.",
     fullDescription: "Aplicação individual de um fio sintético sobre um fio natural. Perfeito para quem deseja o efeito de 'rímel perfeito' todos os dias.",
     imageId: "fio-a-fio",
@@ -93,11 +87,8 @@ const services = [
 
 export function Portfolio() {
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null)
-  const [formData, setFormData] = useState({
-    name: "",
-    date: "",
-    time: ""
-  })
+  const [formData, setFormData] = useState({ name: "", date: "", time: "" })
+  const [calendarOpen, setCalendarOpen] = useState(false)
 
   const availableTimeSlots = useMemo(() => {
     if (!formData.date) return ALL_TIME_SLOTS
@@ -115,10 +106,7 @@ export function Portfolio() {
 
   const handleBooking = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedService || !formData.name || !formData.date || !formData.time) {
-      alert("Por favor, preencha todos os campos para o agendamento.")
-      return
-    }
+    if (!selectedService || !formData.name || !formData.date || !formData.time) return
 
     const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
     const message = `Olá! Gostaria de agendar o procedimento ${selectedService.title.toUpperCase()} ✨\nMeu nome é ${formData.name}.\nData desejada: ${dataFormatada}.\nHorário desejado: ${formData.time}.`
@@ -190,7 +178,7 @@ export function Portfolio() {
                   </div>
                 </DialogTrigger>
 
-                <DialogContent className="max-w-4xl p-0 overflow-hidden border-none bg-background rounded-[2rem] shadow-2xl">
+                <DialogContent className="max-w-4xl p-0 overflow-hidden border-none bg-background rounded-[2rem] shadow-2xl z-[150]">
                   <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="relative aspect-square md:aspect-auto h-[250px] md:h-full">
                       {img && (
@@ -204,9 +192,9 @@ export function Portfolio() {
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                       <div className="absolute bottom-6 left-6">
-                         <Badge className="bg-primary text-white border-none px-4 py-2 text-xl font-headline">
+                         <span className="bg-primary text-white px-4 py-2 rounded-xl text-xl font-headline">
                            {service.price}
-                         </Badge>
+                         </span>
                       </div>
                     </div>
 
@@ -225,37 +213,45 @@ export function Portfolio() {
                       </DialogHeader>
 
                       <form onSubmit={handleBooking} className="space-y-4 pt-4 border-t border-primary/10">
-                        <div className="space-y-2">
-                          <Label className="text-[10px] uppercase tracking-widest font-bold">Seu Nome Completo</Label>
+                        <div className="space-y-2 text-left">
+                          <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Seu Nome Completo</Label>
                           <Input 
                             required
                             placeholder="Ex: Maria Silva" 
-                            className="h-12 bg-secondary/20 border-primary/10 focus:border-primary/30"
+                            className="h-12 bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl"
                             value={formData.name}
                             onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                           />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold">Data Desejada</Label>
-                            <Popover>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="space-y-2 text-left">
+                            <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Data Desejada</Label>
+                            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                               <PopoverTrigger asChild>
                                 <Button
                                   variant={"outline"}
                                   className={cn(
-                                    "h-12 w-full justify-start text-left font-normal bg-secondary/20 border-primary/10 focus:border-primary/30",
+                                    "h-12 w-full justify-start text-left font-normal bg-secondary/20 border-primary/10 focus:border-primary/30 rounded-2xl",
                                     !formData.date && "text-muted-foreground"
                                   )}
                                 >
                                   <CalendarIcon className="mr-2 h-4 w-4" />
-                                  {formData.date ? format(parseISO(formData.date), "dd/MM/yy") : <span>Data</span>}
+                                  {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
                                 </Button>
                               </PopoverTrigger>
-                              <PopoverContent className="w-auto p-0 rounded-3xl border-none shadow-2xl" align="start">
+                              <PopoverContent 
+                                className="w-screen max-w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[200] bg-white" 
+                                align="center"
+                                side="top"
+                                sideOffset={10}
+                              >
                                 <Calendar
                                   mode="single"
                                   selected={formData.date ? parseISO(formData.date) : undefined}
-                                  onSelect={(date) => setFormData(prev => ({ ...prev, date: date ? format(date, "yyyy-MM-dd") : "" }))}
+                                  onSelect={(date) => {
+                                    setFormData(prev => ({ ...prev, date: date ? format(date, "yyyy-MM-dd") : "" }));
+                                    setCalendarOpen(false);
+                                  }}
                                   disabled={(date) => date < new Date() || date.getDay() === 0}
                                   initialFocus
                                   locale={ptBR}
@@ -263,13 +259,13 @@ export function Portfolio() {
                               </PopoverContent>
                             </Popover>
                           </div>
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold">Horário</Label>
+                          <div className="space-y-2 text-left">
+                            <Label className="text-[10px] uppercase tracking-widest font-bold ml-4">Horário</Label>
                             <Select onValueChange={(val) => setFormData(prev => ({ ...prev, time: val }))} required>
-                              <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0">
+                              <SelectTrigger className="h-12 bg-secondary/20 border-primary/10 focus:ring-0 rounded-2xl">
                                 <SelectValue placeholder="Selecione" />
                               </SelectTrigger>
-                              <SelectContent className="rounded-2xl border-none shadow-xl">
+                              <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
                                 {availableTimeSlots.map(time => (
                                   <SelectItem key={time} value={time} className="rounded-xl">
                                     {time}
