@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -347,7 +346,7 @@ export function StyleCatalog() {
                               {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0 rounded-3xl border-none shadow-2xl" align="start">
+                          <PopoverContent className="w-auto p-0 rounded-3xl border-none shadow-2xl z-[150]" align="start">
                             <Calendar
                               mode="single"
                               selected={formData.date ? parseISO(formData.date) : undefined}
