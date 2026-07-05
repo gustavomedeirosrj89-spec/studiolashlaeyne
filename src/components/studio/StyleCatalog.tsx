@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -140,7 +141,6 @@ export function StyleCatalog() {
   const [activeFilter, setActiveFilter] = useState("Todos")
   const [formData, setFormData] = useState({ name: "", serviceType: "", date: "", time: "" })
   const [mounted, setMounted] = useState(false)
-  const [calendarOpen, setCalendarOpen] = useState(false)
   const [existingBookings, setExistingBookings] = useState<any[]>([])
   const firestore = useFirestore()
 
@@ -176,25 +176,30 @@ export function StyleCatalog() {
 
     const slots: string[] = []
     const closingTime = new Date(selectedDate)
-    closingTime.setHours(endHour, endMinute, 0)
+    closingTime.setHours(endHour, endMinute, 0, 0)
 
     let currentSlot = new Date(selectedDate)
-    currentSlot.setHours(startHour, 0, 0)
+    currentSlot.setHours(startHour, 0, 0, 0)
 
     while (true) {
       const slotEndTime = addMinutes(currentSlot, selectedService.duration)
-      if (isBefore(closingTime, slotEndTime)) break
+      if (slotEndTime > closingTime) break
 
-      const timeString = format(currentSlot, "HH:mm")
       const isConflicting = existingBookings.some(booking => {
-        const bStart = parseISO(`${booking.date}T${booking.time}`)
+        const [bH, bM] = booking.time.split(':').map(Number)
+        const bStart = new Date(selectedDate)
+        bStart.setHours(bH, bM, 0, 0)
         const bDuration = booking.duration || 90
         const bEnd = addMinutes(bStart, bDuration)
-        return (currentSlot < bEnd && bStart < slotEndTime)
+        
+        const newStart = currentSlot
+        const newEnd = slotEndTime
+
+        return (newStart < bEnd && bStart < newEnd)
       })
 
-      if (!isConflicting) slots.push(timeString)
-      currentSlot = addMinutes(currentSlot, selectedService.duration)
+      if (!isConflicting) slots.push(format(currentSlot, "HH:mm"))
+      currentSlot = addMinutes(currentSlot, 30) // Passo fixo de 30 minutos
     }
     return slots
   }, [formData.date, formData.serviceType, existingBookings])
@@ -385,7 +390,7 @@ export function StyleCatalog() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Data</Label>
-                          <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>
+                          <Popover modal={true}>
                             <PopoverTrigger asChild>
                               <Button
                                 type="button"

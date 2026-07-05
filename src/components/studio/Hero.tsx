@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -85,7 +86,6 @@ export function Hero() {
     setMounted(true)
   }, [])
 
-  // Buscar agendamentos existentes quando a data muda
   useEffect(() => {
     async function fetchBookings() {
       if (!firestore || !formData.date) return
@@ -106,7 +106,6 @@ export function Hero() {
     const selectedDate = parseISO(formData.date)
     const dayOfWeek = getDay(selectedDate) 
     
-    // Domingo
     if (dayOfWeek === 0) return []
 
     const isSaturday = dayOfWeek === 6
@@ -116,37 +115,38 @@ export function Hero() {
 
     const slots: string[] = []
     const closingTime = new Date(selectedDate)
-    closingTime.setHours(endHour, endMinute, 0)
+    closingTime.setHours(endHour, endMinute, 0, 0)
 
     let currentSlot = new Date(selectedDate)
-    currentSlot.setHours(startHour, 0, 0)
+    currentSlot.setHours(startHour, 0, 0, 0)
 
+    // Gerar horários de 30 em 30 minutos
     while (true) {
       const slotEndTime = addMinutes(currentSlot, selectedService.duration)
       
-      // Se o slot termina depois do horário de fechamento, paramos
-      if (isBefore(closingTime, slotEndTime)) break
+      // Regra de Corte: Início + Duração <= Fechamento
+      if (slotEndTime > closingTime) break
 
-      const timeString = format(currentSlot, "HH:mm")
-      
-      // Verificação de conflito
+      // Verificação de conflito (Sobreposição de intervalos)
       const isConflicting = existingBookings.some(booking => {
-        const bStart = parseISO(`${booking.date}T${booking.time}`)
-        const bDuration = booking.duration || 90 // fallback se não houver duração salva
+        const [bH, bM] = booking.time.split(':').map(Number)
+        const bStart = new Date(selectedDate)
+        bStart.setHours(bH, bM, 0, 0)
+        const bDuration = booking.duration || 90
         const bEnd = addMinutes(bStart, bDuration)
         
         const newStart = currentSlot
         const newEnd = slotEndTime
 
-        // Lógica de sobreposição: [newStart, newEnd] sobrepõe [bStart, bEnd]
+        // Sobreposição: [newStart, newEnd) se sobrepõe a [bStart, bEnd)
         return (newStart < bEnd && bStart < newEnd)
       })
 
       if (!isConflicting) {
-        slots.push(timeString)
+        slots.push(format(currentSlot, "HH:mm"))
       }
 
-      currentSlot = addMinutes(currentSlot, selectedService.duration)
+      currentSlot = addMinutes(currentSlot, 30) // Passo fixo de 30 minutos
     }
 
     return slots
@@ -357,7 +357,7 @@ export function Hero() {
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
                               <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Data</Label>
-                              <Popover open={calendarOpen} onOpenChange={setCalendarOpen} modal={true}>
+                              <Popover modal={true}>
                                 <PopoverTrigger asChild>
                                   <Button
                                     type="button"
