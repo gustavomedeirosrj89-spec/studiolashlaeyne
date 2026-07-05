@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -77,6 +76,7 @@ const topPickServices = [
 export function Hero() {
   const [mounted, setMounted] = useState(false)
   const [formData, setFormData] = useState({ name: "", date: "", time: "" })
+  const [calendarOpen, setCalendarOpen] = useState(false)
   const firestore = useFirestore()
   const specialistImg = PlaceHolderImages.find(img => img.id === "specialist-photo")
 
@@ -107,6 +107,7 @@ export function Hero() {
         serviceName: title,
         date: formData.date,
         time: formData.time,
+        status: "pendente",
         createdAt: serverTimestamp(),
       }
       
@@ -117,7 +118,7 @@ export function Hero() {
           requestResourceData: data,
         })
         errorEmitter.emit("permission-error", permissionError)
-      })
+      });
     }
 
     const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
@@ -245,7 +246,7 @@ export function Hero() {
                       </div>
                     </div>
                   </DialogTrigger>
-                  <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh]">
+                  <DialogContent className="max-w-[1000px] p-0 overflow-y-auto bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh] z-[150]">
                     <div className="grid grid-cols-1 lg:grid-cols-12">
                       <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
                         {img && <Image src={img.imageUrl} alt={pick.name} fill className="object-cover" unoptimized={img.imageUrl.includes('ibb.co')} />}
@@ -272,13 +273,13 @@ export function Hero() {
                             <p className="text-3xl font-headline text-primary font-bold">{pick.price}</p>
                           </div>
                         </div>
-                        <form onSubmit={handleBooking(pick.name)} className="space-y-6 text-left border-t border-primary/10 pt-10">
+                        <form onSubmit={handleBooking(pick.name)} className="space-y-6 text-left border-t border-primary/10 pt-10 pb-8">
                           <div className="space-y-2">
                             <Label className="text-[10px] uppercase font-black tracking-[0.3em] text-muted-foreground ml-4">Solicitar Agendamento</Label>
                             <Input required placeholder="Seu nome completo" className="h-14 bg-secondary/10 border-none rounded-2xl px-6" value={formData.name} onChange={(e) => setFormData(p => ({...p, name: e.target.value}))} />
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <Popover>
+                            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                               <PopoverTrigger asChild>
                                 <Button
                                   variant={"outline"}
@@ -291,11 +292,19 @@ export function Hero() {
                                   {formData.date ? format(parseISO(formData.date), "dd 'de' MMMM", { locale: ptBR }) : <span>Data</span>}
                                 </Button>
                               </PopoverTrigger>
-                              <PopoverContent className="w-auto p-0 rounded-3xl border-none shadow-2xl" align="start">
+                              <PopoverContent 
+                                className="w-screen max-w-[340px] p-0 rounded-3xl border-none shadow-2xl z-[200] bg-white" 
+                                align="center"
+                                side="top"
+                                sideOffset={10}
+                              >
                                 <Calendar
                                   mode="single"
                                   selected={formData.date ? parseISO(formData.date) : undefined}
-                                  onSelect={(date) => setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }))}
+                                  onSelect={(date) => {
+                                    setFormData(p => ({ ...p, date: date ? format(date, "yyyy-MM-dd") : "" }));
+                                    setCalendarOpen(false);
+                                  }}
                                   disabled={(date) => date < new Date() || date.getDay() === 0}
                                   initialFocus
                                   locale={ptBR}
@@ -306,7 +315,7 @@ export function Hero() {
                               <SelectTrigger className="h-14 bg-secondary/10 border-none rounded-2xl px-6 focus:ring-0">
                                 <SelectValue placeholder="Horário" />
                               </SelectTrigger>
-                              <SelectContent className="rounded-2xl border-none shadow-xl">
+                              <SelectContent className="rounded-2xl border-none shadow-xl z-[200]">
                                 {availableTimeSlots.map(time => (
                                   <SelectItem key={time} value={time} className="rounded-xl">
                                     {time}
