@@ -28,29 +28,35 @@ export default function DashboardPage() {
 
   const stats = useMemo(() => {
     // Cálculo de atendimentos no mês
-    const agMes = state.agendamentos.filter(ag => ag.data.startsWith(mesAtual) && ag.status !== 'cancelado');
+    const agMes = state.agendamentos.filter(ag => ag.date?.startsWith(mesAtual) && ag.status !== 'cancelado');
     
     // Cálculo de faturamento bruto (apenas serviços finalizados)
     const faturamento = state.agendamentos
-      .filter(ag => ag.status === 'finalizado' && ag.data.startsWith(mesAtual))
-      .reduce((acc, ag) => acc + (state.servicos.find(s => s.id === ag.servicoId)?.valor || 0), 0);
+      .filter(ag => ag.status === 'finalizado' && ag.date?.startsWith(mesAtual))
+      .reduce((acc, ag) => {
+        const servico = state.servicos.find(s => s.nome === ag.serviceName);
+        return acc + (servico?.valor || 0);
+      }, 0);
     
     // Vagas disponíveis para hoje
-    const ocupadosHoje = state.agendamentos.filter(ag => ag.data === hoje && ag.status !== 'cancelado').length;
+    const ocupadosHoje = state.agendamentos.filter(ag => ag.date === hoje && ag.status !== 'cancelado').length;
     const livresHoje = state.horariosBase.length - ocupadosHoje;
     
     // Serviço mais procurado (Premium)
     const contagem: Record<string, number> = {};
-    state.agendamentos.forEach(ag => { contagem[ag.servicoId] = (contagem[ag.servicoId] || 0) + 1; });
-    const topId = Object.entries(contagem).sort((a, b) => b[1] - a[1])[0]?.[0];
-    const topServico = state.servicos.find(s => s.id === topId)?.nome || '—';
+    state.agendamentos.forEach(ag => { 
+      const name = ag.serviceName || 'Outro';
+      contagem[name] = (contagem[name] || 0) + 1; 
+    });
+    const topServico = Object.entries(contagem).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
     
     return { totalMes: agMes.length, faturamento, livresHoje, topServico };
   }, [state, hoje, mesAtual]);
 
-  const agendamentosHoje = state.agendamentos.filter(ag => ag.data === hoje && ag.status !== 'cancelado');
+  const agendamentosHoje = state.agendamentos.filter(ag => ag.date === hoje && ag.status !== 'cancelado');
 
   const corStatus: Record<string, string> = {
+    pendente:   'bg-slate-500/10 text-slate-400',
     confirmado: 'bg-green-500/10 text-green-400',
     remarcado:  'bg-yellow-500/10 text-yellow-400',
     finalizado: 'bg-blue-500/10 text-blue-400',
@@ -119,23 +125,21 @@ export default function DashboardPage() {
         ) : (
           <div className="space-y-3">
             {agendamentosHoje.map(ag => {
-              const cliente = state.clientes.find(c => c.id === ag.clienteId);
-              const servico = state.servicos.find(s => s.id === ag.servicoId);
               return (
                 <div key={ag.id} className="flex items-center justify-between p-5 bg-background/50 rounded-2xl border border-sidebar-border hover:border-primary/30 transition-all group">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs uppercase">
-                      {cliente?.nome.substring(0,2)}
+                      {ag.clientName?.substring(0,2)}
                     </div>
                     <div>
-                      <p className="font-bold text-foreground group-hover:text-primary transition-colors">{cliente?.nome}</p>
-                      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{servico?.nome}</p>
+                      <p className="font-bold text-foreground group-hover:text-primary transition-colors">{ag.clientName}</p>
+                      <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{ag.serviceName}</p>
                     </div>
                   </div>
                   <div className="text-right flex items-center gap-4">
                     <div className="hidden sm:block">
                        <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-0.5">Horário</p>
-                       <p className="font-bold text-foreground">{ag.horario}</p>
+                       <p className="font-bold text-foreground">{ag.time}</p>
                     </div>
                     <span className={`text-[9px] uppercase font-bold px-3 py-1.5 rounded-full ${corStatus[ag.status]}`}>{ag.status}</span>
                   </div>
