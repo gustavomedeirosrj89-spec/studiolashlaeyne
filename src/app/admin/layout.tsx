@@ -26,7 +26,8 @@ import {
   LogOut,
   UserCircle,
   Lock,
-  Sparkle
+  Sparkle,
+  RefreshCw
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -53,8 +54,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isHydrated, setIsHydrated] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const pathname = usePathname();
   const { toast } = useToast();
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    // Recarrega automaticamente se o app (PWA) ficar muito tempo em segundo plano.
+    // Isso resolve o caso do iOS suspender a conexão em tempo real quando o app
+    // é minimizado e reaberto pela tela de início (modo standalone não tem
+    // "puxar para atualizar").
+    let hiddenAt: number | null = null;
+    const LIMITE_MS = 60 * 1000; // 1 minuto
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        hiddenAt = Date.now();
+      } else if (document.visibilityState === "visible" && hiddenAt) {
+        const tempoAusente = Date.now() - hiddenAt;
+        hiddenAt = null;
+        if (tempoAusente > LIMITE_MS) {
+          window.location.reload();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
 
   useEffect(() => {
     setIsHydrated(true);
@@ -165,6 +196,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <SidebarTrigger className="hover:bg-primary/5 text-foreground" />
               <div className="ml-6 h-6 w-[1px] bg-primary/10" />
               <div className="ml-auto flex items-center gap-6">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleRefresh}
+                  title="Atualizar dados"
+                  className="w-10 h-10 rounded-2xl bg-primary/5 border border-primary/10 hover:bg-primary/10 text-primary transition-transform hover:scale-105"
+                >
+                  <RefreshCw className={`w-5 h-5 ${isRefreshing ? "animate-spin" : ""}`} />
+                </Button>
                 <div className="flex flex-col items-end">
                   <span className="text-[10px] uppercase font-black tracking-widest text-primary">Modo Admin Luxo</span>
                   <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest italic">Laeyne Studio v2.0</span>
