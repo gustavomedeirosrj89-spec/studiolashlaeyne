@@ -338,26 +338,26 @@ export function StyleCatalog() {
               </DialogTrigger>
 
               <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-background border-none rounded-[3.5rem] shadow-2xl max-h-[90vh] z-[150] flex flex-col">
-                {isSuccess ? (
-                  <div className="p-20 text-center space-y-8 graceful-reveal">
-                    <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                      <CheckCircle2 className="w-12 h-12 text-primary animate-in zoom-in duration-500" />
+                <div className="flex-1 overflow-y-auto">
+                  {isSuccess ? (
+                    <div className="p-10 md:p-20 text-center space-y-8 graceful-reveal">
+                      <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                        <CheckCircle2 className="w-12 h-12 text-primary animate-in zoom-in duration-500" />
+                      </div>
+                      <div className="space-y-4">
+                        <h2 className="text-4xl font-headline text-foreground">Solicitação enviada com sucesso! 🤍</h2>
+                        <p className="text-muted-foreground text-lg font-light max-w-md mx-auto">
+                          Obrigada por escolher o LAEYNE Studio. Em breve confirmaremos seu horário através do WhatsApp.
+                        </p>
+                      </div>
+                      <Button 
+                        onClick={() => setIsSuccess(false)}
+                        className="rounded-full px-12 h-16 bg-primary text-white font-bold uppercase tracking-widest"
+                      >
+                        Concluir
+                      </Button>
                     </div>
-                    <div className="space-y-4">
-                      <h2 className="text-4xl font-headline text-foreground">Solicitação enviada com sucesso! 🤍</h2>
-                      <p className="text-muted-foreground text-lg font-light max-w-md mx-auto">
-                        Obrigada por escolher o LAEYNE Studio. Em breve confirmaremos seu horário através do WhatsApp.
-                      </p>
-                    </div>
-                    <Button 
-                      onClick={() => setIsSuccess(false)}
-                      className="rounded-full px-12 h-16 bg-primary text-white font-bold uppercase tracking-widest"
-                    >
-                      Concluir
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex-1 overflow-y-auto">
+                  ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-12">
                       <div className="lg:col-span-5 relative h-[350px] lg:h-auto">
                         {img && (
@@ -480,8 +480,8 @@ export function StyleCatalog() {
                         </form>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </DialogContent>
             </Dialog>
           )
