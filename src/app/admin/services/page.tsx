@@ -70,29 +70,29 @@ export default function ServicesPage() {
             <div className="flex justify-between items-end pt-4 border-t border-sidebar-border">
               <div>
                 <p className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider">Investimento</p>
-                <p className="text-2xl font-bold text-foreground">R$ {s.valor}</p>
+                <p className="text-2xl font-bold text-sidebar-foreground">R$ {s.valor}</p>
               </div>
               <div className="text-right">
                 <p className="text-[9px] uppercase font-bold text-muted-foreground tracking-wider">Duração</p>
-                <div className="flex items-center gap-1 text-foreground text-sm justify-end">
+                <div className="flex items-center gap-1 text-sidebar-foreground text-sm justify-end">
                   <Clock className="w-3 h-3 text-primary" /> {s.duracao} min
                 </div>
               </div>
             </div>
             <div className="flex gap-2 pt-2">
               <button title="Editar" onClick={() => abrirEdicao(s)}
-                className="flex-1 bg-sidebar-accent hover:bg-primary hover:text-white py-2 rounded-lg text-xs transition-all flex items-center justify-center text-foreground">
+                className="flex-1 bg-sidebar-accent hover:bg-primary hover:text-white py-2 rounded-lg text-xs transition-all flex items-center justify-center text-sidebar-foreground">
                 <Edit className="w-4 h-4" />
               </button>
               <button title={s.ativo ? 'Desativar' : 'Ativar'} onClick={() => dispatch({ type: 'TOGGLE_SERVICO', payload: { id: s.id } })}
-                className="flex-1 bg-sidebar-accent hover:bg-primary hover:text-white py-2 rounded-lg text-xs transition-all flex items-center justify-center text-foreground">
+                className="flex-1 bg-sidebar-accent hover:bg-primary hover:text-white py-2 rounded-lg text-xs transition-all flex items-center justify-center text-sidebar-foreground">
                 <CheckCircle className="w-4 h-4" />
               </button>
               <button
                 title={podeExcluir(s.id) ? 'Excluir' : 'Possui agendamentos futuros — não pode excluir'}
                 onClick={() => { if (podeExcluir(s.id)) dispatch({ type: 'EXCLUIR_SERVICO', payload: { id: s.id } }); }}
                 disabled={!podeExcluir(s.id)}
-                className="flex-1 bg-sidebar-accent hover:bg-red-500/20 hover:text-red-400 py-2 rounded-lg text-xs transition-all flex items-center justify-center text-foreground disabled:opacity-30 disabled:cursor-not-allowed">
+                className="flex-1 bg-sidebar-accent hover:bg-red-500/20 hover:text-red-400 py-2 rounded-lg text-xs transition-all flex items-center justify-center text-sidebar-foreground disabled:opacity-30 disabled:cursor-not-allowed">
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>

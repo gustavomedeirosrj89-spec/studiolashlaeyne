@@ -135,7 +135,7 @@ export default function AppointmentsPage() {
                 {ag ? (
                   <div className="flex-1 bg-sidebar border border-sidebar-border p-4 rounded-xl flex justify-between items-center group-hover:border-primary transition-all">
                     <div>
-                      <p className="font-bold text-foreground">{capitalizeName(ag.clientName)}</p>
+                      <p className="font-bold text-sidebar-foreground">{capitalizeName(ag.clientName)}</p>
                       <p className="text-[10px] text-primary uppercase font-bold tracking-wider">{ag.serviceName}</p>
                       <span className={`text-[9px] uppercase font-bold px-2 py-0.5 rounded-full inline-block mt-1 ${corStatus[ag.status]}`}>{ag.status}</span>
                     </div>

@@ -35,9 +35,9 @@ function ModalConfirmar({ aberto, onFechar, onConfirmar, nome }: { aberto: boole
           <div className="w-14 h-14 rounded-full bg-red-500/10 flex items-center justify-center mx-auto">
             <Trash2 className="w-6 h-6 text-red-400" />
           </div>
-          <h2 className="font-headline text-2xl text-foreground font-semibold">Excluir Cliente</h2>
+          <h2 className="font-headline text-2xl text-sidebar-foreground font-semibold">Excluir Cliente</h2>
           <p className="text-sm text-muted-foreground">
-            Tem certeza que deseja excluir <span className="font-bold text-foreground">{capitalizeName(nome)}</span>?
+            Tem certeza que deseja excluir <span className="font-bold text-sidebar-foreground">{capitalizeName(nome)}</span>?
             <br />
             <span className="text-red-400 text-xs font-bold uppercase tracking-wider">Todos os agendamentos dela também serão removidos.</span>
           </p>
@@ -45,7 +45,7 @@ function ModalConfirmar({ aberto, onFechar, onConfirmar, nome }: { aberto: boole
         <div className="flex gap-3">
           <button
             onClick={onFechar}
-            className="flex-1 bg-sidebar-accent text-foreground py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-sidebar-border transition-all"
+            className="flex-1 bg-sidebar-accent text-sidebar-foreground py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-sidebar-border transition-all"
           >
             Cancelar
           </button>
@@ -171,7 +171,7 @@ export default function ClientsPage() {
             {/* Nome + etiquetas + ações rápidas */}
             <div className="flex justify-between items-start gap-3">
               <div className="min-w-0">
-                <h3 className="font-headline text-xl text-foreground font-bold truncate">{capitalizeName(cli.nome)}</h3>
+                <h3 className="font-headline text-xl text-sidebar-foreground font-bold truncate">{capitalizeName(cli.nome)}</h3>
                 <p className="text-xs text-muted-foreground mt-0.5">📱 {cli.telefone}</p>
               </div>
               <div className="flex gap-1 shrink-0">
@@ -225,7 +225,7 @@ export default function ClientsPage() {
               </button>
               <button
                 onClick={() => setModalHistorico(cli.id)}
-                className="flex-1 bg-foreground/5 border border-sidebar-border text-foreground py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white hover:border-primary transition-all"
+                className="flex-1 bg-foreground/5 border border-sidebar-border text-sidebar-foreground py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white hover:border-primary transition-all"
               >
                 Histórico
               </button>
@@ -261,7 +261,7 @@ export default function ClientsPage() {
               }`}
             >
               <Ticket className="w-4 h-4 text-primary shrink-0" />
-              <span className="font-bold text-sm text-foreground">{cup.nome}</span>
+              <span className="font-bold text-sm text-sidebar-foreground">{cup.nome}</span>
               <span className="text-[10px] text-muted-foreground uppercase font-bold px-2 py-0.5 bg-sidebar-accent rounded-lg">
                 {cup.tipo === 'percentual' ? `${cup.valor}%` : `R$ ${cup.valor}`}
               </span>
