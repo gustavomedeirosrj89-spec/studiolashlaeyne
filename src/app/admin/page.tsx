@@ -1,10 +1,11 @@
-'use client';
+"use client"
 
 import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Users, DollarSign, Clock, Sparkles } from 'lucide-react';
 import { useAdmin } from './AdminContext';
+import { capitalizeName } from '@/lib/utils';
 
 function StatCard({ title, value, icon: Icon, description }: { title: string; value: string | number; icon: any; description: string }) {
   return (
@@ -132,7 +133,7 @@ export default function DashboardPage() {
                       {ag.clientName?.substring(0,2)}
                     </div>
                     <div>
-                      <p className="font-bold text-foreground group-hover:text-primary transition-colors">{ag.clientName}</p>
+                      <p className="font-bold text-foreground group-hover:text-primary transition-colors">{capitalizeName(ag.clientName)}</p>
                       <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{ag.serviceName}</p>
                     </div>
                   </div>

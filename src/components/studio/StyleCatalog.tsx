@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
@@ -34,7 +33,7 @@ import { collection, addDoc, serverTimestamp, query, where, onSnapshot } from "f
 import { useFirestore } from "@/firebase"
 import { errorEmitter } from "@/firebase/error-emitter"
 import { FirestorePermissionError } from "@/firebase/errors"
-import { cn } from "@/lib/utils"
+import { cn, capitalizeName } from "@/lib/utils"
 
 const SERVICE_TYPES = [
   { id: "cilios_completo", label: "Cílios completo (aplicação)", duration: 180 },
@@ -218,10 +217,11 @@ export function StyleCatalog() {
   const handleBooking = (title: string) => (e: React.FormEvent) => {
     e.preventDefault()
     const selectedService = SERVICE_TYPES.find(s => s.id === formData.serviceType)
+    const formattedName = capitalizeName(formData.name)
 
     if (firestore) {
       const data = {
-        clientName: formData.name,
+        clientName: formattedName,
         serviceName: title,
         tipoServico: formData.serviceType,
         duration: selectedService?.duration || 0,
@@ -248,7 +248,7 @@ export function StyleCatalog() {
     const dataFormatada = formData.date ? format(parseISO(formData.date), "dd/MM/yyyy") : ""
     const serviceLabel = selectedService?.label || ""
     
-    const elegantMsg = `Olá! Meu nome é ${formData.name}. Gostaria de solicitar um agendamento no LAEYNE Studio Lash. ✨\n\n💎 Estilo: ${title.toUpperCase()}\n🎀 Serviço: ${serviceLabel}\n📅 Data: ${dataFormatada}\n🕐 Horário: ${formData.time}\n\nAguardo a confirmação, obrigada! 🤍`
+    const elegantMsg = `Olá! Meu nome é ${formattedName}. Gostaria de solicitar um agendamento no LAEYNE Studio Lash. ✨\n\n💎 Estilo: ${title.toUpperCase()}\n🎀 Serviço: ${serviceLabel}\n📅 Data: ${dataFormatada}\n🕐 Horário: ${formData.time}\n\nAguardo a confirmação, obrigada! 🤍`
     
     window.open(`https://wa.me/5588996363178?text=${encodeURIComponent(elegantMsg)}`, "_blank")
   }

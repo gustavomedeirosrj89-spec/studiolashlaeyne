@@ -1,8 +1,9 @@
-'use client';
+"use client"
 
 import React, { useState } from 'react';
 import { Search, UserPlus, TrendingUp, Ticket, XCircle, Plus, Edit2, Trash2 } from 'lucide-react';
 import { useAdmin } from '../AdminContext';
+import { capitalizeName } from '@/lib/utils';
 
 function Modal({ aberto, onFechar, titulo, children }: { aberto: boolean; onFechar: () => void; titulo: string; children: React.ReactNode }) {
   if (!aberto) return null;
@@ -36,7 +37,7 @@ function ModalConfirmar({ aberto, onFechar, onConfirmar, nome }: { aberto: boole
           </div>
           <h2 className="font-headline text-2xl text-foreground font-semibold">Excluir Cliente</h2>
           <p className="text-sm text-muted-foreground">
-            Tem certeza que deseja excluir <span className="font-bold text-foreground">{nome}</span>?
+            Tem certeza que deseja excluir <span className="font-bold text-foreground">{capitalizeName(nome)}</span>?
             <br />
             <span className="text-red-400 text-xs font-bold uppercase tracking-wider">Todos os agendamentos dela também serão removidos.</span>
           </p>
@@ -84,7 +85,7 @@ export default function ClientsPage() {
   const handleSalvarNovo = () => {
     if (!novoCli.nome.trim() || !novoCli.telefone.trim()) { setErroForm('Preencha nome e WhatsApp.'); return; }
     setErroForm('');
-    dispatch({ type: 'CRIAR_CLIENTE', payload: novoCli });
+    dispatch({ type: 'CRIAR_CLIENTE', payload: { ...novoCli, nome: capitalizeName(novoCli.nome) } });
     setModalNovo(false);
     setNovoCli({ nome: '', telefone: '' });
   };
@@ -98,7 +99,7 @@ export default function ClientsPage() {
   const handleSalvarEditar = () => {
     if (!editCli.nome.trim() || !editCli.telefone.trim()) { setErroForm('Preencha nome e WhatsApp.'); return; }
     setErroForm('');
-    dispatch({ type: 'EDITAR_CLIENTE', payload: { id: modalEditar, ...editCli } });
+    dispatch({ type: 'EDITAR_CLIENTE', payload: { id: modalEditar, ...editCli, nome: capitalizeName(editCli.nome) } });
     setModalEditar(null);
   };
 
@@ -170,7 +171,7 @@ export default function ClientsPage() {
             {/* Nome + etiquetas + ações rápidas */}
             <div className="flex justify-between items-start gap-3">
               <div className="min-w-0">
-                <h3 className="font-headline text-xl text-foreground font-bold truncate">{cli.nome}</h3>
+                <h3 className="font-headline text-xl text-foreground font-bold truncate">{capitalizeName(cli.nome)}</h3>
                 <p className="text-xs text-muted-foreground mt-0.5">📱 {cli.telefone}</p>
               </div>
               <div className="flex gap-1 shrink-0">
@@ -348,7 +349,7 @@ export default function ClientsPage() {
       </Modal>
 
       {/* Histórico */}
-      <Modal aberto={!!modalHistorico} onFechar={() => setModalHistorico(null)} titulo={`Histórico — ${clienteHistorico?.nome}`}>
+      <Modal aberto={!!modalHistorico} onFechar={() => setModalHistorico(null)} titulo={`Histórico — ${clienteHistorico?.nome ? capitalizeName(clienteHistorico.nome) : ''}`}>
         <div className="space-y-3">
           {historico.length === 0 && (
             <p className="text-muted-foreground text-sm italic text-center py-6">Nenhum agendamento registrado.</p>
