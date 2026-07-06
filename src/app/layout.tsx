@@ -61,9 +61,6 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: `if('serviceWorker'in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').then(function(r){r.addEventListener('updatefound',function(){var w=r.installing;w.addEventListener('statechange',function(){if(w.state==='installed'&&navigator.serviceWorker.controller)w.postMessage({type:'SKIP_WAITING'});});});}).catch(function(){});});}`}} />
-      </head>
       <body className="antialiased">
         <FirebaseClientProvider>
           {children}
